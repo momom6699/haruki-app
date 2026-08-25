@@ -3,78 +3,89 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Haruki</title>
+<title>Haruki — a journal that grows like tree rings</title>
+<meta name="description" content="Haruki is a journaling app for jotting down your day in a few lines. Entries build up quietly in your own Google Drive, and Health Connect can bring in step count and sleep.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='3' fill='%2355643e'/%3E%3Ccircle cx='16' cy='16' r='8' fill='none' stroke='%2355643e' stroke-width='1.4' opacity='0.6'/%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%2355643e' stroke-width='1.4' opacity='0.4'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
 <style>
-  :root {
-    color-scheme: light dark;
-  }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 2.5rem 1.5rem 4rem;
-    line-height: 1.8;
-    color: #1a1a1a;
-    background: #ffffff;
-  }
-  @media (prefers-color-scheme: dark) {
-    body { color: #e5e5e5; background: #121212; }
-    a { color: #7fb2ff; }
-  }
-  h1 {
-    font-size: 1.75rem;
-    margin-bottom: 0.25rem;
-  }
-  .tagline {
-    color: #666;
-    margin-bottom: 2rem;
-  }
-  @media (prefers-color-scheme: dark) {
-    .tagline { color: #aaa; }
-  }
-  section {
-    margin-bottom: 2rem;
-  }
-  a {
-    color: #0b5fff;
-  }
-  .lang-switch {
-    margin-bottom: 2rem;
-    font-size: 0.9rem;
-  }
-  footer {
-    margin-top: 3rem;
-    font-size: 0.85rem;
-    color: #888;
-  }
+  :root { --font-body: 'Work Sans', sans-serif; }
 </style>
 </head>
 <body>
-  <div class="lang-switch"><a href="index.html">日本語</a></div>
+  <a class="skip-link" href="#main">Skip to content</a>
 
-  <h1>Haruki</h1>
-  <p class="tagline">Keep your daily journal simple.</p>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="index-en.html">Haruki<span class="ring-dot" aria-hidden="true"></span></a>
+      <nav>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="index.html" class="lang">日本語</a>
+      </nav>
+    </div>
+  </header>
 
-  <section>
-    <h2>About the app</h2>
-    <p>
-      Haruki is a journaling app that lets you record daily events and your physical condition with ease.
-      Your journal data can be backed up to your own Google Drive, so you can safely carry it over when
-      switching devices. Haruki can also connect with Health Connect to bring health data such as step
-      count and sleep into your journal entries.
-    </p>
-  </section>
+  <main id="main">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Journaling app</p>
+          <h1>Every day you keep,<br>grows into a ring.</h1>
+          <p class="lede">
+            Haruki is a journaling app for writing down your day, or how you felt, in just a
+            few lines. Entries build up quietly in your own Google Drive, and if you connect
+            Health Connect, step count and sleep come along too.
+          </p>
+          <div class="hero-links">
+            <a class="btn" href="/privacy">Read the Privacy Policy</a>
+          </div>
+        </div>
+        <div class="hero-figure">
+          <svg class="rings" viewBox="0 0 400 400" role="img" aria-label="Concentric rings growing outward from a center point, like tree rings">
+            <circle class="seed" cx="200" cy="200" r="5" />
+            <circle class="ring" cx="200" cy="200" r="22"  style="--circ:138.2; --delay:0.10s; stroke-width:1.4; opacity:0.4" />
+            <circle class="ring" cx="200" cy="200" r="38"  style="--circ:238.8; --delay:0.15s; stroke-width:1;   opacity:0.55" />
+            <circle class="ring" cx="200" cy="200" r="52"  style="--circ:326.7; --delay:0.20s; stroke-width:1.8; opacity:0.35" />
+            <circle class="ring" cx="200" cy="200" r="68"  style="--circ:427.3; --delay:0.25s; stroke-width:1;   opacity:0.5" />
+            <circle class="ring" cx="200" cy="200" r="84"  style="--circ:527.8; --delay:0.30s; stroke-width:1.4; opacity:0.4" />
+            <circle class="ring" cx="200" cy="200" r="100" style="--circ:628.3; --delay:0.35s; stroke-width:1;   opacity:0.55" />
+            <circle class="ring" cx="200" cy="200" r="118" style="--circ:741.4; --delay:0.40s; stroke-width:1.8; opacity:0.35" />
+            <circle class="ring" cx="200" cy="200" r="138" style="--circ:867.1; --delay:0.45s; stroke-width:1;   opacity:0.5" />
+            <circle class="ring" cx="200" cy="200" r="160" style="--circ:1005.3; --delay:0.50s; stroke-width:1.4; opacity:0.4" />
+            <circle class="ring today" cx="200" cy="200" r="182" style="--circ:1143.5; --delay:0.55s; stroke-width:3; opacity:1" />
+          </svg>
+        </div>
+      </div>
+    </section>
 
-  <section>
-    <h2>Privacy Policy</h2>
-    <p>
-      Please review our Privacy Policy to learn what information Haruki collects and how it is used.
-    </p>
-    <p><a href="privacy-policy-en.html">Read the Privacy Policy</a></p>
-  </section>
+    <section class="features">
+      <div class="wrap">
+        <h2 class="section-title">What it does</h2>
+        <div class="feature-grid">
+          <article class="feature">
+            <h3>A few lines a day</h3>
+            <p>Jot down what happened, or how you felt, whenever it comes to mind. A plain entry screen that stays out of the way of the habit.</p>
+          </article>
+          <article class="feature">
+            <h3>Backs up quietly to Google Drive</h3>
+            <p>
+              Haruki uses only the <code>drive.file</code> scope, so it can only reach the backup file
+              it created itself — nothing else in your Drive. Switch phones, and your journal comes with you.
+            </p>
+          </article>
+          <article class="feature">
+            <h3>Loosely connects with Health Connect</h3>
+            <p>Step count and sleep duration come in read-only, alongside your entries. Haruki never holds write access to Health Connect.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
 
-  <footer>
-    &copy; 2026 Haruki
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Contact: <a href="mailto:sooksook7110@gmail.com">sooksook7110@gmail.com</a></p>
+      <p class="copyright">&copy; 2026 Haruki</p>
+    </div>
   </footer>
 </body>
 </html>
