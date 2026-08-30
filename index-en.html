@@ -1,25 +1,26 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Haruki — a journal that grows like tree rings</title>
-<meta name="description" content="Haruki is a journaling app for jotting down your day in a few lines. Entries build up quietly in your own Google Drive, and Health Connect can bring in step count and sleep.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='3' fill='%2355643e'/%3E%3Ccircle cx='16' cy='16' r='8' fill='none' stroke='%2355643e' stroke-width='1.4' opacity='0.6'/%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%2355643e' stroke-width='1.4' opacity='0.4'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="style.css">
-<style>
-  :root { --font-body: 'Work Sans', sans-serif; }
-</style>
+<title>Haruki — write down the day you ran</title>
+<meta name="description" content="Haruki is a running journal that keeps your run and the day's entry together. Your records stay on your device.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%232A2620'/%3E%3Ctext x='16' y='24' font-size='22' fill='%23F7F3E9' text-anchor='middle' font-family='serif'%3EH%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500&family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Libre+Caslon+Text&family=Shippori+Mincho&family=Zen+Antique&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap">
+<link rel="stylesheet" href="/style.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header">
     <div class="wrap">
-      <a class="wordmark" href="index-en.html">Haruki<span class="ring-dot" aria-hidden="true"></span></a>
+      <a class="wordmark" href="/index-en.html">Haruki</a>
       <nav>
-        <a href="/privacy">Privacy Policy</a>
-        <a href="index.html" class="lang">日本語</a>
+        <a href="/privacy">プライバシーポリシー</a>
+        <a href="/terms">利用規約</a>
+        <a href="/">日本語</a>
       </nav>
     </div>
   </header>
@@ -28,54 +29,69 @@
     <section class="hero">
       <div class="wrap hero-grid">
         <div class="hero-copy">
-          <p class="eyebrow">Journaling app</p>
-          <h1>Every day you keep,<br>grows into a ring.</h1>
+          <p class="eyebrow">A running journal</p>
+          <h1>Write down the day you ran.</h1>
           <p class="lede">
-            Haruki is a journaling app for writing down your day, or how you felt, in just a
-            few lines. Entries build up quietly in your own Google Drive, and if you connect
-            Health Connect, step count and sleep come along too.
+            Haruki keeps a run and that day's entry together in one place.
+            Your records can stay on your device.
           </p>
-          <div class="hero-links">
-            <a class="btn" href="/privacy">Read the Privacy Policy</a>
-          </div>
         </div>
         <div class="hero-figure">
-          <svg class="rings" viewBox="0 0 400 400" role="img" aria-label="Concentric rings growing outward from a center point, like tree rings">
-            <circle class="seed" cx="200" cy="200" r="5" />
-            <circle class="ring" cx="200" cy="200" r="22"  style="--circ:138.2; --delay:0.10s; stroke-width:1.4; opacity:0.4" />
-            <circle class="ring" cx="200" cy="200" r="38"  style="--circ:238.8; --delay:0.15s; stroke-width:1;   opacity:0.55" />
-            <circle class="ring" cx="200" cy="200" r="52"  style="--circ:326.7; --delay:0.20s; stroke-width:1.8; opacity:0.35" />
-            <circle class="ring" cx="200" cy="200" r="68"  style="--circ:427.3; --delay:0.25s; stroke-width:1;   opacity:0.5" />
-            <circle class="ring" cx="200" cy="200" r="84"  style="--circ:527.8; --delay:0.30s; stroke-width:1.4; opacity:0.4" />
-            <circle class="ring" cx="200" cy="200" r="100" style="--circ:628.3; --delay:0.35s; stroke-width:1;   opacity:0.55" />
-            <circle class="ring" cx="200" cy="200" r="118" style="--circ:741.4; --delay:0.40s; stroke-width:1.8; opacity:0.35" />
-            <circle class="ring" cx="200" cy="200" r="138" style="--circ:867.1; --delay:0.45s; stroke-width:1;   opacity:0.5" />
-            <circle class="ring" cx="200" cy="200" r="160" style="--circ:1005.3; --delay:0.50s; stroke-width:1.4; opacity:0.4" />
-            <circle class="ring today" cx="200" cy="200" r="182" style="--circ:1143.5; --delay:0.55s; stroke-width:3; opacity:1" />
+          <svg class="route" viewBox="45 85 310 290" role="img" aria-label="A line tracing the route of a single run, marked at its start and end.">
+            <path class="line" pathLength="1000"
+              d="M 60 330 C 70 280, 110 268, 140 250 S 180 200, 175 165 C 170 130, 200 98, 240 105 C 286 113, 312 146, 305 186 C 298 231, 264 250, 240 275 C 214 302, 220 330, 250 345 C 291 363, 330 341, 341 299" />
+            <circle class="marker" cx="60" cy="330" r="7" />
+            <circle class="marker" cx="341" cy="299" r="7" />
           </svg>
         </div>
       </div>
     </section>
 
-    <section class="features">
+    <section class="section">
       <div class="wrap">
         <h2 class="section-title">What it does</h2>
-        <div class="feature-grid">
-          <article class="feature">
-            <h3>A few lines a day</h3>
-            <p>Jot down what happened, or how you felt, whenever it comes to mind. A plain entry screen that stays out of the way of the habit.</p>
+        <div class="items">
+          <article class="item">
+            <h3>Records the run</h3>
+            <p>It records your route and your time. While you are running, the only number on screen is elapsed time.</p>
           </article>
-          <article class="feature">
-            <h3>Backs up quietly to Google Drive</h3>
-            <p>
-              Haruki uses only the <code>drive.file</code> scope, so it can only reach the backup file
-              it created itself — nothing else in your Drive. Switch phones, and your journal comes with you.
-            </p>
+          <article class="item">
+            <h3>Holds the day's entry</h3>
+            <p>Add a note, photos, and the song you had on. You can write on the days you did not run, too.</p>
           </article>
-          <article class="feature">
-            <h3>Loosely connects with Health Connect</h3>
-            <p>Step count and sleep duration come in read-only, alongside your entries. Haruki never holds write access to Health Connect.</p>
+          <article class="item">
+            <h3>Lets it accumulate</h3>
+            <p>The days you ran stay on the calendar and the heatmap. The darker a day sits, the further you went.</p>
+            <div class="accumulation" aria-hidden="true">
+              <span></span><span class="d2"></span><span></span><span class="d3"></span>
+              <span class="d2"></span><span class="d4"></span><span></span><span class="d3"></span>
+            </div>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <p class="specimen">
+          <span class="meta">14 August 2026 · 5.2 km</span>
+          Took a long time to get out the door. The rain stopped just before the bridge, and after that it was easy.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <h2 class="section-title">How your data is handled</h2>
+        <div class="note">
+          <p>
+            Runs, entries, and photos are stored on your device. Haruki does not send them to a server of its own.
+          </p>
+          <p>
+            Backing up to Google Drive is optional. Haruki only touches the file it created there and never the
+            other files in your Drive. Health Connect is read-only — Haruki never writes back to it.
+            <a href="/privacy">プライバシーポリシー（日本語）</a>
+          </p>
         </div>
       </div>
     </section>
@@ -84,7 +100,10 @@
   <footer class="site-footer">
     <div class="wrap">
       <p>Contact: <a href="mailto:sooksook7110@gmail.com">sooksook7110@gmail.com</a></p>
-      <p class="copyright">&copy; 2026 Haruki</p>
+      <nav>
+        <a href="/privacy">プライバシーポリシー</a>
+        <a href="/terms">利用規約</a>
+      </nav>
     </div>
   </footer>
 </body>
