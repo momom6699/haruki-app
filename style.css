@@ -235,75 +235,73 @@ a:focus-visible, button:focus-visible {
 
 /* Sections */
 
-.section { padding: 0 0 64px; }
+.section { padding: 0 0 72px; }
 
 .section-title {
   font-family: var(--font-display);
   font-weight: 400;
   font-size: var(--text-heading);
   line-height: var(--leading-heading);
-  margin: 0 0 28px;
+  margin: 0 0 8px;
   padding-bottom: 12px;
   border-bottom: 1px solid var(--border);
 }
 
-.items {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
-}
-
-.item h3 {
-  font-family: var(--font-ui);
-  font-weight: 500;
-  font-size: var(--text-body);
-  line-height: var(--leading-body);
-  margin: 0 0 8px;
-}
-
-.item p {
+.section-lede {
   font-family: var(--font-reading);
   font-size: var(--text-body-sm);
   line-height: var(--leading-body-sm);
   color: var(--muted);
-  margin: 0;
+  margin: 0 0 56px;
 }
 
-/* Accumulation strip — data colours, used for the thing they mean */
+/* Five steps — the screenshots carry the page */
 
-.accumulation {
-  display: flex;
-  gap: 3px;
-  margin-top: 14px;
+.steps {
+  display: grid;
+  gap: 72px;
 }
-.accumulation span {
-  width: 12px;
-  height: 12px;
-  background: var(--data-1);
-  border: 1px solid var(--border);
+
+.step {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 64px;
+  align-items: center;
 }
-.accumulation .d2 { background: var(--data-2); }
-.accumulation .d3 { background: var(--data-3); border-color: var(--data-3); }
-.accumulation .d4 { background: var(--data-4); border-color: var(--data-4); }
 
-/* Diary specimen — the one place the voice face appears */
+.step:nth-child(even) > .step-media { order: -1; }
 
-.specimen {
-  background: var(--surface);
-  padding: 24px 28px;
-  font-family: var(--font-voice);
-  font-size: var(--text-diary);
-  line-height: var(--leading-diary);
+.step-media { display: flex; justify-content: center; }
+
+.step-media img {
+  display: block;
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+}
+
+.step h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-title);
+  line-height: var(--leading-title);
+  margin: 0 0 12px;
+}
+
+.step p {
+  font-family: var(--font-reading);
+  font-size: var(--text-subheading);
+  line-height: var(--leading-subheading);
   color: var(--ink);
   margin: 0;
+  max-width: 30em;
 }
-.specimen .meta {
-  display: block;
-  font-family: var(--font-ui);
-  font-size: var(--text-meta);
-  line-height: var(--leading-meta);
+
+.step p.detail {
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
   color: var(--muted);
-  margin-bottom: 10px;
+  margin-top: 14px;
 }
 
 /* Data handling note */
@@ -422,7 +420,10 @@ article.policy code {
   .hero-grid { grid-template-columns: 1fr; gap: 32px; }
   .hero-figure { order: -1; }
   .route { max-width: 260px; }
-  .items { grid-template-columns: 1fr; gap: 32px; }
+  .steps { gap: 56px; }
+  .step { grid-template-columns: 1fr; gap: 24px; }
+  .step:nth-child(even) > .step-media { order: 0; }
+  .step-media img { max-width: 280px; }
   .note { grid-template-columns: 1fr; gap: 16px; }
   .site-header .wrap { flex-wrap: wrap; gap: 12px; }
 }
