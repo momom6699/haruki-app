@@ -4,12 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Haruki — write down the day you ran</title>
-<meta name="description" content="Haruki is a running journal that keeps your run and the day's entry together. Your records stay on your device.">
+<meta name="description" content="Haruki keeps the route you ran, the songs you heard and the photographs you took, together on one page.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%232A2620'/%3E%3Ctext x='16' y='24' font-size='22' fill='%23F7F3E9' text-anchor='middle' font-family='serif'%3EH%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500&family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Libre+Caslon+Text&family=Shippori+Mincho&family=Zen+Antique&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap">
-<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Shippori+Mincho&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -18,112 +17,118 @@
     <div class="wrap">
       <a class="wordmark" href="/index-en.html">Haruki</a>
       <nav>
-        <a href="/privacy">プライバシーポリシー</a>
-        <a href="/terms">利用規約</a>
+        <a href="/privacy">プライバシーポリシー（日本語）</a>
+        <a href="/terms">利用規約（日本語）</a>
         <a href="/">日本語</a>
       </nav>
     </div>
   </header>
 
   <main id="main">
-    <section class="hero">
-      <div class="wrap hero-grid">
-        <div class="hero-copy">
-          <p class="eyebrow">A running journal</p>
-          <h1>Write down the day you ran.</h1>
-          <p class="lede">
-            Haruki keeps a run and that day's entry together in one place.
-            Your records can stay on your device.
-          </p>
-        </div>
-        <div class="hero-figure">
-          <svg class="route" viewBox="45 85 310 290" role="img" aria-label="A line tracing the route of a single run, marked at its start and end.">
-            <path class="line" pathLength="1000"
-              d="M 60 330 C 70 280, 110 268, 140 250 S 180 200, 175 165 C 170 130, 200 98, 240 105 C 286 113, 312 146, 305 186 C 298 231, 264 250, 240 275 C 214 302, 220 330, 250 345 C 291 363, 330 341, 341 299" />
-            <circle class="marker" cx="60" cy="330" r="7" />
-            <circle class="marker" cx="341" cy="299" r="7" />
-          </svg>
+
+    <!-- 01 — 地図がそのまま画面になる。スマホのモックアップの中には入れない。 -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="map" id="map-hero" role="img"
+           aria-label="A map with one running route drawn on it. Parks, water, greenways and wider roads are separated by colour.">
+        <p class="map__attribution">Map data <span data-attribution>© OpenStreetMap contributors</span></p>
+      </div>
+      <div class="hero__scrim" aria-hidden="true"></div>
+      <div class="hero__copy">
+        <div class="wrap">
+          <h1 class="statement" id="hero-title">Write down the day<br>you ran.</h1>
+          <p class="support">The route, the songs, the photographs.<br>One day, kept on one page.</p>
+          <p class="meta hero__meta">Android — Coming soon</p>
         </div>
       </div>
     </section>
 
-    <section class="section">
+    <!-- 02 — 地図そのものを大きく見せる。説明カードは作らない。 -->
+    <section class="section cartography" aria-labelledby="map-title">
+      <div class="wrap section__head">
+        <h2 class="statement statement--sm" id="map-title">A runner sees<br>a slightly different city.</h2>
+        <ul class="legend">
+          <li class="is-park"><i></i>PARK</li>
+          <li class="is-water"><i></i>WATER</li>
+          <li class="is-greenway"><i></i>GREENWAY</li>
+          <li class="is-road"><i></i>ROAD</li>
+          <li class="is-route"><i></i>ROUTE</li>
+        </ul>
+      </div>
+      <div class="map" id="map-cartography" role="img"
+           aria-label="A map showing only parks, water, greenways and roads wide enough to run on. No shops or points of interest.">
+        <p class="map__attribution">Map data <span data-attribution>© OpenStreetMap contributors</span></p>
+      </div>
+    </section>
+
+    <!-- 03 — 1回のランを、1つの構成として見せる。 -->
+    <section class="section entry-section" aria-labelledby="entry-title">
       <div class="wrap">
-        <h2 class="section-title">How it works</h2>
-        <p class="section-lede">From before the run to reading it back.</p>
-        <div class="steps">
-          <article class="step">
-            <div class="step-text">
-              <h3>Run</h3>
-              <p>One tap. The screen can stay off.</p>
-              <p class="detail">Flip the switch on the Today screen. You can put the phone away and let the screen go dark — recording carries on.</p>
+        <div class="section__head">
+          <h2 class="statement statement--sm" id="entry-title">The day becomes<br>a page.</h2>
+        </div>
+        <div class="entry">
+          <div class="entry__col">
+            <div>
+              <p class="entry__date">23 August<span aria-hidden="true"> </span>Sun</p>
+              <p class="entry__place">The moat loop</p>
             </div>
-            <div class="step-media">
-              <img src="/assets/step-1-en.webp" width="881" height="1450"
-                   loading="lazy" decoding="async" alt="The Today screen: a map, the day’s single line, and the switch that starts recording.">
-            </div>
-          </article>
-          <article class="step">
-            <div class="step-text">
-              <h3>It stays</h3>
-              <p>Distance, time and route, already written.</p>
-              <p class="detail">When you finish, the run becomes a page in the journal. A title and the entry itself can be added later.</p>
-            </div>
-            <div class="step-media">
-              <img src="/assets/step-2-en.webp" width="881" height="1181"
-                   loading="lazy" decoding="async" alt="A finished run: distance, time and average pace, with the route drawn on the map.">
-            </div>
-          </article>
-          <article class="step">
-            <div class="step-text">
-              <h3>So do the songs</h3>
-              <p>What you heard, kept with the run.</p>
-              <p class="detail">The title and artist of whatever was playing during the run are kept with it, so you can find that day’s music again.</p>
-            </div>
-            <div class="step-media">
-              <img src="/assets/step-3-en.webp" width="881" height="1450"
-                   loading="lazy" decoding="async" alt="The music tab of the journal, with the songs from that run laid out by album.">
-            </div>
-          </article>
-          <article class="step">
-            <div class="step-text">
-              <h3>It adds up</h3>
-              <p>The days you ran fill in the month.</p>
-              <p class="detail">A day’s shade comes from how far you went. How many runs and how many kilometres that month sit quietly above.</p>
-            </div>
-            <div class="step-media">
-              <img src="/assets/step-4-en.webp" width="881" height="1450"
-                   loading="lazy" decoding="async" alt="The calendar tab, with the days you ran filled in shades of green.">
-            </div>
-          </article>
-          <article class="step">
-            <div class="step-text">
-              <h3>Read it back</h3>
-              <p>One page a day, like a book.</p>
-              <p class="detail">Search by date, or by the words you wrote. The weather and the songs from that day are still attached.</p>
-            </div>
-            <div class="step-media">
-              <img src="/assets/step-5-en.webp" width="881" height="1450"
-                   loading="lazy" decoding="async" alt="The journal list: each date with its distance, time, weather, songs, route and entry.">
-            </div>
-          </article>
+            <dl class="figure">
+              <dt>Distance</dt>
+              <dd><span data-hero-distance>—</span><small>km</small></dd>
+            </dl>
+            <dl class="figure">
+              <dt>Time</dt>
+              <dd data-hero-duration>—</dd>
+            </dl>
+            <dl class="figure">
+              <dt>Average pace</dt>
+              <dd>7:02<small>/km</small></dd>
+            </dl>
+          </div>
+
+          <div class="map" id="map-entry" role="img" aria-label="A map of the route run that day, marked at its start and finish.">
+            <p class="map__attribution">Map data <span data-attribution>© OpenStreetMap contributors</span></p>
+          </div>
+
+          <div class="entry__col entry__col--right">
+            <p class="entry__note">Started 9:16<br>26°C, sunny with some cloud</p>
+            <p class="entry__note"><strong>Night Window</strong><br>The Kenji Aoki Trio, and 23 more</p>
+            <p class="diary">Went out once the sun came back. Inside the moat the air was moving, and it ran easier than expected.</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="section">
+    <!-- 04 — 積み重ね。ヒートマップにしない。重なりで濃くなるだけ。 -->
+    <section class="section history" aria-labelledby="history-title">
+      <div class="wrap section__head">
+        <h2 class="statement statement--sm" id="history-title">The same streets,<br>over and over.</h2>
+        <p class="support">The roads you run slowly become a map of your own.</p>
+        <p class="history__caption">
+          <span><b data-cumulative-count>—</b> recorded runs</span>
+          <span><b data-cumulative-distance>—</b> km in all</span>
+        </p>
+      </div>
+      <div class="map" id="map-history" role="img"
+           aria-label="Every route run so far, laid over one another. The more often a road was run, the darker its line.">
+        <p class="map__attribution">Map data <span data-attribution>© OpenStreetMap contributors</span></p>
+      </div>
+    </section>
+
+    <!-- 05 -->
+    <section class="section philosophy" aria-labelledby="philosophy-title">
       <div class="wrap">
-        <h2 class="section-title">How your data is handled</h2>
-        <div class="note">
-          <p>
-            Runs, entries, and photos are stored on your device. Haruki does not send them to a server of its own.
-          </p>
-          <p>
-            Backing up to Google Drive is optional. Haruki only touches the file it created there and never the
-            other files in your Drive. Health Connect is read-only — Haruki never writes back to it.
-            <a href="/privacy">プライバシーポリシー（日本語）</a>
-          </p>
-        </div>
+        <h2 class="statement" id="philosophy-title">Running is not<br>a score.</h2>
+        <p class="support">No rankings and no challenges.<br>The fast days and the slow days are kept as the same kind of day.</p>
+        <ul class="facts">
+          <li>Free</li>
+          <li>No ads</li>
+          <li>No account</li>
+          <li>Health Connect</li>
+          <li>Google Drive backup</li>
+          <li>Data export</li>
+          <li>Android — Coming soon</li>
+        </ul>
       </div>
     </section>
   </main>
@@ -132,10 +137,12 @@
     <div class="wrap">
       <p>Contact: <a href="mailto:sooksook7110@gmail.com">sooksook7110@gmail.com</a></p>
       <nav>
-        <a href="/privacy">プライバシーポリシー</a>
-        <a href="/terms">利用規約</a>
+        <a href="/privacy">プライバシーポリシー（日本語）</a>
+        <a href="/terms">利用規約（日本語）</a>
       </nav>
     </div>
   </footer>
+
+  <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

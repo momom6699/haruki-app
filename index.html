@@ -3,13 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Haruki — 走った日のことを書きとめる</title>
-<meta name="description" content="Harukiは、走った記録とその日の日記をひとつに残すランニング日記アプリです。記録は原則として端末の中に保存されます。">
+<title>Haruki — 走った日のことを、書きとめる。</title>
+<meta name="description" content="Harukiは、走った道、聴いていた曲、写真を、その日ひとつのページに残すランニングの日記です。">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%232A2620'/%3E%3Ctext x='16' y='24' font-size='22' fill='%23F7F3E9' text-anchor='middle' font-family='serif'%3EH%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500&family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Libre+Caslon+Text&family=Shippori+Mincho&family=Zen+Antique&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap">
-<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Shippori+Mincho&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
 </head>
 <body>
   <a class="skip-link" href="#main">メインコンテンツへ</a>
@@ -26,104 +25,110 @@
   </header>
 
   <main id="main">
-    <section class="hero">
-      <div class="wrap hero-grid">
-        <div class="hero-copy">
-          <p class="eyebrow">ランニングの日記</p>
-          <h1>走った日のことを、書きとめる。</h1>
-          <p class="lede">
-            Harukiは、走った記録とその日の日記をひとつに残すアプリです。
-            記録は原則として端末の中に置いたままにできます。
-          </p>
-        </div>
-        <div class="hero-figure">
-          <svg class="route" viewBox="45 85 310 290" role="img" aria-label="一回のランニングの経路を描いた線。始点と終点に印がある。">
-            <path class="line" pathLength="1000"
-              d="M 60 330 C 70 280, 110 268, 140 250 S 180 200, 175 165 C 170 130, 200 98, 240 105 C 286 113, 312 146, 305 186 C 298 231, 264 250, 240 275 C 214 302, 220 330, 250 345 C 291 363, 330 341, 341 299" />
-            <circle class="marker" cx="60" cy="330" r="7" />
-            <circle class="marker" cx="341" cy="299" r="7" />
-          </svg>
+
+    <!-- 01 — 地図がそのまま画面になる。スマホのモックアップの中には入れない。 -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="map" id="map-hero" role="img"
+           aria-label="ランニングの経路が1本描かれた地図。公園、水面、緑道、大きな道が色で分かれている。">
+        <p class="map__attribution">地図データ <span data-attribution>© OpenStreetMap contributors</span></p>
+      </div>
+      <div class="hero__scrim" aria-hidden="true"></div>
+      <div class="hero__copy">
+        <div class="wrap">
+          <h1 class="statement" id="hero-title">走った日のことを、<br>書きとめる。</h1>
+          <p class="support">走った道、聴いていた曲、写真。<br>その日がひとつのページに残る。</p>
+          <p class="meta hero__meta">Android — Coming soon</p>
         </div>
       </div>
     </section>
 
-    <section class="section">
+    <!-- 02 — 地図そのものを大きく見せる。説明カードは作らない。 -->
+    <section class="section cartography" aria-labelledby="map-title">
+      <div class="wrap section__head">
+        <h2 class="statement statement--sm" id="map-title">走る人には、<br>街が少し違って見える。</h2>
+        <ul class="legend">
+          <li class="is-park"><i></i>PARK</li>
+          <li class="is-water"><i></i>WATER</li>
+          <li class="is-greenway"><i></i>GREENWAY</li>
+          <li class="is-road"><i></i>ROAD</li>
+          <li class="is-route"><i></i>ROUTE</li>
+        </ul>
+      </div>
+      <div class="map" id="map-cartography" role="img"
+           aria-label="公園と水面と緑道、走れる幅のある道だけを描いた地図。店や施設の記号は載せていない。">
+        <p class="map__attribution">地図データ <span data-attribution>© OpenStreetMap contributors</span></p>
+      </div>
+    </section>
+
+    <!-- 03 — 1回のランを、1つの構成として見せる。 -->
+    <section class="section entry-section" aria-labelledby="entry-title">
       <div class="wrap">
-        <h2 class="section-title">使い方</h2>
-        <p class="section-lede">走る前から、読み返すまで。</p>
-        <div class="steps">
-          <article class="step">
-            <div class="step-text">
-              <h3>走る</h3>
-              <p>ワンタップで計測。画面は消したままで。</p>
-              <p class="detail">「今日」の画面のスイッチを右へ。あとは画面を消したままポケットに入れておけば、計測は続きます。</p>
+        <div class="section__head">
+          <h2 class="statement statement--sm" id="entry-title">その日が、<br>一ページになる。</h2>
+        </div>
+        <div class="entry">
+          <div class="entry__col">
+            <div>
+              <p class="entry__date">8月23日<span aria-hidden="true"> </span>日</p>
+              <p class="entry__place">桜堀の周回</p>
             </div>
-            <div class="step-media">
-              <img src="/assets/step-1.webp" width="881" height="1450"
-                   loading="lazy" decoding="async" alt="「今日」の画面。地図の上に、その日のひとことと計測をはじめるスイッチ。">
-            </div>
-          </article>
-          <article class="step">
-            <div class="step-text">
-              <h3>残る</h3>
-              <p>距離・時間・ルートが、走り終えたときには。</p>
-              <p class="detail">走り終えると、その日の記録が日記の1ページとして残ります。タイトルや本文は、あとから足せます。</p>
-            </div>
-            <div class="step-media">
-              <img src="/assets/step-2.webp" width="881" height="1190"
-                   loading="lazy" decoding="async" alt="走り終えた記録の画面。距離・時間・平均ペースと、走ったルートの地図。">
-            </div>
-          </article>
-          <article class="step">
-            <div class="step-text">
-              <h3>曲が残る</h3>
-              <p>その日いっしょに走った曲が並ぶ。</p>
-              <p class="detail">走っているあいだ再生していた曲名とアーティストを記録します。あとから「あの日に聴いた曲」を辿れます。</p>
-            </div>
-            <div class="step-media">
-              <img src="/assets/step-3.webp" width="881" height="1450"
-                   loading="lazy" decoding="async" alt="日記の音楽タブ。走りながら聴いていた曲がアルバムごとに並んでいる。">
-            </div>
-          </article>
-          <article class="step">
-            <div class="step-text">
-              <h3>積み重なる</h3>
-              <p>走った日が、月を埋めていく。</p>
-              <p class="detail">カレンダーの濃さは走った距離で変わります。その月に何回・何km走ったかは、上に小さく出ます。</p>
-            </div>
-            <div class="step-media">
-              <img src="/assets/step-4.webp" width="881" height="1450"
-                   loading="lazy" decoding="async" alt="日記のカレンダータブ。走った日が濃さの違う緑で埋まっている。">
-            </div>
-          </article>
-          <article class="step">
-            <div class="step-text">
-              <h3>読み返す</h3>
-              <p>その日のページを、本のように。</p>
-              <p class="detail">日付からも、日記に書いた言葉からも探せます。その日の天気や聴いた曲も一緒に残っています。</p>
-            </div>
-            <div class="step-media">
-              <img src="/assets/step-5.webp" width="881" height="1450"
-                   loading="lazy" decoding="async" alt="日記の一覧。日付ごとに距離・時間・天気・曲・ルートと本文が並んでいる。">
-            </div>
-          </article>
+            <dl class="figure">
+              <dt>距離</dt>
+              <dd><span data-hero-distance>—</span><small>km</small></dd>
+            </dl>
+            <dl class="figure">
+              <dt>時間</dt>
+              <dd data-hero-duration>—</dd>
+            </dl>
+            <dl class="figure">
+              <dt>平均ペース</dt>
+              <dd>7:02<small>/km</small></dd>
+            </dl>
+          </div>
+
+          <div class="map" id="map-entry" role="img" aria-label="その日に走った経路の地図。始点と終点に印がある。">
+            <p class="map__attribution">地図データ <span data-attribution>© OpenStreetMap contributors</span></p>
+          </div>
+
+          <div class="entry__col entry__col--right">
+            <p class="entry__note">9:16 開始<br>26℃ 晴れ時々くもり</p>
+            <p class="entry__note"><strong>Night Window</strong><br>The Kenji Aoki Trio ほか23曲</p>
+            <p class="diary">日差しが戻ってから出た。堀の内側は風が通って、思ったより走れた。</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="section">
+    <!-- 04 — 積み重ね。ヒートマップにしない。重なりで濃くなるだけ。 -->
+    <section class="section history" aria-labelledby="history-title">
+      <div class="wrap section__head">
+        <h2 class="statement statement--sm" id="history-title">同じ街を、<br>何度も走る。</h2>
+        <p class="support">走った道が、少しずつ自分の地図になる。</p>
+        <p class="history__caption">
+          <span><b data-cumulative-count>—</b> 本の記録</span>
+          <span>のべ <b data-cumulative-distance>—</b> km</span>
+        </p>
+      </div>
+      <div class="map" id="map-history" role="img"
+           aria-label="これまでの走行ルートをすべて重ねた地図。何度も通った道ほど線が濃くなっている。">
+        <p class="map__attribution">地図データ <span data-attribution>© OpenStreetMap contributors</span></p>
+      </div>
+    </section>
+
+    <!-- 05 -->
+    <section class="section philosophy" aria-labelledby="philosophy-title">
       <div class="wrap">
-        <h2 class="section-title">データの扱い</h2>
-        <div class="note">
-          <p>
-            走行記録・日記・写真は原則として端末内に保存します。Haruki独自のサーバーへ送信することはありません。
-          </p>
-          <p>
-            Googleドライブへのバックアップは任意です。Harukiが作成したファイルだけを扱い、ドライブ内の他のファイルには触れません。
-            Health Connectからは読み取るのみで、書き込みはしません。
-            <a href="/privacy">プライバシーポリシー</a>
-          </p>
-        </div>
+        <h2 class="statement" id="philosophy-title">走ることを、<br>成績にしない。</h2>
+        <p class="support">ランキングも、チャレンジもありません。<br>速かった日も、遅かった日も、同じ一日として残ります。</p>
+        <ul class="facts">
+          <li>無料</li>
+          <li>広告なし</li>
+          <li>アカウント不要</li>
+          <li>Health Connect</li>
+          <li>Google Drive backup</li>
+          <li>Data export</li>
+          <li>Android — Coming soon</li>
+        </ul>
       </div>
     </section>
   </main>
@@ -137,5 +142,7 @@
       </nav>
     </div>
   </footer>
+
+  <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

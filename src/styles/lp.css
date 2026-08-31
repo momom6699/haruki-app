@@ -1,0 +1,214 @@
+/* Haruki LP — 地図が主役のページ。
+   色トークンは Android 版 Color.kt の写し。UI クロームは無彩色で、
+   色が灯るのは走行データ（ルート線・積み重ね）と地物だけ。 */
+
+:root {
+  --bg: #f7f3e9;
+  --surface: #efe9da;
+  --surface-elevated: #fbf8ef;
+  --border: #e4dcc9;
+  --ink: #2a2620;
+  --muted: #6b6152;
+  --route: #5e9e52;
+  --route-marker: #3c6b34;
+
+  /* §3：主要 Statement は sans。日記だけ明朝。 */
+  --font-ui: 'Archivo', 'Zen Kaku Gothic New', 'Hiragino Kaku Gothic ProN', sans-serif;
+  --font-voice: 'Shippori Mincho', 'Hiragino Mincho ProN', serif;
+
+  /* デスクトップで 96–140px、モバイルは viewport に合わせて縮む。 */
+  --statement: clamp(2.5rem, 8.4vw, 8.75rem);
+  --statement-sm: clamp(2rem, 5.6vw, 5rem);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { color: var(--ink); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+.skip-link { position: absolute; left: -9999px; background: var(--surface-elevated); padding: 12px 16px; z-index: 20; }
+.skip-link:focus { left: 16px; top: 16px; }
+
+.wrap { max-width: 1360px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 64px); }
+
+/* --- header ------------------------------------------------------------- */
+
+.site-header { position: relative; z-index: 5; }
+.site-header .wrap {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 24px; padding-top: 22px; padding-bottom: 22px;
+}
+.wordmark { font-size: 20px; font-weight: 600; letter-spacing: 0.01em; text-decoration: none; }
+.site-header nav { display: flex; gap: 20px; font-size: 13px; }
+.site-header nav a { color: var(--muted); text-decoration: none; }
+.site-header nav a:hover { color: var(--ink); }
+
+/* --- statements --------------------------------------------------------- */
+
+.statement {
+  font-size: var(--statement);
+  line-height: 1.06;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0;
+  text-wrap: balance;
+}
+.statement--sm { font-size: var(--statement-sm); }
+
+.support { font-size: clamp(15px, 1.25vw, 19px); line-height: 1.85; color: var(--muted); margin: 20px 0 0; max-width: 34em; }
+.meta { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin: 0; }
+
+/* --- map surfaces ------------------------------------------------------- */
+
+.map {
+  position: relative;
+  width: 100%;
+  background: var(--bg);
+  overflow: hidden;
+}
+.map canvas { display: block; }
+.map__attribution {
+  position: absolute; right: 10px; bottom: 8px; margin: 0;
+  font-size: 11px; line-height: 1.5; color: var(--muted);
+  background: rgba(247, 243, 233, 0.82); padding: 3px 8px; border-radius: 2px;
+}
+.map__attribution a { color: var(--muted); }
+
+/* --- 01 hero ------------------------------------------------------------ */
+
+.hero { position: relative; }
+.hero .map { height: min(94vh, 900px); }
+.hero__copy {
+  position: absolute; inset: auto 0 0 0; z-index: 2;
+  padding-bottom: clamp(28px, 5vh, 72px);
+  pointer-events: none;
+}
+.hero__copy > .wrap > * { pointer-events: auto; }
+.hero__scrim {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(to top, rgba(247, 243, 233, 0.94) 0%, rgba(247, 243, 233, 0.72) 26%, rgba(247, 243, 233, 0) 58%);
+}
+.hero__meta { margin-top: 28px; }
+
+/* --- 02 map ------------------------------------------------------------- */
+
+.section { padding: clamp(72px, 12vh, 160px) 0 0; }
+.section__head { margin-bottom: clamp(28px, 5vh, 64px); }
+
+.cartography .map { height: min(88vh, 820px); }
+
+.legend {
+  display: flex; flex-wrap: wrap; gap: 6px 22px;
+  margin: 18px 0 0; padding: 0; list-style: none;
+  font-size: 11px; letter-spacing: 0.14em; color: var(--muted);
+}
+.legend li { display: flex; align-items: center; gap: 7px; }
+.legend i { width: 14px; height: 3px; border-radius: 2px; background: currentColor; }
+.legend .is-park { color: #7f9a63; }
+.legend .is-water { color: #4f8fd0; }
+.legend .is-greenway { color: #6f9457; }
+.legend .is-road { color: #c8912a; }
+.legend .is-route { color: var(--route); }
+
+/* --- 03 entry ----------------------------------------------------------- */
+
+.entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: clamp(20px, 3vw, 52px);
+  align-items: start;
+  margin-top: 8px;
+}
+.entry .map { height: min(72vh, 680px); border: 1px solid var(--border); }
+.entry__col { display: flex; flex-direction: column; gap: clamp(20px, 3.4vh, 40px); }
+.entry__col--right { text-align: right; }
+
+.entry__date { font-size: clamp(28px, 3.4vw, 46px); line-height: 1.1; font-weight: 600; letter-spacing: -0.01em; margin: 0; }
+.entry__place { font-size: 14px; color: var(--muted); margin: 6px 0 0; }
+
+.figure { margin: 0; }
+.figure dt { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+.figure dd {
+  margin: 2px 0 0;
+  font-size: clamp(26px, 3vw, 40px); line-height: 1.15; font-weight: 500;
+  font-variant-numeric: tabular-nums; letter-spacing: -0.01em;
+}
+.figure dd small { font-size: 0.45em; font-weight: 400; color: var(--muted); margin-left: 4px; letter-spacing: 0; }
+
+.entry__note { font-size: 13px; color: var(--muted); margin: 0; }
+.entry__note strong { font-weight: 500; color: var(--ink); }
+
+.diary {
+  font-family: var(--font-voice);
+  font-size: clamp(16px, 1.35vw, 19px);
+  line-height: 2;
+  margin: 0;
+  color: var(--ink);
+  text-align: left;
+}
+
+/* --- 04 history --------------------------------------------------------- */
+
+.history .map { height: min(96vh, 960px); }
+.history__caption { display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 18px 0 0; font-size: 13px; color: var(--muted); }
+.history__caption b { font-weight: 500; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+/* --- 05 philosophy ------------------------------------------------------ */
+
+.philosophy { padding-bottom: clamp(72px, 12vh, 150px); }
+.facts {
+  display: flex; flex-wrap: wrap; gap: 4px 26px;
+  margin: clamp(40px, 7vh, 88px) 0 0; padding: 0; list-style: none;
+  font-size: 13px; color: var(--muted);
+}
+.facts li::after { content: '·'; margin-left: 26px; color: var(--border); }
+.facts li:last-child::after { content: ''; margin: 0; }
+
+/* --- footer ------------------------------------------------------------- */
+
+.site-footer { border-top: 1px solid var(--border); padding: 26px 0 40px; }
+.site-footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--muted); }
+.site-footer a { color: var(--muted); }
+.site-footer p { margin: 0; }
+.site-footer nav { display: flex; gap: 20px; }
+
+/* --- responsive --------------------------------------------------------- */
+
+@media (max-width: 1000px) {
+  .entry { grid-template-columns: 1fr; }
+  .entry .map { height: min(58vh, 460px); order: -1; }
+  .entry__col--right { text-align: left; }
+}
+
+@media (max-width: 700px) {
+  /* 単純な縮小ではなく、狭い幅で1行に収まる号数へ組み直す（§10）。
+     指定どおりの改行位置を保ったまま、行が勝手に折り返さない大きさにする。 */
+  :root {
+    --statement: clamp(1.9rem, 9.2vw, 3rem);
+    --statement-sm: clamp(1.55rem, 7.4vw, 2.5rem);
+  }
+
+  /* モバイルでも地図は主役のまま。縦積みのカードにしない。 */
+  .hero .map { height: min(78vh, 620px); }
+  .cartography .map { height: min(64vh, 520px); }
+  .history .map { height: min(78vh, 640px); }
+  .statement { line-height: 1.12; letter-spacing: -0.01em; }
+  .site-header nav { gap: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
