@@ -111,7 +111,7 @@ export async function createHarukiMap(spec: MapSpec): Promise<HarukiMap> {
       layout: { 'line-cap': 'round', 'line-join': 'round' },
       paint: {
         'line-color': TOKENS.routeLine,
-        'line-opacity': cumulative ? 0.34 : 0.95,
+        'line-opacity': cumulative ? 0.5 : 0.95,
         'line-width': cumulative ? 3.5 : 8,
       },
     });

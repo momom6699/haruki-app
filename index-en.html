@@ -1,148 +1,159 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Haruki — write down the day you ran</title>
-<meta name="description" content="Haruki keeps the route you ran, the songs you heard and the photographs you took, together on one page.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%232A2620'/%3E%3Ctext x='16' y='24' font-size='22' fill='%23F7F3E9' text-anchor='middle' font-family='serif'%3EH%3C/text%3E%3C/svg%3E">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Haruki — write down the day you ran.</title>
+<link rel="icon" href="/assets/haruki-icon.png">
+<meta name="description" content="Haruki is a running journal. Distance, route, the songs you heard and your photos stay on that day's page.">
+<meta property="og:title" content="Haruki — write down the day you ran.">
+<meta property="og:description" content="Distance, route, songs, photos. A running journal where the day is left on a single page.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://haruki.run/assets/haruki-icon.png">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://haruki.run/index-en.html">
+<link rel="alternate" hreflang="ja" href="https://haruki.run/">
+<link rel="alternate" hreflang="en" href="https://haruki.run/index-en.html">
+<meta name="theme-color" content="#F7F3E9">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Shippori+Mincho&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Shippori+Mincho&family=Zen+Antique&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap">
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
 
-  <header class="site-header">
-    <div class="wrap">
-      <a class="wordmark" href="/index-en.html">Haruki</a>
-      <nav>
-        <a href="/privacy">プライバシーポリシー（日本語）</a>
-        <a href="/terms">利用規約（日本語）</a>
-        <a href="/">日本語</a>
-      </nav>
+<a class="skip-link" href="#hero-h">Skip to content</a>
+
+<header class="page site-head" id="site-head">
+  <div class="brand">
+    <span>Haruki</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:var(--space-related)">
+    <a class="store-link" href="mailto:sooksook7110@gmail.com?subject=Haruki%20pre-registration" style="margin-top:0">Pre-register</a>
+    <a class="langbtn" id="langbtn" href="/" hreflang="ja">日本語</a>
+  </div>
+</header>
+
+<section id="hero" aria-labelledby="hero-h">
+  <div class="map" id="hero-map" role="img" aria-label="A map showing a demo running route. Parks, water, greenways and roads wide enough to run on are separated by colour.">
+    <p class="map__attribution">Map data <span data-attribution>© OpenStreetMap contributors</span></p>
+  </div>
+  <div class="paperwash"></div>
+  <div class="hero-veil"></div>
+  <div class="page" id="hero-copy">
+    <h1 class="statement" id="hero-h">Write down<br>the day you ran.</h1>
+    <p class="lead measure" style="margin-top:min(var(--space-section),3vh)">The road you took, the songs you heard, your photos.<br>The day is left on a single page.</p>
+  </div>
+</section>
+
+<section class="sec" aria-labelledby="map-h">
+  <div class="page stack">
+    <h2 class="statement reveal" id="map-h">Runners see<br>a different city.</h2>
+    <p class="lead measure reveal">Not the name of the intersection — the riverside, the shortcut<br>through the park, the road with no traffic lights.</p>
+  </div>
+</section>
+
+<section class="sec" aria-labelledby="run-h">
+  <div class="page stack" style="margin-bottom:var(--space-major)">
+    <h2 class="statement reveal" id="run-h">Run.</h2>
+    <p class="lead measure reveal">One tap to start. Then put the phone away.</p>
+  </div>
+  <div class="shotwrap reveal">
+    <figure class="device">
+      <span class="camera" aria-hidden="true"></span>
+      <div class="device-screen">
+        <img src="/assets/screen-running-en.webp" width="881" height="1450" alt="The recording screen: over the map, only elapsed time and an on/off switch." loading="lazy" decoding="async">
+      </div>
+      <figcaption>Run</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="sec" aria-labelledby="remain-h">
+  <div class="page stack" style="margin-bottom:var(--space-major)">
+    <h2 class="statement reveal" id="remain-h">It stays.</h2>
+    <p class="lead measure reveal">Distance, route, the songs you heard, your photos. Once the run ends.</p>
+  </div>
+  <div class="device-row reveal">
+    <figure class="device">
+      <span class="camera" aria-hidden="true"></span>
+      <div class="device-screen">
+        <img src="/assets/screen-entry-en.webp" width="881" height="1181" alt="A run in detail: distance, time, average pace and the route on the map." loading="lazy" decoding="async">
+      </div>
+      <figcaption>Run detail</figcaption>
+    </figure>
+    <figure class="device device--sm">
+      <span class="camera" aria-hidden="true"></span>
+      <div class="device-screen">
+        <img src="/assets/screen-songs-en.webp" width="881" height="1450" alt="The songs played during that run." loading="lazy" decoding="async">
+      </div>
+      <figcaption>Songs</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="sec" aria-labelledby="reread-h">
+  <div class="page stack" style="margin-bottom:var(--space-major)">
+    <h2 class="statement reveal" id="reread-h">Read it again.</h2>
+    <p class="lead measure reveal">That day's diary, and a calendar that fills up.</p>
+  </div>
+  <div class="device-row reveal">
+    <figure class="device">
+      <span class="camera" aria-hidden="true"></span>
+      <div class="device-screen">
+        <img src="/assets/screen-journal-en.webp" width="881" height="1450" alt="The running journal, in date order." loading="lazy" decoding="async">
+      </div>
+      <figcaption>Journal</figcaption>
+    </figure>
+    <figure class="device device--sm">
+      <span class="camera" aria-hidden="true"></span>
+      <div class="device-screen">
+        <img src="/assets/screen-calendar-en.webp" width="881" height="1450" alt="A month calendar with the days you ran filled in." loading="lazy" decoding="async">
+      </div>
+      <figcaption>Calendar</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="sec" aria-labelledby="phil-h">
+  <div class="page stack">
+    <h2 class="statement reveal" id="phil-h">Running is<br>not a score.</h2>
+    <div class="measure reveal">
+      <p class="voice" style="font-size:var(--text-heading);line-height:34px">No rankings, no challenges. Fast days and slow days<br>stay as the same kind of day.</p>
     </div>
-  </header>
+  </div>
+</section>
 
-  <main id="main">
+<section class="page" style="padding-bottom:var(--space-chapter)">
+  <hr class="rule" style="margin-bottom:var(--space-major)">
+  <h2 class="statement reveal" id="hist-h">The same city,<br>again and again.</h2>
+  <div class="closing">
+    <p id="close-1">No rankings, no challenges, no ads.</p>
+    <p id="close-2">What you ran stays on your device.</p>
+    <p class="meta" id="close-spec" style="line-height:22px">Automatic tracking, and Health Connect. Photos, music and weather are kept with the record. Optional Google Drive backup and export. 日本語 / English.</p>
+  </div>
+  <p class="lead measure reveal">The roads you ran slowly become your own map. The ones you use most grow darker where they overlap.</p>
+</section>
 
-    <!-- 01 — 地図がそのまま画面になる。スマホのモックアップの中には入れない。 -->
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="map" id="map-hero" role="img"
-           aria-label="A map with one running route drawn on it. Parks, water, greenways and wider roads are separated by colour.">
-        <p class="map__attribution">Map data <span data-attribution>© OpenStreetMap contributors</span></p>
+<section class="sec" aria-labelledby="hist-h">
+  <div class="map map--faint" id="history-map" style="border-top:var(--hairline) solid var(--color-border);border-bottom:var(--hairline) solid var(--color-border)" role="img" aria-label="34 demo runs laid over one another. The more often a road was run, the darker its line.">
+    <div class="paperwash"></div>
+    <div class="history-veil"></div>
+    <p class="map__attribution">Map data <span data-attribution>© OpenStreetMap contributors</span></p>
+    <footer class="page site-foot" style="position:absolute;left:0;right:0;bottom:0;z-index:420;border-top:none;padding-bottom:var(--space-section)">
+      <div class="foot-mark">
+        <img src="/assets/haruki-icon.png" alt="Haruki" width="36" height="36">
+        <span>Haruki</span>
+        <a class="store-link" href="mailto:sooksook7110@gmail.com?subject=Haruki%20pre-registration">Pre-register</a>
       </div>
-      <div class="hero__scrim" aria-hidden="true"></div>
-      <div class="hero__copy">
-        <div class="wrap">
-          <h1 class="statement" id="hero-title">Write down the day<br>you ran.</h1>
-          <p class="support">The route, the songs, the photographs.<br>One day, kept on one page.</p>
-          <p class="meta hero__meta">Android — Coming soon</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- 02 — 地図そのものを大きく見せる。説明カードは作らない。 -->
-    <section class="section cartography" aria-labelledby="map-title">
-      <div class="wrap section__head">
-        <h2 class="statement statement--sm" id="map-title">A runner sees<br>a slightly different city.</h2>
-        <ul class="legend">
-          <li class="is-park"><i></i>PARK</li>
-          <li class="is-water"><i></i>WATER</li>
-          <li class="is-greenway"><i></i>GREENWAY</li>
-          <li class="is-road"><i></i>ROAD</li>
-          <li class="is-route"><i></i>ROUTE</li>
-        </ul>
-      </div>
-      <div class="map" id="map-cartography" role="img"
-           aria-label="A map showing only parks, water, greenways and roads wide enough to run on. No shops or points of interest.">
-        <p class="map__attribution">Map data <span data-attribution>© OpenStreetMap contributors</span></p>
-      </div>
-    </section>
-
-    <!-- 03 — 1回のランを、1つの構成として見せる。 -->
-    <section class="section entry-section" aria-labelledby="entry-title">
-      <div class="wrap">
-        <div class="section__head">
-          <h2 class="statement statement--sm" id="entry-title">The day becomes<br>a page.</h2>
-        </div>
-        <div class="entry">
-          <div class="entry__col">
-            <div>
-              <p class="entry__date">23 August<span aria-hidden="true"> </span>Sun</p>
-              <p class="entry__place">The moat loop</p>
-            </div>
-            <dl class="figure">
-              <dt>Distance</dt>
-              <dd><span data-hero-distance>—</span><small>km</small></dd>
-            </dl>
-            <dl class="figure">
-              <dt>Time</dt>
-              <dd data-hero-duration>—</dd>
-            </dl>
-            <dl class="figure">
-              <dt>Average pace</dt>
-              <dd>7:02<small>/km</small></dd>
-            </dl>
-          </div>
-
-          <div class="map" id="map-entry" role="img" aria-label="A map of the route run that day, marked at its start and finish.">
-            <p class="map__attribution">Map data <span data-attribution>© OpenStreetMap contributors</span></p>
-          </div>
-
-          <div class="entry__col entry__col--right">
-            <p class="entry__note">Started 9:16<br>26°C, sunny with some cloud</p>
-            <p class="entry__note"><strong>Night Window</strong><br>The Kenji Aoki Trio, and 23 more</p>
-            <p class="diary">Went out once the sun came back. Inside the moat the air was moving, and it ran easier than expected.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 04 — 積み重ね。ヒートマップにしない。重なりで濃くなるだけ。 -->
-    <section class="section history" aria-labelledby="history-title">
-      <div class="wrap section__head">
-        <h2 class="statement statement--sm" id="history-title">The same streets,<br>over and over.</h2>
-        <p class="support">The roads you run slowly become a map of your own.</p>
-        <p class="history__caption">
-          <span><b data-cumulative-count>—</b> recorded runs</span>
-          <span><b data-cumulative-distance>—</b> km in all</span>
-        </p>
-      </div>
-      <div class="map" id="map-history" role="img"
-           aria-label="Every route run so far, laid over one another. The more often a road was run, the darker its line.">
-        <p class="map__attribution">Map data <span data-attribution>© OpenStreetMap contributors</span></p>
-      </div>
-    </section>
-
-    <!-- 05 -->
-    <section class="section philosophy" aria-labelledby="philosophy-title">
-      <div class="wrap">
-        <h2 class="statement" id="philosophy-title">Running is not<br>a score.</h2>
-        <p class="support">No rankings and no challenges.<br>The fast days and the slow days are kept as the same kind of day.</p>
-        <ul class="facts">
-          <li>Free</li>
-          <li>No ads</li>
-          <li>No account</li>
-          <li>Health Connect</li>
-          <li>Google Drive backup</li>
-          <li>Data export</li>
-          <li>Android — Coming soon</li>
-        </ul>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="wrap">
-      <p>Contact: <a href="mailto:sooksook7110@gmail.com">sooksook7110@gmail.com</a></p>
       <nav>
-        <a href="/privacy">プライバシーポリシー（日本語）</a>
-        <a href="/terms">利用規約（日本語）</a>
+        <a href="mailto:sooksook7110@gmail.com">sooksook7110@gmail.com</a>
+        <a href="/privacy">Privacy policy（日本語）</a>
+        <a href="/terms">Terms of use（日本語）</a>
       </nav>
-    </div>
-  </footer>
+    </footer>
+  </div>
+</section>
 
-  <script type="module" src="/src/main.ts"></script>
+<script type="module" src="/src/main.ts"></script>
 </body>
 </html>

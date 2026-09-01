@@ -1,0 +1,13 @@
+/* Haruki には影の体系が無い。深さは面の明度と罫線で表す。
+   `_ds/.../tokens/elevation.css` の写し。 */
+:root{
+  --shadow-none:none;
+  --capsule-fill:rgba(251,248,239,0.85);
+  --capsule-fill-strong:rgba(251,248,239,0.94);
+  --overlay-scrim:rgba(42,38,32,0.32);
+  --pressed-veil:rgba(20,17,13,0.06);
+  --motion-fast:120ms;
+  --motion-base:200ms;
+  --motion-slow:320ms;
+  --easing-standard:cubic-bezier(0.2,0,0,1);
+}

@@ -1,148 +1,159 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Haruki — 走った日のことを、書きとめる。</title>
-<meta name="description" content="Harukiは、走った道、聴いていた曲、写真を、その日ひとつのページに残すランニングの日記です。">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%232A2620'/%3E%3Ctext x='16' y='24' font-size='22' fill='%23F7F3E9' text-anchor='middle' font-family='serif'%3EH%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="/assets/haruki-icon.png">
+<meta name="description" content="走った日のことを書きとめるランニング日記アプリ、Haruki。距離・ルート・聴いた曲・写真がその日のページに残ります。">
+<meta property="og:title" content="Haruki — 走った日のことを、書きとめる。">
+<meta property="og:description" content="距離・ルート・曲・写真。走った日が、ひとつのページに残るランニング日記アプリ。">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://haruki.run/assets/haruki-icon.png">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://haruki.run/">
+<link rel="alternate" hreflang="en" href="https://haruki.run/index-en.html">
+<link rel="alternate" hreflang="ja" href="https://haruki.run/">
+<meta name="theme-color" content="#F7F3E9">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Shippori+Mincho&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Shippori+Mincho&family=Zen+Antique&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap">
 </head>
 <body>
-  <a class="skip-link" href="#main">メインコンテンツへ</a>
 
-  <header class="site-header">
-    <div class="wrap">
-      <a class="wordmark" href="/">Haruki</a>
+<a class="skip-link" href="#hero-h">メインコンテンツへ</a>
+
+<header class="page site-head" id="site-head">
+  <div class="brand">
+    <span>Haruki</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:var(--space-related)">
+    <a class="store-link" href="mailto:sooksook7110@gmail.com?subject=Haruki%20事前登録" style="margin-top:0">事前登録</a>
+    <a class="langbtn" id="langbtn" href="/index-en.html" hreflang="en">English</a>
+  </div>
+</header>
+
+<section id="hero" aria-labelledby="hero-h">
+  <div class="map" id="hero-map" role="img" aria-label="デモの走行ルートを表示した地図。公園・水辺・緑道と、走れる幅のある道が色で分かれている。">
+    <p class="map__attribution">地図データ <span data-attribution>© OpenStreetMap contributors</span></p>
+  </div>
+  <div class="paperwash"></div>
+  <div class="hero-veil"></div>
+  <div class="page" id="hero-copy">
+    <h1 class="statement" id="hero-h">走った日のことを、<br>書きとめる。</h1>
+    <p class="lead measure" style="margin-top:min(var(--space-section),3vh)">走った道、聴いていた曲、写真。<br>その日がひとつのページに残る。</p>
+  </div>
+</section>
+
+<section class="sec" aria-labelledby="map-h">
+  <div class="page stack">
+    <h2 class="statement reveal" id="map-h">走る人には、<br>街が少し違って見える。</h2>
+    <p class="lead measure reveal">交差点の名前より、川沿いと、公園の抜け道と、<br>信号のない一本道。</p>
+  </div>
+</section>
+
+<section class="sec" aria-labelledby="run-h">
+  <div class="page stack" style="margin-bottom:var(--space-major)">
+    <h2 class="statement reveal" id="run-h">走る</h2>
+    <p class="lead measure reveal">ワンタップで計測。画面は消したままで。</p>
+  </div>
+  <div class="shotwrap reveal">
+    <figure class="device">
+      <span class="camera" aria-hidden="true"></span>
+      <div class="device-screen">
+        <img src="/assets/screen-running.webp" width="881" height="1450" alt="計測中の画面。地図の上に経過時間とオン・オフのスイッチだけが表示されている。" loading="lazy" decoding="async">
+      </div>
+      <figcaption>走る</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="sec" aria-labelledby="remain-h">
+  <div class="page stack" style="margin-bottom:var(--space-major)">
+    <h2 class="statement reveal" id="remain-h">残る</h2>
+    <p class="lead measure reveal">距離・ルート・聴いていた曲・写真。走り終えたときには。</p>
+  </div>
+  <div class="device-row reveal">
+    <figure class="device">
+      <span class="camera" aria-hidden="true"></span>
+      <div class="device-screen">
+        <img src="/assets/screen-entry.webp" width="881" height="1190" alt="走行記録の詳細画面。距離、時間、平均ペース、ルート地図が並ぶ。" loading="lazy" decoding="async">
+      </div>
+      <figcaption>ルート詳細</figcaption>
+    </figure>
+    <figure class="device device--sm">
+      <span class="camera" aria-hidden="true"></span>
+      <div class="device-screen">
+        <img src="/assets/screen-songs.webp" width="881" height="1450" alt="走った日に聴いた曲の一覧。" loading="lazy" decoding="async">
+      </div>
+      <figcaption>曲の一覧</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="sec" aria-labelledby="reread-h">
+  <div class="page stack" style="margin-bottom:var(--space-major)">
+    <h2 class="statement reveal" id="reread-h">読み返す</h2>
+    <p class="lead measure reveal">その日の日記と、積み重なったカレンダー。</p>
+  </div>
+  <div class="device-row reveal">
+    <figure class="device">
+      <span class="camera" aria-hidden="true"></span>
+      <div class="device-screen">
+        <img src="/assets/screen-journal.webp" width="881" height="1450" alt="日付順に並ぶランニング日記。" loading="lazy" decoding="async">
+      </div>
+      <figcaption>日記</figcaption>
+    </figure>
+    <figure class="device device--sm">
+      <span class="camera" aria-hidden="true"></span>
+      <div class="device-screen">
+        <img src="/assets/screen-calendar.webp" width="881" height="1450" alt="走った日が塗られた月間カレンダー。" loading="lazy" decoding="async">
+      </div>
+      <figcaption>カレンダー</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="sec" aria-labelledby="phil-h">
+  <div class="page stack">
+    <h2 class="statement reveal" id="phil-h">走ることを、<br>成績にしない。</h2>
+    <div class="measure reveal">
+      <p class="voice" style="font-size:var(--text-heading);line-height:34px">ランキングも、チャレンジもありません。<br>速かった日も、遅かった日も、同じ一日として残ります。</p>
+    </div>
+  </div>
+</section>
+
+<section class="page" style="padding-bottom:var(--space-chapter)">
+  <hr class="rule" style="margin-bottom:var(--space-major)">
+  <h2 class="statement reveal" id="hist-h">同じ街を、<br>何度も走る。</h2>
+  <div class="closing">
+    <p id="close-1">ランキングも、チャレンジも、広告もありません。</p>
+    <p id="close-2">走った記録は、あなたの端末に残ります。</p>
+    <p class="meta" id="close-spec" style="line-height:22px">自動計測にも対応し、Health Connectと連携します。写真・音楽・天気も記録に残ります。Googleドライブへの任意バックアップと書き出しに対応。日本語・English。</p>
+  </div>
+  <p class="lead measure reveal">走った道が、少しずつ自分の地図になる。よく通る道は、重なって濃くなる。</p>
+</section>
+
+<section class="sec" aria-labelledby="hist-h">
+  <div class="map map--faint" id="history-map" style="border-top:var(--hairline) solid var(--color-border);border-bottom:var(--hairline) solid var(--color-border)" role="img" aria-label="34回分のデモ走行ルートを重ねた地図。繰り返し通った道ほど線が濃く見える。">
+    <div class="paperwash"></div>
+    <div class="history-veil"></div>
+    <p class="map__attribution">地図データ <span data-attribution>© OpenStreetMap contributors</span></p>
+    <footer class="page site-foot" style="position:absolute;left:0;right:0;bottom:0;z-index:420;border-top:none;padding-bottom:var(--space-section)">
+      <div class="foot-mark">
+        <img src="/assets/haruki-icon.png" alt="Haruki" width="36" height="36">
+        <span>Haruki</span>
+        <a class="store-link" href="mailto:sooksook7110@gmail.com?subject=Haruki%20事前登録">事前登録</a>
+      </div>
       <nav>
+        <a href="mailto:sooksook7110@gmail.com">sooksook7110@gmail.com</a>
         <a href="/privacy">プライバシーポリシー</a>
         <a href="/terms">利用規約</a>
-        <a href="/index-en.html">English</a>
       </nav>
-    </div>
-  </header>
+    </footer>
+  </div>
+</section>
 
-  <main id="main">
-
-    <!-- 01 — 地図がそのまま画面になる。スマホのモックアップの中には入れない。 -->
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="map" id="map-hero" role="img"
-           aria-label="ランニングの経路が1本描かれた地図。公園、水面、緑道、大きな道が色で分かれている。">
-        <p class="map__attribution">地図データ <span data-attribution>© OpenStreetMap contributors</span></p>
-      </div>
-      <div class="hero__scrim" aria-hidden="true"></div>
-      <div class="hero__copy">
-        <div class="wrap">
-          <h1 class="statement" id="hero-title">走った日のことを、<br>書きとめる。</h1>
-          <p class="support">走った道、聴いていた曲、写真。<br>その日がひとつのページに残る。</p>
-          <p class="meta hero__meta">Android — Coming soon</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- 02 — 地図そのものを大きく見せる。説明カードは作らない。 -->
-    <section class="section cartography" aria-labelledby="map-title">
-      <div class="wrap section__head">
-        <h2 class="statement statement--sm" id="map-title">走る人には、<br>街が少し違って見える。</h2>
-        <ul class="legend">
-          <li class="is-park"><i></i>PARK</li>
-          <li class="is-water"><i></i>WATER</li>
-          <li class="is-greenway"><i></i>GREENWAY</li>
-          <li class="is-road"><i></i>ROAD</li>
-          <li class="is-route"><i></i>ROUTE</li>
-        </ul>
-      </div>
-      <div class="map" id="map-cartography" role="img"
-           aria-label="公園と水面と緑道、走れる幅のある道だけを描いた地図。店や施設の記号は載せていない。">
-        <p class="map__attribution">地図データ <span data-attribution>© OpenStreetMap contributors</span></p>
-      </div>
-    </section>
-
-    <!-- 03 — 1回のランを、1つの構成として見せる。 -->
-    <section class="section entry-section" aria-labelledby="entry-title">
-      <div class="wrap">
-        <div class="section__head">
-          <h2 class="statement statement--sm" id="entry-title">その日が、<br>一ページになる。</h2>
-        </div>
-        <div class="entry">
-          <div class="entry__col">
-            <div>
-              <p class="entry__date">8月23日<span aria-hidden="true"> </span>日</p>
-              <p class="entry__place">桜堀の周回</p>
-            </div>
-            <dl class="figure">
-              <dt>距離</dt>
-              <dd><span data-hero-distance>—</span><small>km</small></dd>
-            </dl>
-            <dl class="figure">
-              <dt>時間</dt>
-              <dd data-hero-duration>—</dd>
-            </dl>
-            <dl class="figure">
-              <dt>平均ペース</dt>
-              <dd>7:02<small>/km</small></dd>
-            </dl>
-          </div>
-
-          <div class="map" id="map-entry" role="img" aria-label="その日に走った経路の地図。始点と終点に印がある。">
-            <p class="map__attribution">地図データ <span data-attribution>© OpenStreetMap contributors</span></p>
-          </div>
-
-          <div class="entry__col entry__col--right">
-            <p class="entry__note">9:16 開始<br>26℃ 晴れ時々くもり</p>
-            <p class="entry__note"><strong>Night Window</strong><br>The Kenji Aoki Trio ほか23曲</p>
-            <p class="diary">日差しが戻ってから出た。堀の内側は風が通って、思ったより走れた。</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 04 — 積み重ね。ヒートマップにしない。重なりで濃くなるだけ。 -->
-    <section class="section history" aria-labelledby="history-title">
-      <div class="wrap section__head">
-        <h2 class="statement statement--sm" id="history-title">同じ街を、<br>何度も走る。</h2>
-        <p class="support">走った道が、少しずつ自分の地図になる。</p>
-        <p class="history__caption">
-          <span><b data-cumulative-count>—</b> 本の記録</span>
-          <span>のべ <b data-cumulative-distance>—</b> km</span>
-        </p>
-      </div>
-      <div class="map" id="map-history" role="img"
-           aria-label="これまでの走行ルートをすべて重ねた地図。何度も通った道ほど線が濃くなっている。">
-        <p class="map__attribution">地図データ <span data-attribution>© OpenStreetMap contributors</span></p>
-      </div>
-    </section>
-
-    <!-- 05 -->
-    <section class="section philosophy" aria-labelledby="philosophy-title">
-      <div class="wrap">
-        <h2 class="statement" id="philosophy-title">走ることを、<br>成績にしない。</h2>
-        <p class="support">ランキングも、チャレンジもありません。<br>速かった日も、遅かった日も、同じ一日として残ります。</p>
-        <ul class="facts">
-          <li>無料</li>
-          <li>広告なし</li>
-          <li>アカウント不要</li>
-          <li>Health Connect</li>
-          <li>Google Drive backup</li>
-          <li>Data export</li>
-          <li>Android — Coming soon</li>
-        </ul>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="wrap">
-      <p>お問い合わせ: <a href="mailto:sooksook7110@gmail.com">sooksook7110@gmail.com</a></p>
-      <nav>
-        <a href="/privacy">プライバシーポリシー</a>
-        <a href="/terms">利用規約</a>
-      </nav>
-    </div>
-  </footer>
-
-  <script type="module" src="/src/main.ts"></script>
+<script type="module" src="/src/main.ts"></script>
 </body>
 </html>
