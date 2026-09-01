@@ -124,6 +124,41 @@ for (let i = 0; routes.length < 34 && i < 400; i++) {
 }
 routes.sort((a, b) => a.distance - b.distance);
 
+/**
+ * 描く前に間引く。グラフを組むために 12.5m 刻みまで割ってあるので、そのまま書き出すと
+ * 点が数万になる。Android も保存点はそのまま持ち、**描画時だけ** simplifyRoute で
+ * 間引いている（CumulativeRouteMapView）。ここも同じで、形は変えずに点だけ減らす。
+ */
+function simplify(points, tolerance = 0.00004) {
+  if (points.length < 3) return points;
+  const keep = new Array(points.length).fill(false);
+  keep[0] = keep[points.length - 1] = true;
+  const stack = [[0, points.length - 1]];
+  while (stack.length) {
+    const [first, last] = stack.pop();
+    let index = -1;
+    let far = tolerance;
+    const [ax, ay] = points[first];
+    const [bx, by] = points[last];
+    const dx = bx - ax;
+    const dy = by - ay;
+    const len = Math.hypot(dx, dy) || 1e-12;
+    for (let i = first + 1; i < last; i++) {
+      const [px, py] = points[i];
+      const d = Math.abs(dy * px - dx * py + bx * ay - by * ax) / len;
+      if (d > far) {
+        far = d;
+        index = i;
+      }
+    }
+    if (index !== -1) {
+      keep[index] = true;
+      stack.push([first, index], [index, last]);
+    }
+  }
+  return points.filter((_, i) => keep[i]);
+}
+
 const fc = (list, note) => ({
   type: 'FeatureCollection',
   demo: true,
@@ -131,7 +166,7 @@ const fc = (list, note) => ({
   features: list.map((r, i) => ({
     type: 'Feature',
     properties: { index: i, distanceMetres: Math.round(r.distance) },
-    geometry: { type: 'LineString', coordinates: r.coords },
+    geometry: { type: 'LineString', coordinates: simplify(r.coords) },
   })),
 });
 

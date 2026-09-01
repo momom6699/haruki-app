@@ -6,6 +6,20 @@
 @import './tokens/spacing.css';
 @import './tokens/elevation.css';
 
+/* 自前配信のフォント。Google Fonts は使わない——第三者オリジンへの通信を無くし、
+   CDN の可否に組みが左右されないようにする。ページに出る字だけへ絞ってあるので、
+   4フェイス合わせて約120KB。文言を変えたら `npm run fonts:build` を流し直すこと
+   （収録外の字は豆腐になる。test/fonts.test.ts が突き合わせて落とす）。 */
+@font-face{font-family:'Zen Antique';font-style:normal;font-weight:400;font-display:swap;
+  src:url('/fonts/ZenAntique-400.woff2') format('woff2')}
+@font-face{font-family:'Shippori Mincho';font-style:normal;font-weight:400;font-display:swap;
+  src:url('/fonts/ShipporiMincho-400.woff2') format('woff2')}
+@font-face{font-family:'Zen Kaku Gothic New';font-style:normal;font-weight:400;font-display:swap;
+  src:url('/fonts/ZenKakuGothicNew-400.woff2') format('woff2')}
+@font-face{font-family:'Zen Kaku Gothic New';font-style:normal;font-weight:500;font-display:swap;
+  src:url('/fonts/ZenKakuGothicNew-500.woff2') format('woff2')}
+
+
 :root{
   /* デザインは Hiragino（macOS 同梱）を指していたが、実サイトでは全環境で同じ組みに
      なるよう Web フォントを当てる。役割の割り当てはデザインのまま。 */
