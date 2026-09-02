@@ -106,6 +106,19 @@ const prelude = `
 // 確認用の1枚に畳んだ版。ファイルを取りに行く先だけを差し替える。
 document.documentElement.lang = ${JSON.stringify(lang)};
 window.__harukiWorkerUrl = URL.createObjectURL(new Blob([${JSON.stringify(worker)}], { type: 'text/javascript' }));
+// MapLibre は Map を作る時点で worker を1つ掴む。描画には使っていない（地物もルートも
+// 自前の WebGL レイヤ）が、外すと "No actors found" で落ちるので掴ませてはいる。
+// blob: の worker を止めている場所——CSP の効いたサンドボックスなど——では \`new Worker\` が
+// **例外を投げ、Map の生成ごと落ちて地図が丸ごと出ない**。掴めないなら無害な代役を返す。
+const NativeWorker = window.Worker;
+window.Worker = function (url, options) {
+  try {
+    return new NativeWorker(url, options);
+  } catch (error) {
+    console.warn('[haruki] worker unavailable here; the map does not need one', error);
+    return { postMessage() {}, addEventListener() {}, removeEventListener() {}, terminate() {}, onmessage: null, onerror: null };
+  }
+};
 const HARUKI_FIXTURES = ${JSON.stringify(fixtures)};
 const nativeFetch = window.fetch.bind(window);
 window.fetch = (input, init) => {

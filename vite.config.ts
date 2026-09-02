@@ -6,10 +6,10 @@ import { resolve, dirname } from 'node:path';
 const require = createRequire(import.meta.url);
 
 /**
- * MapLibre は GeoJSON の解析を worker で行い、その worker は本体とは別ファイルで、
+ * MapLibre は Map の生成時に worker を1つ掴む（描画には使っていないが、外せない
+ * ——src/map/haruki-map.ts の setWorkerUrl のコメント）。worker は本体とは別ファイルで、
  * さらに `./maplibre-gl-shared.mjs` を相対で読む。バンドラ任せだと両方とも出力されず、
- * 「地図の下地は出るのにルートだけ出ない」という気付きにくい壊れ方をする
- * （source が永久に loaded にならない）。実体を固定名で置いて、URL を明示する。
+ * worker の生成が失敗して**地図そのものが出ない**。実体を固定名で置く。
  */
 function maplibreWorker(): Plugin {
   const dist = dirname(require.resolve('maplibre-gl/dist/maplibre-gl.mjs'));

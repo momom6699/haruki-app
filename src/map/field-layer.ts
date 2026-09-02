@@ -30,13 +30,13 @@ const linearRgb = (hex: string): [number, number, number] => {
   return [toLinear(r), toLinear(g), toLinear(b)];
 };
 
-const merc = (c: number[]) => {
+export const merc = (c: number[]) => {
   const m = MercatorCoordinate.fromLngLat({ lng: c[0], lat: c[1] });
   return [m.x, m.y] as [number, number];
 };
 
 /** 面 → 三角形。穴は使っていないので外周のみ。 */
-function polygonTriangles(rings: number[][][], out: number[]) {
+export function polygonTriangles(rings: number[][][], out: number[]) {
   for (const ring of rings) {
     const flat: number[] = [];
     for (const c of ring) {
@@ -55,7 +55,7 @@ function polygonTriangles(rings: number[][][], out: number[]) {
  * 数珠のような濃淡が出る（Android は Path をひと塗りするのでそうならない）。
  * 隣り合う四角が辺を共有するように頂点を出して、重なりそのものを作らない。
  */
-function lineTriangles(coords: number[][], halfWidth: number, out: number[]) {
+export function lineTriangles(coords: number[][], halfWidth: number, out: number[]) {
   const pts: [number, number][] = [];
   for (const c of coords) {
     const p = merc(c);
@@ -212,7 +212,7 @@ export class HarukiFieldLayer implements CustomLayerInterface {
   }
 }
 
-function compile(gl: WebGL2RenderingContext, vertexSrc: string, fragmentSrc: string): WebGLProgram {
+export function compile(gl: WebGL2RenderingContext, vertexSrc: string, fragmentSrc: string): WebGLProgram {
   const make = (type: number, src: string) => {
     const shader = gl.createShader(type)!;
     gl.shaderSource(shader, src);
