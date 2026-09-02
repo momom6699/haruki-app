@@ -9,10 +9,12 @@
  * ——同じ src/ をバンドルし、同じ fixture、同じサブセットフォントを埋める。差し替えるのは
  * 「ファイルの取り方」だけ：
  *   - フォントと画像は data: URI
- *   - GeoJSON は fetch を差し替えて、埋め込んだものを返す
- *   - MapLibre の worker は blob: URL（別ファイルを置けないので）
+ *   - ルートの GeoJSON は fetch を差し替えて、埋め込んだものを返す
  *
- * 本番のコードには手を入れない。上の3つはここで**バンドル済みの文字列に対して**行う。
+ * 地図の下地タイルだけは差し替えない。デザインどおり OpenStreetMap から引くので、
+ * この1枚もネットにつながった状態で開く必要がある。
+ *
+ * 本番のコードには手を入れない。差し替えはここで**バンドル済みの文字列に対して**行う。
  */
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
@@ -38,32 +40,13 @@ run([
   '--target=es2020',
   '--minify',
   '--loader:.woff2=file',
+  // Leaflet の CSS がマーカーの画像を参照する（この地図では使わない）。1枚に畳むので埋める。
+  '--loader:.png=dataurl',
   '--external:/fonts/*',
   `--outfile=${join(tmp, 'app.js')}`,
 ]);
 let js = readFileSync(join(tmp, 'app.js'), 'utf8');
 let css = readFileSync(join(tmp, 'app.css'), 'utf8');
-
-/* --- worker ---------------------------------------------------------------- */
-
-// worker は `./maplibre-gl-shared.mjs` を import している。blob: から相対 import は
-// 解決できないので、1枚に畳んでから blob にする。
-run([
-  'node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs',
-  '--bundle',
-  '--format=esm',
-  '--minify',
-  `--outfile=${join(tmp, 'worker.js')}`,
-]);
-const worker = readFileSync(join(tmp, 'worker.js'), 'utf8');
-
-// バンドル後の文字列リテラルを差し替える。本番コードは触らない。
-const WORKER_LITERAL = '"/build/maplibre-gl-worker.mjs"';
-if (!js.includes(WORKER_LITERAL)) {
-  console.error(`worker URL literal not found in the bundle (${WORKER_LITERAL})`);
-  process.exit(1);
-}
-js = js.replace(WORKER_LITERAL, 'window.__harukiWorkerUrl');
 
 /* --- 埋め込む素材 ----------------------------------------------------------- */
 
@@ -79,7 +62,7 @@ if (/url\(\s*['"]?\//.test(css)) {
 }
 
 const fixtures = Object.fromEntries(
-  ['area', 'route-hero', 'routes-cumulative'].map((name) => [
+  ['route-hero', 'routes-cumulative'].map((name) => [
     `/data/${name}.geojson`,
     readFileSync(`public/data/${name}.geojson`, 'utf8'),
   ]),
@@ -105,20 +88,6 @@ body = otherLangUrl
 const prelude = `
 // 確認用の1枚に畳んだ版。ファイルを取りに行く先だけを差し替える。
 document.documentElement.lang = ${JSON.stringify(lang)};
-window.__harukiWorkerUrl = URL.createObjectURL(new Blob([${JSON.stringify(worker)}], { type: 'text/javascript' }));
-// MapLibre は Map を作る時点で worker を1つ掴む。描画には使っていない（地物もルートも
-// 自前の WebGL レイヤ）が、外すと "No actors found" で落ちるので掴ませてはいる。
-// blob: の worker を止めている場所——CSP の効いたサンドボックスなど——では \`new Worker\` が
-// **例外を投げ、Map の生成ごと落ちて地図が丸ごと出ない**。掴めないなら無害な代役を返す。
-const NativeWorker = window.Worker;
-window.Worker = function (url, options) {
-  try {
-    return new NativeWorker(url, options);
-  } catch (error) {
-    console.warn('[haruki] worker unavailable here; the map does not need one', error);
-    return { postMessage() {}, addEventListener() {}, removeEventListener() {}, terminate() {}, onmessage: null, onerror: null };
-  }
-};
 const HARUKI_FIXTURES = ${JSON.stringify(fixtures)};
 const nativeFetch = window.fetch.bind(window);
 window.fetch = (input, init) => {

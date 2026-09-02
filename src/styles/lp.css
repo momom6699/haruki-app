@@ -1,7 +1,5 @@
 /* Haruki LP — Claude Design プロジェクトの「Haruki LP standalone.html」の実装。
-   デザインの構造・コピー・タイポグラフィ・端末フレームはそのまま。
-   地図だけ Leaflet + OSM ラスタタイルではなく、リポジトリ既存の MapLibre エンジン
-   （src/map/*：ローカル GeoJSON と、Android の MapPaintLayer から移植したシェーダ）で描く。 */
+   構造・コピー・タイポグラフィ・端末フレーム・地図まわりの見え方はデザインのまま。 */
 @import './tokens/colors.css';
 @import './tokens/spacing.css';
 @import './tokens/elevation.css';
@@ -63,21 +61,22 @@ h1,h2,h3,p{margin:0}
 .voice{font-family:var(--font-voice)}
 .rule{border:0;border-top:var(--hairline) solid var(--color-border);margin:0}
 
-/* --- map chrome ---------------------------------------------------------
-   デザインは OSM のラスタタイルにグレースケール＋セピアのフィルタを掛けて紙に寄せていた。
-   こちらはタイルを引かず、生成りの紙の上に意味地物（公園・水・緑道・走れる幅の道）を
-   描くので、フィルタは要らない。紙のかぶせ（paperwash）とヴェールはデザインのまま残す
-   ——文字を載せるための階調はこれが作っている。 */
+/* --- map chrome: paper-toned basemap, POI-suppressed ---------------------
+   下地は OSM のラスタタイル。グレースケールに落としてから軽くセピアを混ぜ、明るさを上げて
+   紙の色に寄せる——街の細かさは残したまま、色だけ抜く。ズームや POI は出さない。 */
 .map{position:relative;background:var(--color-bg)}
-.map canvas{display:block}
-/* デザインの .map--faint は「下地タイルだけを薄くし、ルート線はそのまま」という指定
-   （.leaflet-tile-pane の opacity）。こちらは下地タイルを持たないので、canvas 全体を
-   薄くしてはいけない——ルートまで消える。積み重ねの淡さは線側の不透明度で出す。 */
+.map .leaflet-container{background:var(--color-bg);font-family:var(--font-ui)}
+.map .leaflet-tile-pane{filter:grayscale(1) contrast(.85) brightness(1.22) sepia(.22)}
+.map--faint .leaflet-tile-pane{opacity:.4;filter:grayscale(1) contrast(.6) brightness(1.2) sepia(.35)}
+/* デザインは `a.leaflet-attribution-flag` を隠していたが、Leaflet 1.9.4 がその class を
+   付けるのはリンクの中の <svg> で、しかも本体の CSS が `display:inline!important` を当てている。
+   要素で絞らず、同じ強さで隠す——旗を出さない、という指定はデザインのまま。 */
+.map .leaflet-control-zoom{display:none}
+.map .leaflet-attribution-flag{display:none!important}
+.map .leaflet-control-attribution{background:transparent;color:var(--color-muted);font-family:var(--font-ui);font-size:10px;padding:2px 6px}
+.map .leaflet-control-attribution a{color:var(--color-muted);border:0}
 .paperwash{position:absolute;inset:0;pointer-events:none;background:var(--color-bg);opacity:.18;z-index:400}
-.map__attribution{position:absolute;right:6px;bottom:2px;z-index:430;margin:0;max-width:min(62%,32em);text-align:right;
-  font-family:var(--font-ui);font-size:10px;line-height:16px;color:var(--color-muted)}
-.map__attribution a{color:var(--color-muted);border:0}
-/* 地図を描けなかったときだけ出る一行。帰属表示と紛れないよう、枠の中央に置く。 */
+/* 地図を読み込めなかったときだけ出る一行。黙って空の枠を残さない。 */
 .map__failure{position:absolute;inset:0;z-index:420;display:grid;place-content:center;margin:0;padding:var(--space-related);
   font-family:var(--font-ui);font-size:13px;line-height:1.6;color:var(--color-muted);text-align:center}
 
@@ -92,10 +91,8 @@ h1,h2,h3,p{margin:0}
 #hero-copy>*{pointer-events:auto}
 .hero-veil{position:absolute;inset:0;z-index:410;pointer-events:none;
   background:linear-gradient(to top,var(--color-bg) 0%,rgba(247,243,233,.86) 26%,rgba(247,243,233,0) 58%)}
-/* 上端をページに溶かし、下端でフッターを座らせる。中間は軌跡が読める濃さまで弱める
-   （デザインの数値は下にタイル下地がある前提のもの）。 */
 .history-veil{position:absolute;inset:0;z-index:410;pointer-events:none;
-  background:linear-gradient(to bottom,var(--color-bg) 0%,rgba(247,243,233,.72) 18%,rgba(247,243,233,.16) 46%,rgba(247,243,233,.30) 78%,rgba(247,243,233,.52) 100%)}
+  background:linear-gradient(to bottom,var(--color-bg) 0%,rgba(247,243,233,.86) 26%,rgba(247,243,233,.55) 58%,rgba(247,243,233,.42) 100%)}
 
 .sec{padding:clamp(88px,13vh,168px) 0}
 .stack{display:grid;gap:var(--space-section)}

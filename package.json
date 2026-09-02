@@ -10,22 +10,19 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --ext .ts,.mjs",
     "test": "vitest run",
-    "fixture:map": "node scripts/build-map-fixture.mjs",
     "fixture:routes": "node scripts/make-demo-routes.mjs",
-    "fonts:build": "python3 scripts/build-fonts.py",
-    "fixture:area": "node scripts/make-area-map.mjs"
+    "fonts:build": "python3 scripts/build-fonts.py"
   },
   "dependencies": {
-    "earcut": "^3.0.1",
-    "maplibre-gl": "^6.6.0"
+    "leaflet": "^1.9.4"
   },
   "devDependencies": {
     "@expo-google-fonts/bodoni-moda": "^0.4.2",
     "@expo-google-fonts/shippori-mincho": "^0.4.1",
     "@expo-google-fonts/zen-antique": "^0.4.1",
     "@expo-google-fonts/zen-kaku-gothic-new": "^0.4.1",
-    "@types/earcut": "^3.0.0",
     "@types/geojson": "^7946.0.16",
+    "@types/leaflet": "^1.9.22",
     "@types/node": "^26.4.1",
     "eslint": "^9.13.0",
     "typescript": "^5.6.0",

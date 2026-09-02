@@ -36,8 +36,9 @@ FACES = [
 # ——テストは HTML しか見ないので、書き忘れると本番でその字だけ豆腐になる。
 EXTRA = (
     "©— 〜/()（）:：,、.。0123456789km"
-    + "この環境では地図を描けませんでした。"  # src/main.ts: showMapFailure
-    + "The map could not be drawn in this browser."
+    + "地図を読み込めませんでした。"  # src/main.ts: showMapFailure
+    + "The map could not be loaded."
+    + "Leaflet |"  # 地図の帰属コントロールが出す文字
 )
 
 
@@ -67,9 +68,7 @@ def build(group: str, pages: "tuple[str, ...]") -> int:
     for name in pages:
         chars |= set(rendered_text((ROOT / name).read_text(encoding="utf-8")))
     if not group:
-        # 地物データの帰属文は JS が差し込む。マークアップには無いので、ここで足す。
-        area = json.loads((ROOT / "public" / "data" / "area.geojson").read_text(encoding="utf-8"))
-        chars |= set(str(area.get("attribution", ""))) | set(str(area.get("attributionEn", "")))
+        # 地図の帰属は Leaflet が差し込む。マークアップには無いので、ここで足す。
         chars |= set("© OpenStreetMap contributors")
     chars = {c for c in chars if c.isprintable() and not c.isspace()}
 
