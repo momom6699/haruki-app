@@ -38,6 +38,8 @@ EXTRA = (
     "©— 〜/()（）:：,、.。0123456789km"
     + "地図を読み込めませんでした。"  # src/main.ts: showMapFailure
     + "The map could not be loaded."
+    + "地図の下地を openstreetmap.org から読み込めませんでした。"  # src/map/lp-map.ts: watchTiles
+    + "The basemap could not be loaded from openstreetmap.org."
     + "Leaflet |"  # 地図の帰属コントロールが出す文字
 )
 

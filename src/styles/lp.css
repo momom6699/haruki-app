@@ -101,18 +101,18 @@ h1,h2,h3,p{margin:0}
 .shotwrap{max-width:340px;margin:0 auto}
 .device-row{display:flex;align-items:flex-end;justify-content:center;gap:var(--space-major);flex-wrap:wrap;max-width:640px;margin:0 auto}
 .device-row .device--sm{width:158px;opacity:.9}
-/* デザインは aspect-ratio:9/19.5（実機まるごとのスクリーンショット前提）。
-   手元にあるのはストア用アセットから切り出した画面部分（881x1450）だけなので、
-   枠を素材の比率に合わせている——切り落としも、無い部分の捏造もしないため。
-   実機比率のスクリーンショットが入ったら 9/19.5 に戻す。 */
-.device{position:relative;aspect-ratio:881/1450;padding:7px;border:1px solid #4A463E;border-radius:44px;width:220px;
+/* 枠は実機の比率（デザインのまま 9/19.5）。手元のスクリーンショットは画面部分だけを
+   切り出したもので 9:14.8 しかないので、`cover` だと横が2割以上切れる（日付が欠ける）。
+   `contain` で全体を入れ、余りは画面の地色で埋める——切り落とさず、無い部分も作らない。
+   実機まるごとの画像が入ったら、デザインどおり `cover` に戻せる。 */
+.device{position:relative;aspect-ratio:9/19.5;padding:7px;border:1px solid #4A463E;border-radius:44px;width:220px;
   background:linear-gradient(145deg,#4B473F 0%,#25231F 20%,#171612 72%,#403C35 100%);
   box-shadow:0 42px 80px rgba(42,38,32,.18),0 10px 24px rgba(42,38,32,.12),inset 0 0 0 1px rgba(255,255,255,.11)}
 .device::before,.device::after{content:"";position:absolute;right:-4px;width:3px;border-radius:2px;background:#5B564D}
 .device::before{top:22%;height:11%}
 .device::after{top:36%;height:17%}
 .device-screen{position:relative;width:100%;height:100%;overflow:hidden;border-radius:37px;background:var(--color-bg)}
-.device-screen img{width:100%;height:100%;object-fit:cover;object-position:top center}
+.device-screen img{width:100%;height:100%;object-fit:contain;object-position:center}
 .camera{position:absolute;top:16px;left:50%;z-index:4;width:11px;height:11px;border:2px solid #302E29;
   border-radius:50%;background:#080807;box-shadow:inset 0 0 0 2px #151A1D;transform:translateX(-50%);pointer-events:none}
 .device figcaption{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
