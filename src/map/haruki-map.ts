@@ -77,7 +77,25 @@ const paperStyle = (): StyleSpecification => ({
 
 export type HarukiMap = { map: MlMap; destroy: () => void };
 
+/**
+ * WebGL2 が使えるかを先に見る。
+ *
+ * 使えない環境で Map を作ると、MapLibre は**投げも `error` も出さずに**コンソールへ
+ * 書くだけで止まる（GPUInitializationError）。`load` は永久に来ないので、待っている側は
+ * 何も知らされない——地図の枠には帰属表示の一行だけが残り、原因を追う手がかりもない。
+ * ここで先に確かめて、失敗として返す。
+ */
+function supportsWebGL2(): boolean {
+  try {
+    return document.createElement('canvas').getContext('webgl2') !== null;
+  } catch {
+    return false;
+  }
+}
+
 export async function createHarukiMap(spec: MapSpec): Promise<HarukiMap> {
+  if (!supportsWebGL2()) throw new Error('WebGL2 is unavailable in this browser');
+
   const map = new MlMap({
     container: spec.container,
     style: paperStyle(),
@@ -92,7 +110,7 @@ export async function createHarukiMap(spec: MapSpec): Promise<HarukiMap> {
     refreshExpiredTiles: false,
   });
 
-  await new Promise<void>((resolve) => map.on('load', () => resolve()));
+  await ready(map);
 
   let field: HarukiFieldLayer | null = null;
   const month = new Date().getMonth() + 1;
@@ -151,6 +169,30 @@ export async function createHarukiMap(spec: MapSpec): Promise<HarukiMap> {
       map.remove();
     },
   };
+}
+
+/**
+ * 地図が使える状態になるまで待つ。
+ *
+ * `load` だけを待つと、**描けなかったときに永久に待つ**——WebGL が使えない環境では
+ * MapLibre は `load` を出さず `error` を出すので、待っている側は解決も失敗もしない。
+ * 呼び出し側の catch も走らず、地図の枠には帰属表示の一行だけが残る。
+ * 見えない失敗をいちばん作りやすい場所なので、`error` と時間切れの両方で必ず倒す。
+ */
+function ready(map: MlMap): Promise<void> {
+  const LIMIT_MS = 8_000;
+  return new Promise<void>((resolve, reject) => {
+    let settled = false;
+    const done = (fn: () => void) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      fn();
+    };
+    const timer = setTimeout(() => done(() => reject(new Error('map did not load within 8s'))), LIMIT_MS);
+    map.on('load', () => done(resolve));
+    map.on('error', (event) => done(() => reject(event?.error ?? new Error('map failed to initialise'))));
+  });
 }
 
 /** 走った範囲へカメラを合わせる。Android も軌跡・日記の地図は記録の範囲に合わせている。 */

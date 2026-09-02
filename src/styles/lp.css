@@ -77,6 +77,9 @@ h1,h2,h3,p{margin:0}
 .map__attribution{position:absolute;right:6px;bottom:2px;z-index:430;margin:0;max-width:min(62%,32em);text-align:right;
   font-family:var(--font-ui);font-size:10px;line-height:16px;color:var(--color-muted)}
 .map__attribution a{color:var(--color-muted);border:0}
+/* 地図を描けなかったときだけ出る一行。帰属表示と紛れないよう、枠の中央に置く。 */
+.map__failure{position:absolute;inset:0;z-index:420;display:grid;place-content:center;margin:0;padding:var(--space-related);
+  font-family:var(--font-ui);font-size:13px;line-height:1.6;color:var(--color-muted);text-align:center}
 
 .annot{position:absolute;z-index:450;font-family:var(--font-ui);font-size:10px;letter-spacing:.16em;color:var(--color-muted);pointer-events:none}
 .annot::before{content:"";display:block;width:22px;border-top:var(--hairline) solid var(--color-border);margin-bottom:6px}

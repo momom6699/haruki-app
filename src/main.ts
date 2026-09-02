@@ -97,6 +97,25 @@ function revealOnScroll() {
   });
 }
 
+/**
+ * 地図を描けなかったことを画面にも出す。
+ *
+ * 黙って落ちると、地図の枠には帰属表示の一行だけが残る——「地図が出ない」のか
+ * 「地図データの但し書きだけの絵なのか」が見た目で区別できず、報告する側も受ける側も困る。
+ * 原因（WebGL が使えない、モジュールが読めない）はコンソールに出したうえで、
+ * 描けなかったこと自体はここで言う。
+ */
+function showMapFailure(container: HTMLElement) {
+  if (container.querySelector('[data-map-failed]')) return;
+  const note = document.createElement('p');
+  note.dataset.mapFailed = '';
+  note.className = 'map__failure';
+  note.textContent = document.documentElement.lang.startsWith('en')
+    ? 'The map could not be drawn in this browser.'
+    : 'この環境では地図を描けませんでした。';
+  container.appendChild(note);
+}
+
 async function main() {
   revealOnScroll();
 
@@ -124,6 +143,7 @@ async function main() {
         .catch((error) => {
           // 黙って落とさない。地図が出ない理由が分からないのがいちばん困る。
           console.error(`[haruki-map] ${spec.id} failed`, error);
+          showMapFailure(container);
         });
     };
     if (spec.eager) build();

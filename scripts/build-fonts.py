@@ -32,8 +32,13 @@ FACES = [
     ("ZenKakuGothicNew", 500, "zen-kaku-gothic-new/500Medium/ZenKakuGothicNew_500Medium.ttf"),
 ]
 
-# 画面に出るがマークアップには無い文字（JS が入れる帰属表示など）。
-EXTRA = "©— 〜/()（）:：,、.。0123456789km"
+# 画面に出るがマークアップには無い文字。JS が入れるものはここに書き足すこと
+# ——テストは HTML しか見ないので、書き忘れると本番でその字だけ豆腐になる。
+EXTRA = (
+    "©— 〜/()（）:：,、.。0123456789km"
+    + "この環境では地図を描けませんでした。"  # src/main.ts: showMapFailure
+    + "The map could not be drawn in this browser."
+)
 
 
 # サブセットは**2組**作る。
