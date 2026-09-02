@@ -45,6 +45,19 @@ function load(url: string): Promise<GeoJSON.FeatureCollection> {
   return cache.get(url)!;
 }
 
+/**
+ * すでに読んである GeoJSON を渡しておく。
+ *
+ * 帰属表示とヒーローの画角を決めるために、本体側は地図モジュールを読み込む前に
+ * area と route-hero を取っている。ここへ渡しておかないと、同じ2本をもう一度取りに行く
+ * ——キャッシュ指示のない配信だと実際に2回落ちる（27KB の無駄）。
+ */
+export function primeData(url: string, data: GeoJSON.FeatureCollection) {
+  if (!cache.has(url)) cache.set(url, Promise.resolve(data));
+}
+
+export const DATA_URLS = { area: AREA_URL, hero: HERO_URL } as const;
+
 export const prefersReducedMotion = () =>
   typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
 

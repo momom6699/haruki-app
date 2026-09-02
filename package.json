@@ -12,7 +12,8 @@
     "test": "vitest run",
     "fixture:map": "node scripts/build-map-fixture.mjs",
     "fixture:routes": "node scripts/make-demo-routes.mjs",
-    "fonts:build": "python3 scripts/build-fonts.py"
+    "fonts:build": "python3 scripts/build-fonts.py",
+    "fixture:area": "node scripts/make-area-map.mjs"
   },
   "dependencies": {
     "earcut": "^3.0.1",

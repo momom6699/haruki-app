@@ -7,6 +7,22 @@
    Colour is lit only where it means something: the route actually run, the
    accumulation scale, and "now"/destructive. Nothing here is coloured for decoration. */
 
+/* 自前配信のサブセット（scripts/build-fonts.py が作る）。第三者への通信はこのサイトから一切出さない
+   ——計測タグもCookieも置かないという方針は、フォントのCDNにも同じように効く。
+   Bodoni Moda / Libre Caslon Text / Archivo は落として、日本語フェイスがラテン文字も受け持つ。
+   下の --font-* はその並びのまま——読み込まれなければ次の候補へ落ちる。
+
+   LP とは別のサブセット（/fonts/legal/）を読む。規約の本文は長く、字種も多いので、
+   これを LP と1本にまとめると最初に出る1枚が重くなる。 */
+@font-face{font-family:'Zen Antique';font-style:normal;font-weight:400;font-display:swap;
+  src:url('/fonts/legal/ZenAntique-400.woff2') format('woff2')}
+@font-face{font-family:'Shippori Mincho';font-style:normal;font-weight:400;font-display:swap;
+  src:url('/fonts/legal/ShipporiMincho-400.woff2') format('woff2')}
+@font-face{font-family:'Zen Kaku Gothic New';font-style:normal;font-weight:400;font-display:swap;
+  src:url('/fonts/legal/ZenKakuGothicNew-400.woff2') format('woff2')}
+@font-face{font-family:'Zen Kaku Gothic New';font-style:normal;font-weight:500;font-display:swap;
+  src:url('/fonts/legal/ZenKakuGothicNew-500.woff2') format('woff2')}
+
 :root {
   /* surfaces — warm unbleached paper */
   --bg: #f7f3e9;

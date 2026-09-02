@@ -2,134 +2,153 @@
 /**
  * **デモ用**の走行ルートを作る。実利用者の記録は一切使わない（§7）。
  *
- * 道路・緑道のジオメトリからグラフを組み、同じ「家」から出て同じ「家」へ帰る周回を
- * 決定論的に生成する。何度も同じ道を通るので、重ねたときに濃さが自然に出る
- * ——ヒートマップの色分けをしないで密度を出す、というのが Android 版
- * CumulativeRouteMapView と同じ考え方。
+ *   node scripts/make-demo-routes.mjs
+ *
+ * 皇居の一周は内堀通りの歩道をたどる約5kmで、走る人はここを反時計回りに回る。
+ * ルートは思いつきの曲線ではなく、`scripts/lib/kokyo.mjs` の内堀通り中心線を
+ * **濠側の歩道ぶんだけ内へ寄せた線**そのもの。だから公園・濠・道と正しく噛み合う。
+ *
+ * 実際の記録に見せるために足したのは2つだけ：
+ *  - GPS のふらつき。白色雑音ではなく、数十メートル周期の**滑らかなうねり**にする
+ *    ——受信機の誤差は隣り合う点で相関するので、白色雑音にすると毛羽立って嘘になる。
+ *  - 発着の枝。皇居ランは駅やロッカーから通いで来るので、一周だけの線にはならない。
+ *    枝は毎回同じ道を通るから、重ねると幹線だけが濃くなる（Android の軌跡と同じ見え方）。
  */
-import { readFileSync, writeFileSync } from 'node:fs';
+import { writeFileSync } from 'node:fs';
 import { rng } from './lib/geo.mjs';
+import { LOOP, coord, lengthOf, loopRing, resample, rightNormals, toXY } from './lib/kokyo.mjs';
 
-const SNAP_DEG = 0.00025; // ざっくり25m。頂点をまとめて交差点にする。
-const key = (c) => `${Math.round(c[0] / SNAP_DEG)}:${Math.round(c[1] / SNAP_DEG)}`;
+const random = rng(70260902);
+
+/** 濠側の歩道。中心線から内（＝右）へ11m。 */
+const ring = loopRing();
+const normals = rightNormals(ring);
+const sidewalk = resample(
+  ring.map((p, i) => ({ east: p.east + normals[i].east * 11, north: p.north + normals[i].north * 11 })),
+  8,
+);
+const stationIndex = (name) => {
+  const s = LOOP.find((x) => x.name === name);
+  const target = toXY(s.lat, s.lon);
+  let best = 0;
+  let bestD = Infinity;
+  sidewalk.forEach((p, i) => {
+    const d = Math.hypot(p.east - target.east, p.north - target.north);
+    if (d < bestD) [best, bestD] = [i, d];
+  });
+  return best;
+};
 
 /**
- * 線を細かく割ってから丸める。
- *
- * 元の頂点そのままだと、交差する2本の道が交点に頂点を持っていない限り同じ節点にならず、
- * グラフが「つながっていない線の束」になる。そうなると歩き回れず、経路が
- * 1本の線の往復にしかならない。丸め幅の半分より細かく割ってから丸めれば、
- * 実際に交差している場所で必ず同じ節点になる。
+ * 駅・ロッカーから周回へ入る枝。皇居ランはたいてい通いなので、
+ * 行きと帰りで同じ道を通る——重なった線が濃くなるのはこのため。
  */
-function densify(coords, step = SNAP_DEG / 2) {
+const APPROACHES = [
+  { from: [[35.6748, 139.7601], [35.6752, 139.758], [35.6752, 139.7562]], gate: '祝田橋' },
+  { from: [[35.6812, 139.7669], [35.6818, 139.7638], [35.6821, 139.7609]], gate: '和田倉門' },
+  { from: [[35.6866, 139.7661], [35.6864, 139.7628], [35.6862, 139.7596]], gate: '大手門' },
+  { from: [[35.6906, 139.7592]], gate: '竹橋' },
+  { from: [[35.6857, 139.742], [35.6855, 139.7434]], gate: '半蔵門' },
+  { from: [[35.6957, 139.7517], [35.6934, 139.7501], [35.6914, 139.7488]], gate: '千鳥ヶ淵交差点' },
+  { from: [[35.6959, 139.7578], [35.6934, 139.7583], [35.6913, 139.7588]], gate: '竹橋' },
+  { from: [[35.6751, 139.7636], [35.6748, 139.7606], [35.6754, 139.7583]], gate: '日比谷' },
+  { from: [[35.6785, 139.7405], [35.6791, 139.7438], [35.6796, 139.746]], gate: '三宅坂' },
+];
+
+/**
+ * 滑らかなうねり。周期の違う正弦をいくつか重ねる——隣り合う点で誤差が相関する、
+ * という受信機のふるまいだけを写す。
+ */
+function wobble(amplitude, waves = 4) {
+  const parts = Array.from({ length: waves }, () => ({
+    period: 40 + random() * 220,
+    phase: random() * Math.PI * 2,
+    gain: 0.35 + random() * 0.65,
+  }));
+  const norm = parts.reduce((s, p) => s + p.gain, 0);
+  return (metres) =>
+    (amplitude / norm) * parts.reduce((s, p) => s + p.gain * Math.sin((metres / p.period) * Math.PI * 2 + p.phase), 0);
+}
+
+/** 線に沿ってふらつきを乗せる。横（歩道の幅の中）を主に、縦は歩幅ぶんだけ。 */
+function jitter(points, lateral = 3.4, bias = 0) {
+  const across = wobble(lateral);
+  const along = wobble(1.2);
+  let travelled = 0;
+  return points.map((p, i) => {
+    if (i) travelled += Math.hypot(p.east - points[i - 1].east, p.north - points[i - 1].north);
+    const a = points[Math.max(i - 1, 0)];
+    const b = points[Math.min(i + 1, points.length - 1)];
+    const tx = b.east - a.east;
+    const ty = b.north - a.north;
+    const len = Math.hypot(tx, ty) || 1;
+    const nx = ty / len;
+    const ny = -tx / len;
+    const off = across(travelled) + bias;
+    return {
+      east: p.east + nx * off + (tx / len) * along(travelled),
+      north: p.north + ny * off + (ty / len) * along(travelled),
+    };
+  });
+}
+
+/** 周回を laps 周ぶん、gate から。反時計回りなら線を逆に辿る。 */
+function laps(gate, count, counterClockwise) {
+  const n = sidewalk.length;
+  const at = stationIndex(gate);
   const out = [];
-  for (let i = 0; i < coords.length - 1; i++) {
-    const [x1, y1] = coords[i];
-    const [x2, y2] = coords[i + 1];
-    const n = Math.max(1, Math.ceil(Math.hypot(x2 - x1, y2 - y1) / step));
-    for (let k = 0; k < n; k++) out.push([x1 + ((x2 - x1) * k) / n, y1 + ((y2 - y1) * k) / n]);
+  for (let k = 0; k < Math.round(count * n); k++) {
+    const i = counterClockwise ? (at - k + n * (Math.ceil(count) + 1)) % n : (at + k) % n;
+    out.push(sidewalk[i]);
   }
-  out.push(coords[coords.length - 1]);
   return out;
 }
 
-const area = JSON.parse(readFileSync('public/data/area.geojson', 'utf8'));
-const walkable = area.features.filter(
-  (f) => f.geometry.type === 'LineString' && (f.properties.kind === 'road' || f.properties.kind === 'greenway'),
-);
-
-/** node key -> {coord, neighbours:Set<key>} */
-const nodes = new Map();
-const touch = (coord) => {
-  const k = key(coord);
-  if (!nodes.has(k)) nodes.set(k, { coord, neighbours: new Set() });
-  return k;
-};
-for (const f of walkable) {
-  const coords = densify(f.geometry.coordinates);
-  for (let i = 0; i < coords.length - 1; i++) {
-    const a = touch(coords[i]);
-    const b = touch(coords[i + 1]);
-    if (a === b) continue;
-    nodes.get(a).neighbours.add(b);
-    nodes.get(b).neighbours.add(a);
-  }
+function makeRun({ gate, count, counterClockwise, approach }) {
+  const spur = approach ? resample(approach.from.map(([lat, lon]) => toXY(lat, lon)), 8) : [];
+  const inbound = spur.slice();
+  const outbound = spur.slice().reverse();
+  const raw = [...inbound, ...laps(gate, count, counterClockwise), ...outbound];
+  const points = jitter(raw, 2.6 + random() * 1.8, (random() - 0.5) * 3.2);
+  return { points, distance: lengthOf(points) };
 }
 
-const R = 6_371_000;
-const metres = (a, b) => {
-  const dLat = ((b[1] - a[1]) * Math.PI) / 180;
-  const dLon = ((b[0] - a[0]) * Math.PI) / 180;
-  const lat = ((a[1] + b[1]) / 2) * (Math.PI / 180);
-  return Math.hypot(dLat, dLon * Math.cos(lat)) * R;
-};
+/* --- 一本（ヒーロー）------------------------------------------------------- */
 
-const center = area.center ?? [139.7528, 35.6852];
-const home = [...nodes.keys()].sort(
-  (a, b) => metres(nodes.get(a).coord, center) - metres(nodes.get(b).coord, center),
-)[0];
+// 桜田門から反時計回りに一周。皇居ランの作法どおり。
+const hero = makeRun({ gate: '桜田門', count: 1, counterClockwise: true, approach: null });
 
-/** 家までの最短経路（辺数）。帰り道に使う。 */
-function pathHome(from) {
-  const prev = new Map([[from, null]]);
-  const queue = [from];
-  while (queue.length) {
-    const cur = queue.shift();
-    if (cur === home) break;
-    for (const n of nodes.get(cur).neighbours) {
-      if (!prev.has(n)) {
-        prev.set(n, cur);
-        queue.push(n);
-      }
-    }
-  }
-  if (!prev.has(home)) return [];
-  // prev は from からの BFS なので、home から辿ると home→…→from。
-  // 帰り道として使うには from→…→home にしたいので、1回だけ反転する。
-  const backwards = [];
-  for (let c = home; c; c = prev.get(c)) backwards.push(c);
-  return backwards.reverse();
+/* --- 積み重ね -------------------------------------------------------------- */
+
+const runs = [];
+for (let i = 0; i < 34; i++) {
+  const approach = APPROACHES[Math.floor(random() * APPROACHES.length)];
+  // 1周が基本、たまに2〜4周。ロング走ほど数が少ないのは実際の走り方に合わせて。
+  const roll = random();
+  const count = roll < 0.46 ? 1 : roll < 0.78 ? 2 : roll < 0.94 ? 3 : 4;
+  runs.push(
+    makeRun({
+      gate: approach.gate,
+      count,
+      counterClockwise: random() < 0.82, // 時計回りに回る日もある
+      approach,
+    }),
+  );
 }
-
-function makeRoute(random, targetMetres) {
-  const visited = [home];
-  let current = home;
-  let travelled = 0;
-  let guard = 0;
-  while (travelled < targetMetres * 0.55 && guard++ < 400) {
-    const options = [...nodes.get(current).neighbours];
-    if (!options.length) break;
-    // 直前に来た道へすぐ戻らない（往復のギザギザを避ける）。
-    const back = visited[visited.length - 2];
-    const forward = options.filter((o) => o !== back);
-    const next = (forward.length ? forward : options)[Math.floor(random() * (forward.length || options.length))];
-    travelled += metres(nodes.get(current).coord, nodes.get(next).coord);
-    visited.push(next);
-    current = next;
-  }
-  const back = pathHome(current);
-  const full = [...visited, ...back.slice(1)];
-  const coords = full.map((k) => nodes.get(k).coord);
-  const deduped = coords.filter((c, i) => i === 0 || c[0] !== coords[i - 1][0] || c[1] !== coords[i - 1][1]);
-  const distance = deduped.reduce((sum, c, i) => (i ? sum + metres(deduped[i - 1], c) : 0), 0);
-  return { coords: deduped, distance };
-}
-
-const random = rng(70260831);
-const routes = [];
-for (let i = 0; routes.length < 34 && i < 400; i++) {
-  const target = 3_000 + random() * 11_000;
-  const route = makeRoute(random, target);
-  if (route.coords.length > 12 && route.distance > 2_000) routes.push(route);
-}
-routes.sort((a, b) => a.distance - b.distance);
+runs.sort((a, b) => a.distance - b.distance);
 
 /**
- * 描く前に間引く。グラフを組むために 12.5m 刻みまで割ってあるので、そのまま書き出すと
- * 点が数万になる。Android も保存点はそのまま持ち、**描画時だけ** simplifyRoute で
+ * 描く前に間引く。Android も保存点はそのまま持ち、**描画時だけ** simplifyRoute で
  * 間引いている（CumulativeRouteMapView）。ここも同じで、形は変えずに点だけ減らす。
+ *
+ * 許容はその地図の縮尺に合わせる。ヒーローは寄った絵なので 1.5m 相当まで残し、
+ * 積み重ねは1画面に5kmが収まる縮尺（1px≒10m）なので 6m 相当で足りる
+ * ——見えない細かさを34本ぶん持つと、それだけで fixture が10倍に膨れる。
  */
-function simplify(points, tolerance = 0.00004) {
+const HERO_TOLERANCE = 0.000014;
+const CUMULATIVE_TOLERANCE = 0.000055;
+
+function simplify(points, tolerance) {
   if (points.length < 3) return points;
   const keep = new Array(points.length).fill(false);
   keep[0] = keep[points.length - 1] = true;
@@ -159,23 +178,23 @@ function simplify(points, tolerance = 0.00004) {
   return points.filter((_, i) => keep[i]);
 }
 
-const fc = (list, note) => ({
+const fc = (list, note, tolerance) => ({
   type: 'FeatureCollection',
   demo: true,
   note,
   features: list.map((r, i) => ({
     type: 'Feature',
     properties: { index: i, distanceMetres: Math.round(r.distance) },
-    geometry: { type: 'LineString', coordinates: simplify(r.coords) },
+    geometry: { type: 'LineString', coordinates: simplify(r.points.map(coord), tolerance) },
   })),
 });
 
-// ヒーローの1本は、形が読める中くらいの周回を選ぶ。
-const hero = routes[Math.floor(routes.length * 0.6)];
-writeFileSync('public/data/route-hero.geojson', JSON.stringify(fc([hero], 'demo fixture — not real user data')));
-writeFileSync('public/data/routes-cumulative.geojson', JSON.stringify(fc(routes, 'demo fixture — not real user data')));
+const NOTE = 'demo fixture — not real user data（皇居一周・デモ）';
+writeFileSync('public/data/route-hero.geojson', JSON.stringify(fc([hero], NOTE, HERO_TOLERANCE)));
+writeFileSync('public/data/routes-cumulative.geojson', JSON.stringify(fc(runs, NOTE, CUMULATIVE_TOLERANCE)));
 console.log(
-  `wrote route-hero.geojson (${(hero.distance / 1000).toFixed(1)} km, ${hero.coords.length} pts) ` +
-    `and routes-cumulative.geojson (${routes.length} routes, ` +
-    `${(routes.reduce((s, r) => s + r.distance, 0) / 1000).toFixed(0)} km total)`,
+  `wrote route-hero.geojson (${(hero.distance / 1000).toFixed(2)} km, ` +
+    `${simplify(hero.points.map(coord), HERO_TOLERANCE).length} pts) and routes-cumulative.geojson ` +
+    `(${runs.length} runs, ${(runs.reduce((s, r) => s + r.distance, 0) / 1000).toFixed(0)} km total, ` +
+    `${(runs[0].distance / 1000).toFixed(1)}–${(runs[runs.length - 1].distance / 1000).toFixed(1)} km)`,
 );

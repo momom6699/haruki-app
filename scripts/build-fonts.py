@@ -36,6 +36,18 @@ FACES = [
 EXTRA = "©— 〜/()（）:：,、.。0123456789km"
 
 
+# サブセットは**2組**作る。
+#
+# LP と法務ページを1組にまとめると、法務ページの長い本文ぶんの字が全部入り、
+# LP が先読みする表示用フェイスが 44KB → 118KB に膨らむ。あの1枚は最初に出るものなので、
+# めったに開かれない規約のためにそこを重くしたくない。両方読む人は2回落とすことになるが、
+# 割に合う方を取る。
+GROUPS = {
+    "": ("index.html", "index-en.html"),
+    "legal": ("public/privacy/index.html", "public/terms/index.html"),
+}
+
+
 def rendered_text(html: str) -> str:
     html = re.sub(r"<(script|style)\b.*?</\1>", " ", html, flags=re.S | re.I)
     html = re.sub(r"<[^>]+>", " ", html)
@@ -43,19 +55,21 @@ def rendered_text(html: str) -> str:
     return html
 
 
-def main() -> int:
-    OUT.mkdir(parents=True, exist_ok=True)
+def build(group: str, pages: "tuple[str, ...]") -> int:
+    out = OUT / group if group else OUT
+    out.mkdir(parents=True, exist_ok=True)
     chars = set(EXTRA)
-    for name in ("index.html", "index-en.html"):
+    for name in pages:
         chars |= set(rendered_text((ROOT / name).read_text(encoding="utf-8")))
-    # 地物データの帰属文（仮データのときは日本語が混じる）。
-    area = json.loads((ROOT / "public" / "data" / "area.geojson").read_text(encoding="utf-8"))
-    chars |= set(str(area.get("attribution", "")))
-    chars |= set("© OpenStreetMap contributors")
+    if not group:
+        # 地物データの帰属文は JS が差し込む。マークアップには無いので、ここで足す。
+        area = json.loads((ROOT / "public" / "data" / "area.geojson").read_text(encoding="utf-8"))
+        chars |= set(str(area.get("attribution", ""))) | set(str(area.get("attributionEn", "")))
+        chars |= set("© OpenStreetMap contributors")
     chars = {c for c in chars if c.isprintable() and not c.isspace()}
 
     text = "".join(sorted(chars))
-    print(f"charset: {len(chars)} glyphs")
+    print(f"[{group or 'lp'}] charset: {len(chars)} glyphs")
 
     coverage = {"chars": text, "faces": []}
     total = 0
@@ -74,7 +88,7 @@ def main() -> int:
         sub = Subsetter(options=options)
         sub.populate(text=text)
         sub.subset(font)
-        dest = OUT / f"{family}-{weight}.woff2"
+        dest = out / f"{family}-{weight}.woff2"
         font.flavor = "woff2"
         font.save(str(dest))
         kb = dest.stat().st_size / 1024
@@ -84,9 +98,17 @@ def main() -> int:
         coverage["faces"].append({"family": family, "weight": weight, "missing": missing})
         flag = "" if not missing else f"  !! missing {len(missing)}: {''.join(missing[:20])}"
         print(f"  {dest.name:34s} {kb:6.1f} KB{flag}")
-    print(f"total {total:.1f} KB")
+    print(f"[{group or 'lp'}] total {total:.1f} KB")
 
-    (OUT / "coverage.json").write_text(json.dumps(coverage, ensure_ascii=False), encoding="utf-8")
+    (out / "coverage.json").write_text(json.dumps(coverage, ensure_ascii=False), encoding="utf-8")
+    return 0
+
+
+def main() -> int:
+    for group, pages in GROUPS.items():
+        code = build(group, pages)
+        if code:
+            return code
     return 0
 
 
