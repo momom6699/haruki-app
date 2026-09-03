@@ -1,22 +1,36 @@
 /**
  * LP の地図。デザイン（`Haruki LP standalone.html`）の実装をそのまま持ってくる。
  *
- * デザインは **Leaflet ＋ OpenStreetMap のラスタタイル**で下地を敷き、CSS のフィルタで
- * 紙の色に寄せている（`.leaflet-tile-pane{filter:grayscale(1) …sepia(.22)}`）。
- * 街の細かさ——通りの一本一本、街区、水面——はこの下地が出しているもので、
- * ルート線はその上に細く1本乗るだけ。ここを自前のベクタ描画に置き換えると、
- * 同じ配置・同じ文字でも**別物の絵**になる。だから下地はデザインどおりタイルを引く。
+ * デザインは **Leaflet のラスタタイル**で下地を敷き、CSS のフィルタで紙の色に寄せている
+ * （`.leaflet-tile-pane{filter:grayscale(1) …sepia(.22)}`）。街の細かさ——通りの一本一本、
+ * 街区、水面——はこの下地が出しているもので、ルート線はその上に細く1本乗るだけ。ここを
+ * 自前のベクタ描画に置き換えると、同じ配置・同じ文字でも**別物の絵**になる。だから
+ * 下地はデザインどおりタイルを引く。
  *
- * デザインから変えたのは1つだけ、ルートの出どころ。デザインは三角関数で作った
- * 楕円のループ（道の上を通らない）だが、こちらは内堀通りの歩道からとった実際の
- * 皇居一周を使う（`scripts/lib/kokyo.mjs`）。下地が実際の地図なので、
- * 作りものの線だと道から外れているのがそのまま見えてしまう。
+ * デザインから変えたのは2つ。
+ *
+ * 1. **タイルの提供元**。デザインは `tile.openstreetmap.org` を直に引いていたが、OSM の
+ *    タイル運用ポリシーは公開サイトでの常用を認めていない。アプリ（`OsmMap.kt`）と同じ
+ *    **CARTO Positron `light_nolabels`** に揃える——建物・POI・地名をタイル段階で淡くする
+ *    下地で、CSS フィルタ後の見え方もアプリと揃う。帰属は OSM と CARTO の両方を出す。
+ *    CARTO はキー無しでもタイルを返すが透かしが焼き込まれるので、ビルド時に
+ *    `VITE_CARTO_KEY` を渡す（未設定でも動く。透かし付きで出るだけ）。`.env.example` 参照。
+ *    なお CARTO はラスター提供の retiring を予告済みで、これはアプリと歩調を合わせた当面の
+ *    選択。乗り換え先はアプリ側の判断と合わせて別途決める。
+ * 2. **ルートの出どころ**。デザインは三角関数で作った楕円のループ（道の上を通らない）だが、
+ *    こちらは内堀通りの歩道からとった実際の皇居一周を使う（`scripts/lib/kokyo.mjs`）。
+ *    下地が実際の地図なので、作りものの線だと道から外れているのがそのまま見えてしまう。
  */
 import 'leaflet/dist/leaflet.css';
 import L, { type LatLngExpression, type Map as LeafletMap, type PolylineOptions, type TileLayer } from 'leaflet';
 
-const TILES = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
-const ATTRIBUTION = '© OpenStreetMap contributors';
+/** CARTO の無料キー。アカウント不要・fair use。ソースへ直書きせず、ビルド時に環境変数で渡す
+ *  （アプリが `local.properties` の `CARTO_API_KEY` から読むのと同じ扱い）。未設定なら
+ *  キー無し＝透かし付きのタイルが出る（ビルドも動作も従来どおり）。 */
+const CARTO_KEY = (import.meta.env.VITE_CARTO_KEY ?? '').trim();
+const TILES = `https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png${CARTO_KEY ? `?key=${CARTO_KEY}` : ''}`;
+const TILE_SUBDOMAINS = 'abcd';
+const ATTRIBUTION = '© OpenStreetMap contributors © CARTO';
 
 const HERO_URL = '/data/route-hero.geojson';
 const CUMULATIVE_URL = '/data/routes-cumulative.geojson';
@@ -41,7 +55,7 @@ async function routes(url: string): Promise<LatLngExpression[][]> {
 /**
  * 下地が1枚も来なかったことを画面に出す。
  *
- * タイルはこのページの外——OpenStreetMap——から来るので、そこへ出られない場所では
+ * タイルはこのページの外——CARTO——から来るので、そこへ出られない場所では
  * **紙とルート線だけ**が残る。地図が出ていないのか、そういう絵なのかが見分けられず、
  * 実際それで一度こじれた。届かなかったのなら、そう書く。
  */
@@ -59,8 +73,8 @@ function watchTiles(tiles: TileLayer, element: HTMLElement) {
     note.dataset.mapFailed = '';
     note.className = 'map__failure';
     note.textContent = document.documentElement.lang.startsWith('en')
-      ? 'The basemap could not be loaded from openstreetmap.org.'
-      : '地図の下地を openstreetmap.org から読み込めませんでした。';
+      ? 'The basemap could not be loaded.'
+      : '地図の下地を読み込めませんでした。';
     element.appendChild(note);
   }, LIMIT_MS);
 }
@@ -76,7 +90,12 @@ function base(element: HTMLElement, interactive: boolean): LeafletMap {
     keyboard: false,
     preferCanvas: true,
   });
-  const tiles = L.tileLayer(TILES, { attribution: ATTRIBUTION, maxZoom: 17, detectRetina: false });
+  const tiles = L.tileLayer(TILES, {
+    attribution: ATTRIBUTION,
+    subdomains: TILE_SUBDOMAINS,
+    maxZoom: 17,
+    detectRetina: false,
+  });
   watchTiles(tiles, element);
   tiles.addTo(map);
   return map;

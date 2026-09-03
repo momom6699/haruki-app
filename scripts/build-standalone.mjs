@@ -11,8 +11,9 @@
  *   - フォントと画像は data: URI
  *   - ルートの GeoJSON は fetch を差し替えて、埋め込んだものを返す
  *
- * 地図の下地タイルだけは差し替えない。デザインどおり OpenStreetMap から引くので、
- * この1枚もネットにつながった状態で開く必要がある。
+ * 地図の下地タイルだけは差し替えない。本番と同じく CARTO から引くので、この1枚も
+ * ネットにつながった状態で開く必要がある。CARTO キーは `VITE_CARTO_KEY` を export して
+ * おけば埋まる（無ければ透かし付きのタイルで出る）。
  *
  * 本番のコードには手を入れない。差し替えはここで**バンドル済みの文字列に対して**行う。
  */
@@ -43,6 +44,9 @@ run([
   // Leaflet の CSS がマーカーの画像を参照する（この地図では使わない）。1枚に畳むので埋める。
   '--loader:.png=dataurl',
   '--external:/fonts/*',
+  // Vite の `import.meta.env` は esbuild では展開されない。CARTO キーだけ環境から差し込む
+  // （非モジュールの <script> に畳むので `import.meta` を残せない）。
+  `--define:import.meta.env.VITE_CARTO_KEY=${JSON.stringify(process.env.VITE_CARTO_KEY ?? '')}`,
   `--outfile=${join(tmp, 'app.js')}`,
 ]);
 let js = readFileSync(join(tmp, 'app.js'), 'utf8');

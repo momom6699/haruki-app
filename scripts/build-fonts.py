@@ -38,8 +38,8 @@ EXTRA = (
     "©— 〜/()（）:：,、.。0123456789km"
     + "地図を読み込めませんでした。"  # src/main.ts: showMapFailure
     + "The map could not be loaded."
-    + "地図の下地を openstreetmap.org から読み込めませんでした。"  # src/map/lp-map.ts: watchTiles
-    + "The basemap could not be loaded from openstreetmap.org."
+    + "地図の下地を読み込めませんでした。"  # src/map/lp-map.ts: watchTiles
+    + "The basemap could not be loaded."
     + "Leaflet |"  # 地図の帰属コントロールが出す文字
 )
 
@@ -71,7 +71,7 @@ def build(group: str, pages: "tuple[str, ...]") -> int:
         chars |= set(rendered_text((ROOT / name).read_text(encoding="utf-8")))
     if not group:
         # 地図の帰属は Leaflet が差し込む。マークアップには無いので、ここで足す。
-        chars |= set("© OpenStreetMap contributors")
+        chars |= set("© OpenStreetMap contributors © CARTO")
     chars = {c for c in chars if c.isprintable() and not c.isspace()}
 
     text = "".join(sorted(chars))
