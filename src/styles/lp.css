@@ -101,10 +101,12 @@ h1,h2,h3,p{margin:0}
 .shotwrap{max-width:340px;margin:0 auto}
 .device-row{display:flex;align-items:flex-end;justify-content:center;gap:var(--space-major);flex-wrap:wrap;max-width:640px;margin:0 auto}
 .device-row .device--sm{width:158px;opacity:.9}
-/* 枠は実機の比率（デザインのまま 9/19.5）。手元のスクリーンショットは画面部分だけを
-   切り出したもので 9:14.8 しかないので、`cover` だと横が2割以上切れる（日付が欠ける）。
-   `contain` で全体を入れ、余りは画面の地色で埋める——切り落とさず、無い部分も作らない。
-   実機まるごとの画像が入ったら、デザインどおり `cover` に戻せる。 */
+/* 枠は実機の比率（デザインのまま 9/19.5）。中身は実機（Pixel、1080×2424）から撮って
+   ステータスバーを落とした 1080×2324（≒9:19.3）——枠とほぼ同じ比率なので `contain` でも
+   letterbox は 1% 未満（事実上フルブリード）。デザインは `cover` 指定だが、5枚のうち
+   「ルート詳細」だけまだ旧クロップ（9:12）で撮り直せておらず、そこへ `cover` を当てると
+   左右が3割切れて距離・ペースの列が欠ける。全部を実機比率で撮り直せたら `cover` へ戻す
+   （それまでは 5枚とも `contain` で見え方を揃える）。 */
 .device{position:relative;aspect-ratio:9/19.5;padding:7px;border:1px solid #4A463E;border-radius:44px;width:220px;
   background:linear-gradient(145deg,#4B473F 0%,#25231F 20%,#171612 72%,#403C35 100%);
   box-shadow:0 42px 80px rgba(42,38,32,.18),0 10px 24px rgba(42,38,32,.12),inset 0 0 0 1px rgba(255,255,255,.11)}
