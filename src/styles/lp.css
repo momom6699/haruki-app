@@ -100,14 +100,15 @@ h1,h2,h3,p{margin:0}
 /* --- app screen sections --- */
 .shotwrap{max-width:340px;margin:0 auto}
 .device-row{display:flex;align-items:flex-end;justify-content:center;gap:var(--space-major);flex-wrap:wrap;max-width:640px;margin:0 auto}
-.device-row .device--sm{width:158px;opacity:.9}
+/* デザインは行の2台目を一回り小さく（.device--sm）していたが、作者指示で**同じ大きさ**に
+   揃える（縮尺が違って見えるため）。行内の端末はすべて .device のまま。 */
 /* 枠は実機の比率（デザインのまま 9/19.5）。中身は実機（Pixel、1080×2424）から撮って
    ステータスバーを落とした 1080×2324（≒9:19.3）——枠とほぼ同じ比率なので `contain` でも
-   letterbox は 1% 未満（事実上フルブリード）。デザインは `cover` 指定だが、5枚のうち
+   letterbox は 1% 未満（事実上フルブリード）。デザインは `cover` 指定だが、
    「ルート詳細」だけまだ旧クロップ（9:12）で撮り直せておらず、そこへ `cover` を当てると
    左右が3割切れて距離・ペースの列が欠ける。全部を実機比率で撮り直せたら `cover` へ戻す
-   （それまでは 5枚とも `contain` で見え方を揃える）。 */
-.device{position:relative;aspect-ratio:9/19.5;padding:7px;border:1px solid #4A463E;border-radius:44px;width:220px;
+   （それまでは `contain` で見え方を揃える）。 */
+.device{position:relative;aspect-ratio:9/19.5;padding:7px;border:1px solid #4A463E;border-radius:44px;width:220px;margin:0;
   background:linear-gradient(145deg,#4B473F 0%,#25231F 20%,#171612 72%,#403C35 100%);
   box-shadow:0 42px 80px rgba(42,38,32,.18),0 10px 24px rgba(42,38,32,.12),inset 0 0 0 1px rgba(255,255,255,.11)}
 .device::before,.device::after{content:"";position:absolute;right:-4px;width:3px;border-radius:2px;background:#5B564D}
@@ -167,7 +168,8 @@ h1,h2,h3,p{margin:0}
   .shotwrap{max-width:250px}
   .device{width:170px}
   .device-row{gap:var(--space-section)}
-  .device-row .device--sm{width:118px}
+  /* 行内は2台を横並びのままにしたいので、行のときだけ少し小さく（縦積みでも可）。 */
+  .device-row .device{width:150px}
   #hero{height:92svh}
   #history-map{height:47vh}
 }
