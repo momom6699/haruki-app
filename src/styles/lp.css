@@ -103,11 +103,8 @@ h1,h2,h3,p{margin:0}
 /* デザインは行の2台目を一回り小さく（.device--sm）していたが、作者指示で**同じ大きさ**に
    揃える（縮尺が違って見えるため）。行内の端末はすべて .device のまま。 */
 /* 枠は実機の比率（デザインのまま 9/19.5）。中身は実機（Pixel、1080×2424）から撮って
-   ステータスバーを落とした 1080×2324（≒9:19.3）——枠とほぼ同じ比率なので `contain` でも
-   letterbox は 1% 未満（事実上フルブリード）。デザインは `cover` 指定だが、
-   「ルート詳細」だけまだ旧クロップ（9:12）で撮り直せておらず、そこへ `cover` を当てると
-   左右が3割切れて距離・ペースの列が欠ける。全部を実機比率で撮り直せたら `cover` へ戻す
-   （それまでは `contain` で見え方を揃える）。 */
+   ステータスバーを落とした 1080×2324（≒9:19.3）で、ページに出る端末は全部この比率に
+   揃っている。だからデザインどおり `cover` で埋める——差は 1% 未満、切れるのは端の数 px。 */
 .device{position:relative;aspect-ratio:9/19.5;padding:7px;border:1px solid #4A463E;border-radius:44px;width:220px;margin:0;
   background:linear-gradient(145deg,#4B473F 0%,#25231F 20%,#171612 72%,#403C35 100%);
   box-shadow:0 42px 80px rgba(42,38,32,.18),0 10px 24px rgba(42,38,32,.12),inset 0 0 0 1px rgba(255,255,255,.11)}
@@ -115,7 +112,7 @@ h1,h2,h3,p{margin:0}
 .device::before{top:22%;height:11%}
 .device::after{top:36%;height:17%}
 .device-screen{position:relative;width:100%;height:100%;overflow:hidden;border-radius:37px;background:var(--color-bg)}
-.device-screen img{width:100%;height:100%;object-fit:contain;object-position:center}
+.device-screen img{width:100%;height:100%;object-fit:cover;object-position:top center}
 .camera{position:absolute;top:16px;left:50%;z-index:4;width:11px;height:11px;border:2px solid #302E29;
   border-radius:50%;background:#080807;box-shadow:inset 0 0 0 2px #151A1D;transform:translateX(-50%);pointer-events:none}
 .device figcaption{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
@@ -166,10 +163,10 @@ h1,h2,h3,p{margin:0}
   .page{padding:0 var(--space-subsection)}
   .statement{font-size:clamp(30px,7.5vw,44px);line-height:1.5}
   .shotwrap{max-width:250px}
-  .device{width:170px}
+  /* 端末はページのどこでも同じ大きさ。158px なら 2台＋隙間で 348px に収まり、
+     狭い画面でも行が縦積みにならずに済む。 */
+  .device{width:158px}
   .device-row{gap:var(--space-section)}
-  /* 行内は2台を横並びのままにしたいので、行のときだけ少し小さく（縦積みでも可）。 */
-  .device-row .device{width:150px}
   #hero{height:92svh}
   #history-map{height:47vh}
 }

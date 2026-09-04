@@ -69,16 +69,16 @@
     <h2 class="statement reveal" id="remain-h">残る</h2>
     <p class="lead measure reveal">距離・ルート・聴いていた曲・写真。走り終えたときには。</p>
   </div>
+  <!-- 本来ここは「ルート詳細」1枚が主役だが、その画面だけ実機比率で撮り直せていない
+       （シナリオのタップが外れて日記一覧が写っている）。撮れるまでは、同じ中身
+       ——距離・時間・ルート・曲——を1画面で見せている記録の一覧を置く。 -->
   <div class="device-row reveal">
-    <!-- screen-entry だけ実機比率での撮り直しがまだ（他4枚は 1080×2324）。旧クロップ 9:12 の
-         ままなので枠の中で上下に余白が出る。撮り直しが入ったら width/height を 1080×2324 に
-         して、lp.css を `cover` へ戻す。 -->
     <figure class="device">
       <span class="camera" aria-hidden="true"></span>
       <div class="device-screen">
-        <img src="/assets/screen-entry.webp" width="881" height="1190" alt="走行記録の詳細画面。距離、時間、平均ペース、ルート地図が並ぶ。" loading="lazy" decoding="async">
+        <img src="/assets/screen-journal.webp" width="1080" height="2324" alt="走った記録の一覧。日付ごとに距離、時間、聴いた曲、ルート地図が並ぶ。" loading="lazy" decoding="async">
       </div>
-      <figcaption>ルート詳細</figcaption>
+      <figcaption>記録の一覧</figcaption>
     </figure>
     <figure class="device">
       <span class="camera" aria-hidden="true"></span>
@@ -95,18 +95,11 @@
     <h2 class="statement reveal" id="reread-h">読み返す</h2>
     <p class="lead measure reveal">その日の日記と、積み重なったカレンダー。</p>
   </div>
-  <div class="device-row reveal">
+  <div class="shotwrap reveal">
     <figure class="device">
       <span class="camera" aria-hidden="true"></span>
       <div class="device-screen">
-        <img src="/assets/screen-journal.webp" width="1080" height="2324" alt="日付順に並ぶランニング日記。" loading="lazy" decoding="async">
-      </div>
-      <figcaption>日記</figcaption>
-    </figure>
-    <figure class="device">
-      <span class="camera" aria-hidden="true"></span>
-      <div class="device-screen">
-        <img src="/assets/screen-calendar.webp" width="1080" height="2324" alt="走った日が塗られた月間カレンダー。" loading="lazy" decoding="async">
+        <img src="/assets/screen-calendar.webp" width="1080" height="2324" alt="走った日が塗られた月間カレンダーと、その日の記録。" loading="lazy" decoding="async">
       </div>
       <figcaption>カレンダー</figcaption>
     </figure>
@@ -131,6 +124,15 @@
     <p class="meta" id="close-spec" style="line-height:22px">自動計測にも対応し、Health Connectと連携します。写真・音楽・天気も記録に残ります。Googleドライブへの任意バックアップと書き出しに対応。日本語・English。</p>
   </div>
   <p class="lead measure reveal">走った道が、少しずつ自分の地図になる。よく通る道は、重なって濃くなる。</p>
+  <div class="shotwrap reveal" style="margin-top:var(--space-chapter)">
+    <figure class="device">
+      <span class="camera" aria-hidden="true"></span>
+      <div class="device-screen">
+        <img src="/assets/screen-trajectory.webp" width="1080" height="2324" alt="その月に走った軌跡を重ねた地図と、累積の距離と日数。" loading="lazy" decoding="async">
+      </div>
+      <figcaption>軌跡</figcaption>
+    </figure>
+  </div>
 </section>
 
 <section class="sec" aria-labelledby="hist-h">
