@@ -4,3 +4,9 @@ dist/
 test-results/
 .env
 .env.local
+
+# npx skills add が置いていくもの（refero-design ほか）。個人の道具立てで、
+# サイトのビルドには関係しないのでリポジトリには入れない。
+.agents/
+.claude/
+skills-lock.json
