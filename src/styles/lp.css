@@ -1,13 +1,24 @@
-/* Haruki LP — Claude Design プロジェクトの「Haruki LP standalone.html」の実装。
-   構造・コピー・タイポグラフィ・端末フレーム・地図まわりの見え方はデザインのまま。 */
-@import './tokens/colors.css';
-@import './tokens/spacing.css';
-@import './tokens/elevation.css';
+/* Haruki LP。
+   値・書体・余白・状態は正本（momom6699/Haruki-Designsystem）の生成物をそのまま読む。
+   `tokens/_*.css` は `tools/sync-to.py` が置いていくもので、ここでは編集しない——
+   直したい値があれば正本の `tokens/haruki.tokens.json` を直して配り直す。
+
+     _generated.css        共通の色・余白・角丸・罫・動き・書体の役割（light だけ。LP はダークを持たない）
+     _profiles.css         Web の組版プロファイル。ページ幅・ガター・1行の長さ・節の間隔・表題の大きさ
+     _app-typography.css   :lang(ja) / :lang(en) で「4つの声」に実際のファミリを割り当てる
+
+   紙面の組み方は references/adaline.md で採った規律に沿う：節は一定の拍（96px = space.plate）で
+   刻み、表題の声（display）はページに2回だけ置き、面は段（bg → surface）で重ねて影は使わない。 */
+@import './tokens/_generated.css';
+@import './tokens/_profiles.css';
+@import './tokens/_app-typography.css';
 
 /* 自前配信のフォント。Google Fonts は使わない——第三者オリジンへの通信を無くし、
    CDN の可否に組みが左右されないようにする。ページに出る字だけへ絞ってあるので、
-   4フェイス合わせて約120KB。文言を変えたら `npm run fonts:build` を流し直すこと
+   文言を変えたら `npm run fonts:build` を流し直すこと
    （収録外の字は豆腐になる。test/fonts.test.ts が突き合わせて落とす）。 */
+
+/* 和文の4フェイス。 */
 @font-face{font-family:'Zen Antique';font-style:normal;font-weight:400;font-display:swap;
   src:url('/fonts/ZenAntique-400.woff2') format('woff2')}
 @font-face{font-family:'Shippori Mincho';font-style:normal;font-weight:400;font-display:swap;
@@ -17,53 +28,92 @@
 @font-face{font-family:'Zen Kaku Gothic New';font-style:normal;font-weight:500;font-display:swap;
   src:url('/fonts/ZenKakuGothicNew-500.woff2') format('woff2')}
 
+/* 欧文の4フェイス。正本は「4つの声はそれぞれ欧文と和文の対」と決めていて、英語版の相方は
+   Bodoni Moda / Libre Caslon Text / Archivo。これまで LP は名前だけ書いて配っておらず、
+   英語ページも和文フェイスのラテン字で出ていた。 */
+@font-face{font-family:'Bodoni Moda';font-style:normal;font-weight:400;font-display:swap;
+  unicode-range:U+0000-2E7F;src:url('/fonts/BodoniModa-400.woff2') format('woff2')}
+@font-face{font-family:'Libre Caslon Text';font-style:normal;font-weight:400;font-display:swap;
+  unicode-range:U+0000-2E7F;src:url('/fonts/LibreCaslonText-400.woff2') format('woff2')}
+@font-face{font-family:'Archivo';font-style:normal;font-weight:400;font-display:swap;
+  unicode-range:U+0000-2E7F;src:url('/fonts/Archivo-400.woff2') format('woff2')}
+@font-face{font-family:'Archivo';font-style:normal;font-weight:500;font-display:swap;
+  unicode-range:U+0000-2E7F;src:url('/fonts/Archivo-500.woff2') format('woff2')}
 
-:root{
-  /* デザインは Hiragino（macOS 同梱）を指していたが、実サイトでは全環境で同じ組みに
-     なるよう Web フォントを当てる。役割の割り当てはデザインのまま。 */
-  --font-display:'Zen Antique','Bodoni Moda','Hiragino Mincho ProN',serif;
-  --font-reading:'Shippori Mincho','Hiragino Mincho ProN','Georgia',serif;
-  --font-ui:'Zen Kaku Gothic New','Hiragino Kaku Gothic ProN','Helvetica Neue',sans-serif;
-  --font-numeric:'Bodoni Moda','Georgia',serif;
-  --font-voice:'Shippori Mincho','Hiragino Mincho ProN','Georgia',serif;
-
-  --text-display:36px; --leading-display:44px; --text-title:28px; --leading-title:36px;
-  --text-headline:24px; --leading-headline:32px; --text-heading:20px; --leading-heading:28px;
-  --text-subheading:18px; --leading-subheading:25px; --text-body:16px; --leading-body:26px;
-  --text-body-sm:14px; --leading-body-sm:22px; --text-label:14px; --leading-label:20px;
-  --text-meta:13px; --leading-meta:20px; --text-caption:12px; --leading-caption:17px;
-  --text-metric:15px; --leading-metric:21px; --text-diary:17px; --leading-diary:30px;
-  --weight-regular:400; --weight-medium:500; --weight-bold:700;
-  --numeric-features:'tnum' 1;
-}
+/* 欧文フェイスの名前で和文が来たときの相方。英語ページにも「日本語」の3字は出る。
+   スタック（'Archivo',sans-serif）へ和文を書き足すと :lang() の宣言を生成物から
+   ずらすことになるので、対応は同じ名前の別レンジとして持つ。 */
+@font-face{font-family:'Bodoni Moda';font-style:normal;font-weight:400;font-display:swap;
+  unicode-range:U+2E80-FFFF;src:url('/fonts/ZenAntique-400.woff2') format('woff2')}
+@font-face{font-family:'Libre Caslon Text';font-style:normal;font-weight:400;font-display:swap;
+  unicode-range:U+2E80-FFFF;src:url('/fonts/ShipporiMincho-400.woff2') format('woff2')}
+@font-face{font-family:'Archivo';font-style:normal;font-weight:400;font-display:swap;
+  unicode-range:U+2E80-FFFF;src:url('/fonts/ZenKakuGothicNew-400.woff2') format('woff2')}
+@font-face{font-family:'Archivo';font-style:normal;font-weight:500;font-display:swap;
+  unicode-range:U+2E80-FFFF;src:url('/fonts/ZenKakuGothicNew-500.woff2') format('woff2')}
 
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--color-bg);color:var(--color-ink);font-family:var(--font-reading);text-wrap:pretty;overflow-x:hidden}
+body{margin:0;background:var(--color-bg);color:var(--color-ink);font-family:var(--font-reading);
+  font-size:var(--text-body);line-height:var(--leading-body);text-wrap:pretty;overflow-x:hidden}
 img{display:block;max-width:100%}
 a{color:var(--color-ink);text-decoration:none;border-bottom:var(--hairline) solid var(--color-border)}
 a:hover{color:var(--color-accent-pressed);border-bottom-color:var(--color-ink)}
-a:focus-visible,button:focus-visible{outline:2px solid var(--color-focus-ring);outline-offset:3px}
-h1,h2,h3,p{margin:0}
+/* 外周フォーカスは正本の border.focus / border.focus-offset / color.focus-ring。 */
+a:focus-visible,button:focus-visible{outline:var(--focus) solid var(--color-focus-ring);
+  outline-offset:var(--focus-offset)}
+h1,h2,h3,p,ul{margin:0}
+ul{padding:0;list-style:none}
 
-.skip-link{position:absolute;left:-9999px;background:var(--color-surface-elevated);padding:12px 16px;z-index:900}
-.skip-link:focus{left:16px;top:16px}
+.skip-link{position:absolute;left:-9999px;background:var(--color-surface-elevated);
+  padding:var(--space-related) var(--space-same-group);z-index:900}
+.skip-link:focus{left:var(--space-same-group);top:var(--space-same-group)}
 
-.page{max-width:1280px;margin:0 auto;padding:0 var(--space-expanded)}
-.measure{max-width:26em}
-.kicker{font-family:var(--font-ui);font-size:var(--text-caption);letter-spacing:.18em;color:var(--color-muted);text-transform:uppercase}
-.statement{font-family:var(--font-display);font-weight:400;
-  font-size:clamp(32px,5vw,64px);line-height:1.5;letter-spacing:0}
-#hero-h{font-size:min(clamp(32px,5vw,64px),11vh)}
-.lead{font-size:var(--text-subheading);line-height:32px}
-.meta{font-family:var(--font-ui);font-size:var(--text-meta);letter-spacing:.06em;color:var(--color-muted)}
-.num{font-family:var(--font-numeric);font-feature-settings:var(--numeric-features)}
-.voice{font-family:var(--font-voice)}
-.rule{border:0;border-top:var(--hairline) solid var(--color-border);margin:0}
+/* --- 紙面 -------------------------------------------------------------- */
+.page{max-width:var(--editorial-width);margin:0 auto;padding-inline:var(--editorial-gutter)}
+.measure{max-width:var(--editorial-measure)}
+/* 節は一定の拍で刻む。以前は clamp(88px,13vh,168px) と画面の高さに紐づけていて、
+   同じページでも端末ごとに拍が変わっていた。プロファイルの値は 48 → 96px（= space.plate）。 */
+.sec{padding-block:var(--editorial-section-space)}
+.stack{display:grid;gap:var(--space-section)}
 
-/* --- map chrome: paper-toned basemap, POI-suppressed ---------------------
-   下地は OSM のラスタタイル。グレースケールに落としてから軽くセピアを混ぜ、明るさを上げて
-   紙の色に寄せる——街の細かさは残したまま、色だけ抜く。ズームや POI は出さない。 */
+/* 表題の声。ページの入口と締めの2回だけに置く（brand.md「すべての節へ同じ強さで反復しない」）。 */
+.display{font-family:var(--font-display);font-weight:var(--weight-regular);
+  font-size:var(--editorial-title-size);line-height:var(--editorial-title-leading);letter-spacing:0;
+  max-width:14em}
+/* 節の見出しは読みものの声で一段下げる。明朝はページ全体を貫いたまま、強さだけを分ける。 */
+.statement{font-family:var(--font-reading);font-weight:var(--weight-regular);
+  font-size:clamp(var(--text-headline),3.2vw,var(--text-display));line-height:1.45;letter-spacing:0;
+  /* 見出しは本文より短い行で折る。editorial-measure(32em) は本文のための1行の長さ。 */
+  max-width:18em}
+.kicker{font-family:var(--font-ui);font-size:var(--text-caption);line-height:var(--leading-caption);
+  font-weight:var(--weight-medium);letter-spacing:.18em;color:var(--color-muted);text-transform:uppercase}
+/* 行送りは画面（アプリ）の値ではなく読みものの値。正本は媒体ごとの組版を profiles へ分けている。 */
+.lead{font-size:var(--text-subheading);line-height:1.75}
+.voice{font-family:var(--font-voice);font-size:var(--text-heading);line-height:1.8}
+
+/* --- 操作 -------------------------------------------------------------- */
+/* 主操作。正本の accent / on-accent、48px の操作領域、ピル。色相は持たない。 */
+.cta{display:inline-flex;align-items:center;justify-content:center;
+  min-height:var(--touch-target);padding-inline:var(--space-subsection);
+  font-family:var(--font-ui);font-size:var(--text-label);line-height:var(--leading-label);
+  font-weight:var(--weight-medium);letter-spacing:.04em;white-space:nowrap;
+  color:var(--color-on-accent);background:var(--color-accent);border:0;border-radius:var(--radius-pill);
+  transition:background var(--motion-fast) var(--easing-standard)}
+.cta:hover{background:var(--color-accent-pressed);color:var(--color-on-accent)}
+/* 副の操作。識別を枠が担うので、装飾の細罫ではなく border.control / color.control-border を使う。 */
+.ghost{display:inline-flex;align-items:center;justify-content:center;
+  min-height:var(--touch-target);padding-inline:var(--space-same-group);
+  font-family:var(--font-ui);font-size:var(--text-meta);line-height:var(--leading-meta);
+  letter-spacing:.04em;white-space:nowrap;color:var(--color-ink);background:transparent;
+  border:var(--control) solid var(--color-control-border);border-radius:var(--radius-pill);
+  transition:background var(--motion-fast) var(--easing-standard)}
+.ghost:hover{background:var(--color-surface);color:var(--color-ink);
+  border-color:var(--color-control-border)}
+
+/* --- 地図 ---------------------------------------------------------------
+   下地は CARTO Positron のラスタタイル。グレースケールに落としてから軽くセピアを混ぜ、
+   明るさを上げて紙の色に寄せる——街の細かさは残したまま、色だけ抜く。ズームや POI は出さない。 */
 .map{position:relative;background:var(--color-bg)}
 .map .leaflet-container{background:var(--color-bg);font-family:var(--font-ui)}
 .map .leaflet-tile-pane{filter:grayscale(1) contrast(.85) brightness(1.22) sepia(.22)}
@@ -73,107 +123,121 @@ h1,h2,h3,p{margin:0}
    要素で絞らず、同じ強さで隠す——旗を出さない、という指定はデザインのまま。 */
 .map .leaflet-control-zoom{display:none}
 .map .leaflet-attribution-flag{display:none!important}
-.map .leaflet-control-attribution{background:transparent;color:var(--color-muted);font-family:var(--font-ui);font-size:10px;padding:2px 6px}
+.map .leaflet-control-attribution{background:transparent;color:var(--color-muted);
+  font-family:var(--font-ui);font-size:10px;padding:2px 6px}
 .map .leaflet-control-attribution a{color:var(--color-muted);border:0}
 .paperwash{position:absolute;inset:0;pointer-events:none;background:var(--color-bg);opacity:.18;z-index:400}
 /* 地図を読み込めなかったときだけ出る一行。黙って空の枠を残さない。 */
-.map__failure{position:absolute;inset:0;z-index:420;display:grid;place-content:center;margin:0;padding:var(--space-related);
-  font-family:var(--font-ui);font-size:13px;line-height:1.6;color:var(--color-muted);text-align:center}
+.map__failure{position:absolute;inset:0;z-index:420;display:grid;place-content:center;margin:0;
+  padding:var(--space-related);font-family:var(--font-ui);font-size:var(--text-meta);
+  line-height:var(--leading-body);color:var(--color-muted);text-align:center}
 
-.annot{position:absolute;z-index:450;font-family:var(--font-ui);font-size:10px;letter-spacing:.16em;color:var(--color-muted);pointer-events:none}
-.annot::before{content:"";display:block;width:22px;border-top:var(--hairline) solid var(--color-border);margin-bottom:6px}
-
-/* --- hero --- */
-#hero{position:relative;height:100svh;min-height:480px;overflow:hidden}
+/* --- 入口 -------------------------------------------------------------- */
+/* 高さは画面いっぱいを下限にして、文字が増えれば伸びる。200% 拡大でコピーを切らない。 */
+#hero{position:relative;min-height:min(100svh,900px);overflow:hidden;
+  display:flex;flex-direction:column;justify-content:flex-end}
 #hero .map{position:absolute;inset:0}
-#hero-copy{position:relative;z-index:500;height:100%;display:flex;flex-direction:column;justify-content:flex-end;
-  padding-bottom:clamp(24px,6vh,96px);pointer-events:none;overflow:hidden}
-#hero-copy>*{pointer-events:auto}
+#hero-copy{position:relative;z-index:500;display:grid;gap:var(--space-subsection);
+  padding-block:var(--space-plate) clamp(var(--space-major),8vh,var(--space-plate))}
+#hero-h{font-size:min(var(--editorial-title-size),12vh);margin-block-start:var(--space-related)}
 .hero-veil{position:absolute;inset:0;z-index:410;pointer-events:none;
   background:linear-gradient(to top,var(--color-bg) 0%,rgba(247,243,233,.86) 26%,rgba(247,243,233,0) 58%)}
+ /* 版の上下だけを地の色へ溶かす。中ほどは線が読める濃さで残す。 */
 .history-veil{position:absolute;inset:0;z-index:410;pointer-events:none;
-  background:linear-gradient(to bottom,var(--color-bg) 0%,rgba(247,243,233,.86) 26%,rgba(247,243,233,.55) 58%,rgba(247,243,233,.42) 100%)}
+  background:linear-gradient(to bottom,var(--color-bg) 0%,rgba(247,243,233,.45) 22%,
+    rgba(247,243,233,.45) 78%,var(--color-bg) 100%)}
 
-.sec{padding:clamp(88px,13vh,168px) 0}
-.stack{display:grid;gap:var(--space-section)}
+.site-head{display:flex;align-items:center;justify-content:space-between;
+  gap:var(--space-subsection);flex-wrap:wrap;padding-block:var(--space-section);
+  position:absolute;top:0;left:0;right:0;z-index:600}
+.brand{font-family:var(--font-display);font-size:var(--text-title);letter-spacing:.08em}
 
-/* --- app screen sections --- */
-.shotwrap{max-width:340px;margin:0 auto}
-.device-row{display:flex;align-items:flex-end;justify-content:center;gap:var(--space-major);flex-wrap:wrap;max-width:640px;margin:0 auto}
-/* デザインは行の2台目を一回り小さく（.device--sm）していたが、作者指示で**同じ大きさ**に
-   揃える（縮尺が違って見えるため）。行内の端末はすべて .device のまま。 */
-/* 枠は実機の比率（デザインのまま 9/19.5）。中身は実機（Pixel、1080×2424）から撮って
-   ステータスバーを落とした 1080×2324（≒9:19.3）で、ページに出る端末は全部この比率に
-   揃っている。だからデザインどおり `cover` で埋める——差は 1% 未満、切れるのは端の数 px。 */
-.device{position:relative;aspect-ratio:9/19.5;padding:7px;border:1px solid #4A463E;border-radius:44px;width:220px;margin:0;
+/* --- 節の組み -----------------------------------------------------------
+   端末を毎回まんなかへ同じ大きさで置くと、節が全部同じ型になる。
+   media.md「スマホを全部同じ角度で並べる、各節を同じ高さにする、といった固定テンプレートに
+   はしない」に沿って、寄せる／並べる／全幅に敷く、を節ごとに変える。 */
+.spread{display:grid;gap:var(--space-plate) var(--space-major);align-items:center;
+  grid-template-columns:minmax(0,1fr) max-content}
+.spread--mirror{grid-template-columns:max-content minmax(0,1fr)}
+.spread--mirror>.spread__copy{order:2}
+.device-row{display:flex;align-items:flex-start;justify-content:center;
+  gap:var(--space-major);flex-wrap:wrap}
+
+/* 枠は正本の imagery.device-ratio。中身は実機（Pixel、1080×2424）から撮ってステータスバーを
+   落とした 1080×2324（≒9:19.3）で、ページに出る端末は全部この比率に揃っている。だから
+   `cover` で埋める——差は 1% 未満、切れるのは端の数 px。
+   影は落とさない。正本に影の体系は無く（effect.shadow-none）、奥行きは面と罫で表す。 */
+.shot{margin:0;display:grid;gap:var(--space-related);justify-items:center;width:220px}
+.shot figcaption{font-family:var(--font-ui);font-size:var(--text-caption);
+  line-height:var(--leading-caption);letter-spacing:.08em;color:var(--color-muted);text-align:center}
+.device{position:relative;width:100%;aspect-ratio:var(--imagery-device-ratio);padding:7px;
+  border:1px solid #4A463E;border-radius:44px;
   background:linear-gradient(145deg,#4B473F 0%,#25231F 20%,#171612 72%,#403C35 100%);
-  box-shadow:0 42px 80px rgba(42,38,32,.18),0 10px 24px rgba(42,38,32,.12),inset 0 0 0 1px rgba(255,255,255,.11)}
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.11)}
 .device::before,.device::after{content:"";position:absolute;right:-4px;width:3px;border-radius:2px;background:#5B564D}
 .device::before{top:22%;height:11%}
 .device::after{top:36%;height:17%}
-.device-screen{position:relative;width:100%;height:100%;overflow:hidden;border-radius:37px;background:var(--color-bg)}
+.device-screen{position:relative;width:100%;height:100%;overflow:hidden;
+  border-radius:37px;background:var(--color-bg)}
 .device-screen img{width:100%;height:100%;object-fit:cover;object-position:top center}
 .camera{position:absolute;top:16px;left:50%;z-index:4;width:11px;height:11px;border:2px solid #302E29;
-  border-radius:50%;background:#080807;box-shadow:inset 0 0 0 2px #151A1D;transform:translateX(-50%);pointer-events:none}
-.device figcaption{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  border-radius:50%;background:#080807;box-shadow:inset 0 0 0 2px #151A1D;transform:translateX(-50%);
+  pointer-events:none}
 
-.closing{display:grid;gap:var(--space-expanded);max-width:34em}
-.closing p{font-size:var(--text-subheading);line-height:34px}
-.closing__spec{font-family:var(--font-ui);font-size:var(--text-meta);line-height:26px;color:var(--color-muted);
-  display:flex;flex-wrap:wrap;gap:4px var(--space-subsection)}
+/* 段をひとつ上げる。影ではなく面の明度と罫線だけで、ページの中央に静かな面を作る。 */
+.sec--level{background:var(--color-surface);border-block:var(--hairline) solid var(--color-border)}
 
-/* --- history --- */
-#history-map{height:min(58vh,573px)}
-.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--space-expanded) var(--space-major);
-  font-family:var(--font-ui);font-size:var(--text-label);line-height:var(--leading-body)}
-.facts h3{font-size:var(--text-caption);letter-spacing:.14em;color:var(--color-muted);font-weight:400;margin-bottom:var(--space-related)}
+/* 節と節のあいだに敷く一枚。区切り線や背景色の切り替えの代わりに置く（imagery の「版」）。 */
+.plate{position:relative;border-block:var(--hairline) solid var(--color-border)}
+#history-map{height:clamp(320px,52vh,560px)}
 
-.site-head{display:flex;align-items:center;justify-content:space-between;gap:var(--space-subsection);flex-wrap:wrap;
-  padding-top:var(--space-section);padding-bottom:var(--space-section);
-  position:absolute;top:0;left:0;right:0;z-index:600}
-.brand{display:flex;align-items:center;gap:var(--space-related)}
-.brand span{font-family:var(--font-display);font-size:28px;letter-spacing:.08em}
-.langbtn{font-family:var(--font-ui);font-size:var(--text-meta);letter-spacing:.04em;color:var(--color-ink);
-  background:var(--color-bg);border:var(--hairline) solid var(--color-border);border-radius:999px;
-  padding:8px 16px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
-.langbtn:hover{background:var(--color-border);color:var(--color-ink)}
+/* --- 締め -------------------------------------------------------------- */
+.closing{display:grid;gap:var(--space-expanded);max-width:var(--editorial-measure)}
+.closing p{font-size:var(--text-subheading);line-height:1.85}
+/* 仕様の列挙は「確かめさせるもの」。明朝ではなく ui、文ではなく箇条で並べる。 */
+.closing__spec{font-family:var(--font-ui);font-size:var(--text-meta);line-height:var(--leading-body);
+  color:var(--color-muted);display:flex;flex-wrap:wrap;gap:var(--space-tight) var(--space-subsection)}
+.closing__spec li{display:flex;align-items:baseline;gap:var(--space-tight)}
+.closing__spec li::before{content:"";flex:none;width:var(--space-tight);
+  border-top:var(--control) solid var(--color-border)}
 
-.site-foot{display:flex;flex-wrap:wrap;gap:var(--space-subsection);justify-content:space-between;align-items:center;
-  font-family:var(--font-ui);font-size:var(--text-meta);color:var(--color-muted);
-  padding-top:var(--space-expanded);padding-bottom:var(--space-chapter);border-top:var(--hairline) solid var(--color-border)}
+.site-foot{display:flex;flex-wrap:wrap;gap:var(--space-subsection);justify-content:space-between;
+  align-items:center;font-family:var(--font-ui);font-size:var(--text-meta);color:var(--color-muted);
+  padding-block:var(--space-expanded) var(--space-chapter);
+  border-top:var(--hairline) solid var(--color-border)}
 .foot-mark{display:flex;align-items:center;gap:var(--space-subsection)}
 .foot-mark img{width:36px;height:36px;border-radius:var(--radius-interactive);opacity:.9}
-.foot-mark span{font-family:var(--font-display);font-size:16px;letter-spacing:.08em;color:var(--color-ink)}
+.foot-mark span{font-family:var(--font-display);font-size:var(--text-body);letter-spacing:.08em;
+  color:var(--color-ink)}
 .site-foot nav{display:flex;flex-wrap:wrap;gap:var(--space-subsection)}
 .site-foot nav a{display:inline-flex;align-items:center;min-height:44px}
 
-.mark-return{display:grid;justify-items:center;gap:var(--space-subsection);
-  padding-top:var(--space-chapter);padding-bottom:var(--space-major)}
-.mark-return img{width:64px;height:64px;border-radius:var(--radius-interactive);opacity:.9}
-.mark-return p{font-family:var(--font-display);font-size:16px;letter-spacing:.08em;color:var(--color-ink)}
-.store-link{font-family:var(--font-ui);font-size:var(--text-meta);letter-spacing:.04em;color:var(--color-ink);
-  border:var(--hairline) solid var(--color-border);border-radius:999px;padding:10px 20px;margin-top:4px;
-  white-space:nowrap;min-height:44px;display:inline-flex;align-items:center;justify-content:center}
-.store-link:hover{background:var(--color-border)}
-
-.reveal{opacity:0;transform:translateY(10px);transition:opacity .25s ease,transform .25s ease}
+.reveal{opacity:0;transform:translateY(10px);
+  transition:opacity var(--motion-base) var(--easing-standard),transform var(--motion-base) var(--easing-standard)}
 .reveal.in{opacity:1;transform:none}
 
 @media (max-width:900px){
-  .page{padding:0 var(--space-subsection)}
-  .statement{font-size:clamp(30px,7.5vw,44px);line-height:1.5}
-  .shotwrap{max-width:250px}
+  .spread,.spread--mirror{grid-template-columns:minmax(0,1fr);justify-items:start;
+    gap:var(--space-major)}
+  .spread--mirror>.spread__copy{order:0}
   /* 端末はページのどこでも同じ大きさ。158px なら 2台＋隙間で 348px に収まり、
      狭い画面でも行が縦積みにならずに済む。 */
-  .device{width:158px}
+  .shot{width:158px}
+  .device{border-radius:32px}
+  .device-screen{border-radius:26px}
+  .camera{top:11px;width:8px;height:8px}
   .device-row{gap:var(--space-section)}
-  #hero{height:92svh}
-  #history-map{height:47vh}
+  #hero{min-height:min(92svh,760px)}
 }
 @media (max-width:480px){
-  .site-head{gap:var(--space-related);padding-top:var(--space-subsection);padding-bottom:var(--space-subsection)}
-  .store-link,.langbtn{font-size:12px;padding:9px 14px}
-  .brand span{font-size:22px}
+  .site-head{gap:var(--space-related);padding-block:var(--space-subsection)}
+  .brand{font-size:var(--text-heading)}
+}
+@media (max-width:400px){
+  /* 320px 幅では profiles の下限（2rem）でも和文9字が1行に入らず、途中で折れて句読点が
+     行頭に落ちる。使う側で見つけた不足なので、profiles.json へ戻すまではここで下限を下げる。 */
+  .display{font-size:clamp(1.6rem,8vw,2rem)}
+  #hero-h{font-size:min(clamp(1.6rem,8vw,2rem),12vh)}
 }
 @media (prefers-reduced-motion:reduce){
   .reveal{opacity:1;transform:none;transition:none}

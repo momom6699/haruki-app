@@ -85,9 +85,10 @@ body = body.replace(/(src|href)="\/assets\/([^"]+)"/g, (_, attr, name) => {
   return `${attr}="${dataUri(`public/assets/${name}`, mime)}"`;
 });
 // 言語ボタンは別ページへのリンク。1枚に畳むと行き先が無いので、渡された URL へ向ける。
+const langLink = /(<a[^>]*?id="langbtn"[^>]*?)href="[^"]*"/;
 body = otherLangUrl
-  ? body.replace(/(<a class="langbtn"[^>]*?)href="[^"]*"/, `$1href="${otherLangUrl}"`)
-  : body.replace(/(<a class="langbtn"[^>]*?)href="[^"]*"/, '$1href="#" aria-disabled="true"');
+  ? body.replace(langLink, `$1href="${otherLangUrl}"`)
+  : body.replace(langLink, '$1href="#" aria-disabled="true"');
 
 const prelude = `
 // 確認用の1枚に畳んだ版。ファイルを取りに行く先だけを差し替える。

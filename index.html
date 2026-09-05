@@ -15,20 +15,18 @@
 <link rel="alternate" hreflang="en" href="https://haruki.run/index-en.html">
 <link rel="alternate" hreflang="ja" href="https://haruki.run/">
 <meta name="theme-color" content="#F7F3E9">
+<!-- 日本語ページの2つの声（display=Zen Antique、reading=Shippori Mincho）。欧文の4フェイスは
+     :lang(en) しか名指さないので、この1枚では落ちてこない。 -->
 <link rel="preload" href="/fonts/ZenAntique-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/ShipporiMincho-400.woff2" as="font" type="font/woff2" crossorigin>
 </head>
 <body>
 
 <a class="skip-link" href="#hero-h">メインコンテンツへ</a>
 
 <header class="page site-head" id="site-head">
-  <div class="brand">
-    <span>Haruki</span>
-  </div>
-  <div style="display:flex;align-items:center;gap:var(--space-related)">
-    <a class="store-link" href="mailto:sooksook7110@gmail.com?subject=Haruki%20事前登録" style="margin-top:0">事前登録</a>
-    <a class="langbtn" id="langbtn" href="/index-en.html" hreflang="en">English</a>
-  </div>
+  <p class="brand">Haruki</p>
+  <a class="ghost" id="langbtn" href="/index-en.html" hreflang="en">English</a>
 </header>
 
 <section id="hero" aria-labelledby="hero-h">
@@ -36,54 +34,62 @@
   <div class="paperwash"></div>
   <div class="hero-veil"></div>
   <div class="page" id="hero-copy">
-    <h1 class="statement" id="hero-h">走った日のことを、<br>書きとめる。</h1>
-    <p class="lead measure" style="margin-top:min(var(--space-section),3vh)">走った道、聴いていた曲、写真。<br>その日がひとつのページに残る。</p>
+    <p class="kicker">ランニング日記</p>
+    <h1 class="display" id="hero-h">走った日のことを、<br>書きとめる。</h1>
+    <p class="lead measure">走った道、聴いていた曲、写真。<br>その日がひとつのページに残る。</p>
+    <p><a class="cta" href="mailto:sooksook7110@gmail.com?subject=Haruki%20事前登録">事前登録</a></p>
   </div>
 </section>
 
 <section class="sec" aria-labelledby="map-h">
-  <div class="page stack">
-    <h2 class="statement reveal" id="map-h">走る人には、<br>街が少し違って見える。</h2>
-    <p class="lead measure reveal">交差点の名前より、川沿いと、公園の抜け道と、<br>信号のない一本道。</p>
+  <div class="page stack reveal">
+    <h2 class="statement" id="map-h">走る人には、<br>街が少し違って見える。</h2>
+    <p class="lead measure">交差点の名前より、川沿いと、公園の抜け道と、<br>信号のない一本道。</p>
   </div>
 </section>
 
 <section class="sec" aria-labelledby="run-h">
-  <div class="page stack" style="margin-bottom:var(--space-major)">
-    <h2 class="statement reveal" id="run-h">走る</h2>
-    <p class="lead measure reveal">ワンタップで計測。画面は消したままで。</p>
-  </div>
-  <div class="shotwrap reveal">
-    <figure class="device">
-      <span class="camera" aria-hidden="true"></span>
-      <div class="device-screen">
-        <img src="/assets/screen-running.webp" width="1080" height="2324" alt="計測中の画面。地図の上に経過時間とオン・オフのスイッチだけが表示されている。" loading="lazy" decoding="async">
+  <div class="page spread reveal">
+    <div class="spread__copy stack">
+      <h2 class="statement" id="run-h">走る</h2>
+      <p class="lead measure">ワンタップで計測。画面は消したままで。</p>
+    </div>
+    <figure class="shot">
+      <div class="device">
+        <span class="camera" aria-hidden="true"></span>
+        <div class="device-screen">
+          <img src="/assets/screen-running.webp" width="1080" height="2324" alt="計測中の画面。地図の上に経過時間とオン・オフのスイッチだけが表示されている。" loading="lazy" decoding="async">
+        </div>
       </div>
-      <figcaption>走る</figcaption>
+      <figcaption>計測中</figcaption>
     </figure>
   </div>
 </section>
 
 <section class="sec" aria-labelledby="remain-h">
-  <div class="page stack" style="margin-bottom:var(--space-major)">
-    <h2 class="statement reveal" id="remain-h">残る</h2>
-    <p class="lead measure reveal">距離・ルート・聴いていた曲・写真。走り終えたときには。</p>
+  <div class="page stack reveal" style="margin-bottom:var(--space-plate)">
+    <h2 class="statement" id="remain-h">残る</h2>
+    <p class="lead measure">距離・ルート・聴いていた曲・写真。走り終えたときには。</p>
   </div>
   <!-- 本来ここは「ルート詳細」1枚が主役だが、その画面だけ実機比率で撮り直せていない
        （シナリオのタップが外れて日記一覧が写っている）。撮れるまでは、同じ中身
        ——距離・時間・ルート・曲——を1画面で見せている記録の一覧を置く。 -->
-  <div class="device-row reveal">
-    <figure class="device">
-      <span class="camera" aria-hidden="true"></span>
-      <div class="device-screen">
-        <img src="/assets/screen-journal.webp" width="1080" height="2324" alt="走った記録の一覧。日付ごとに距離、時間、聴いた曲、ルート地図が並ぶ。" loading="lazy" decoding="async">
+  <div class="page device-row reveal">
+    <figure class="shot">
+      <div class="device">
+        <span class="camera" aria-hidden="true"></span>
+        <div class="device-screen">
+          <img src="/assets/screen-journal.webp" width="1080" height="2324" alt="走った記録の一覧。日付ごとに距離、時間、聴いた曲、ルート地図が並ぶ。" loading="lazy" decoding="async">
+        </div>
       </div>
       <figcaption>記録の一覧</figcaption>
     </figure>
-    <figure class="device">
-      <span class="camera" aria-hidden="true"></span>
-      <div class="device-screen">
-        <img src="/assets/screen-songs.webp" width="1080" height="2324" alt="走った日に聴いた曲の一覧。" loading="lazy" decoding="async">
+    <figure class="shot">
+      <div class="device">
+        <span class="camera" aria-hidden="true"></span>
+        <div class="device-screen">
+          <img src="/assets/screen-songs.webp" width="1080" height="2324" alt="走った日に聴いた曲の一覧。" loading="lazy" decoding="async">
+        </div>
       </div>
       <figcaption>曲の一覧</figcaption>
     </figure>
@@ -91,69 +97,83 @@
 </section>
 
 <section class="sec" aria-labelledby="reread-h">
-  <div class="page stack" style="margin-bottom:var(--space-major)">
-    <h2 class="statement reveal" id="reread-h">読み返す</h2>
-    <p class="lead measure reveal">その日の日記と、積み重なったカレンダー。</p>
-  </div>
-  <div class="shotwrap reveal">
-    <figure class="device">
-      <span class="camera" aria-hidden="true"></span>
-      <div class="device-screen">
-        <img src="/assets/screen-calendar.webp" width="1080" height="2324" alt="走った日が塗られた月間カレンダーと、その日の記録。" loading="lazy" decoding="async">
+  <div class="page spread spread--mirror reveal">
+    <div class="spread__copy stack">
+      <h2 class="statement" id="reread-h">読み返す</h2>
+      <p class="lead measure">その日の日記と、積み重なったカレンダー。</p>
+    </div>
+    <figure class="shot">
+      <div class="device">
+        <span class="camera" aria-hidden="true"></span>
+        <div class="device-screen">
+          <img src="/assets/screen-calendar.webp" width="1080" height="2324" alt="走った日が塗られた月間カレンダーと、その日の記録。" loading="lazy" decoding="async">
+        </div>
       </div>
       <figcaption>カレンダー</figcaption>
     </figure>
   </div>
 </section>
 
-<section class="sec" aria-labelledby="phil-h">
-  <div class="page stack">
-    <h2 class="statement reveal" id="phil-h">走ることを、<br>成績にしない。</h2>
-    <div class="measure reveal">
-      <p class="voice" style="font-size:var(--text-heading);line-height:34px">ランキングも、チャレンジもありません。<br>速かった日も、遅かった日も、同じ一日として残ります。</p>
-    </div>
+<section class="sec sec--level" aria-labelledby="phil-h">
+  <div class="page stack reveal">
+    <h2 class="statement" id="phil-h">走ることを、<br>成績にしない。</h2>
+    <p class="voice measure">ランキングも、チャレンジもありません。<br>速かった日も、遅かった日も、同じ一日として残ります。</p>
   </div>
 </section>
 
-<section class="page" style="padding-bottom:var(--space-chapter)">
-  <hr class="rule" style="margin-bottom:var(--space-major)">
-  <h2 class="statement reveal" id="hist-h">同じ街を、<br>何度も走る。</h2>
-  <div class="closing">
-    <p id="close-1">ランキングも、チャレンジも、広告もありません。</p>
-    <p id="close-2">走った記録は、あなたの端末に残ります。</p>
-    <p class="meta" id="close-spec" style="line-height:22px">自動計測にも対応し、Health Connectと連携します。写真・音楽・天気も記録に残ります。Googleドライブへの任意バックアップと書き出しに対応。日本語・English。</p>
+<section class="sec" aria-labelledby="hist-h">
+  <div class="page stack reveal" style="margin-bottom:var(--space-plate)">
+    <h2 class="display" id="hist-h">同じ街を、<br>何度も走る。</h2>
   </div>
-  <p class="lead measure reveal">走った道が、少しずつ自分の地図になる。よく通る道は、重なって濃くなる。</p>
-  <div class="shotwrap reveal" style="margin-top:var(--space-chapter)">
-    <figure class="device">
-      <span class="camera" aria-hidden="true"></span>
-      <div class="device-screen">
-        <img src="/assets/screen-trajectory.webp" width="1080" height="2324" alt="その月に走った軌跡を重ねた地図と、累積の距離と日数。" loading="lazy" decoding="async">
+  <div class="page spread reveal">
+    <div class="spread__copy">
+      <p class="lead measure">走った道が、少しずつ自分の地図になる。よく通る道は、重なって濃くなる。</p>
+    </div>
+    <figure class="shot">
+      <div class="device">
+        <span class="camera" aria-hidden="true"></span>
+        <div class="device-screen">
+          <img src="/assets/screen-trajectory.webp" width="1080" height="2324" alt="その月に走った軌跡を重ねた地図と、累積の距離と日数。" loading="lazy" decoding="async">
+        </div>
       </div>
       <figcaption>軌跡</figcaption>
     </figure>
   </div>
 </section>
 
-<section class="sec" aria-labelledby="hist-h">
-  <div class="page stack" style="margin-bottom:var(--space-major)"></div>
-  <div class="map map--faint" id="history-map" style="border-top:var(--hairline) solid var(--color-border);border-bottom:var(--hairline) solid var(--color-border)" role="img" aria-label="34回分のデモ走行ルートを重ねた地図。繰り返し通った道ほど線が濃く見える。">
-    <div class="paperwash"></div>
-    <div class="history-veil"></div>
-    <footer class="page site-foot" style="position:absolute;left:0;right:0;bottom:0;z-index:420;border-top:none;padding-bottom:var(--space-section)">
-      <div class="foot-mark">
-        <img src="/assets/haruki-icon.png" alt="Haruki" width="36" height="36">
-        <span>Haruki</span>
-        <a class="store-link" href="mailto:sooksook7110@gmail.com?subject=Haruki%20事前登録">事前登録</a>
-      </div>
-      <nav>
-        <a href="mailto:sooksook7110@gmail.com">sooksook7110@gmail.com</a>
-        <a href="/privacy">プライバシーポリシー</a>
-        <a href="/terms">利用規約</a>
-      </nav>
-    </footer>
+<!-- 節と節のあいだに敷く一枚。区切り線の代わりに置く。 -->
+<div class="plate map map--faint" id="history-map" role="img" aria-label="34回分のデモ走行ルートを重ねた地図。繰り返し通った道ほど線が濃く見える。">
+  <div class="paperwash"></div>
+  <div class="history-veil"></div>
+</div>
+
+<section class="sec" aria-labelledby="close-1">
+  <div class="page reveal">
+    <div class="closing">
+      <p id="close-1">ランキングも、チャレンジも、広告もありません。</p>
+      <p id="close-2">走った記録は、あなたの端末に残ります。</p>
+      <ul class="closing__spec" id="close-spec">
+        <li>自動計測とHealth Connect連携</li>
+        <li>写真・音楽・天気も記録に残る</li>
+        <li>Googleドライブへの任意バックアップと書き出し</li>
+        <li>日本語・English</li>
+      </ul>
+      <p><a class="cta" href="mailto:sooksook7110@gmail.com?subject=Haruki%20事前登録">事前登録</a></p>
+    </div>
   </div>
 </section>
+
+<footer class="page site-foot">
+  <div class="foot-mark">
+    <img src="/assets/haruki-icon.png" alt="Haruki" width="36" height="36">
+    <span>Haruki</span>
+  </div>
+  <nav>
+    <a href="mailto:sooksook7110@gmail.com">sooksook7110@gmail.com</a>
+    <a href="/privacy">プライバシーポリシー</a>
+    <a href="/terms">利用規約</a>
+  </nav>
+</footer>
 
 <script type="module" src="/src/main.ts"></script>
 </body>

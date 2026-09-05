@@ -15,20 +15,18 @@
 <link rel="alternate" hreflang="ja" href="https://haruki.run/">
 <link rel="alternate" hreflang="en" href="https://haruki.run/index-en.html">
 <meta name="theme-color" content="#F7F3E9">
-<link rel="preload" href="/fonts/ZenAntique-400.woff2" as="font" type="font/woff2" crossorigin>
+<!-- 英語ページの2つの声（display=Bodoni Moda、reading=Libre Caslon Text）。
+     「日本語」の3字だけは同じ名前の CJK レンジから和文フェイスが受け持つ。 -->
+<link rel="preload" href="/fonts/BodoniModa-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/LibreCaslonText-400.woff2" as="font" type="font/woff2" crossorigin>
 </head>
 <body>
 
 <a class="skip-link" href="#hero-h">Skip to content</a>
 
 <header class="page site-head" id="site-head">
-  <div class="brand">
-    <span>Haruki</span>
-  </div>
-  <div style="display:flex;align-items:center;gap:var(--space-related)">
-    <a class="store-link" href="mailto:sooksook7110@gmail.com?subject=Haruki%20pre-registration" style="margin-top:0">Pre-register</a>
-    <a class="langbtn" id="langbtn" href="/" hreflang="ja">日本語</a>
-  </div>
+  <p class="brand">Haruki</p>
+  <a class="ghost" id="langbtn" href="/" hreflang="ja">日本語</a>
 </header>
 
 <section id="hero" aria-labelledby="hero-h">
@@ -36,55 +34,63 @@
   <div class="paperwash"></div>
   <div class="hero-veil"></div>
   <div class="page" id="hero-copy">
-    <h1 class="statement" id="hero-h">Write down<br>the day you ran.</h1>
-    <p class="lead measure" style="margin-top:min(var(--space-section),3vh)">The road you took, the songs you heard, your photos.<br>The day is left on a single page.</p>
+    <p class="kicker">A running journal</p>
+    <h1 class="display" id="hero-h">Write down<br>the day you ran.</h1>
+    <p class="lead measure">The road you took, the songs you heard, your photos.<br>The day is left on a single page.</p>
+    <p><a class="cta" href="mailto:sooksook7110@gmail.com?subject=Haruki%20pre-registration">Pre-register</a></p>
   </div>
 </section>
 
 <section class="sec" aria-labelledby="map-h">
-  <div class="page stack">
-    <h2 class="statement reveal" id="map-h">Runners see<br>a different city.</h2>
-    <p class="lead measure reveal">Not the name of the intersection — the riverside, the shortcut<br>through the park, the road with no traffic lights.</p>
+  <div class="page stack reveal">
+    <h2 class="statement" id="map-h">Runners see<br>a different city.</h2>
+    <p class="lead measure">Not the name of the intersection — the riverside, the shortcut<br>through the park, the road with no traffic lights.</p>
   </div>
 </section>
 
 <section class="sec" aria-labelledby="run-h">
-  <div class="page stack" style="margin-bottom:var(--space-major)">
-    <h2 class="statement reveal" id="run-h">Run.</h2>
-    <p class="lead measure reveal">One tap to start. Then put the phone away.</p>
-  </div>
-  <div class="shotwrap reveal">
-    <figure class="device">
-      <span class="camera" aria-hidden="true"></span>
-      <div class="device-screen">
-        <img src="/assets/screen-running-en.webp" width="1080" height="2324" alt="The recording screen: over the map, only elapsed time and an on/off switch." loading="lazy" decoding="async">
+  <div class="page spread reveal">
+    <div class="spread__copy stack">
+      <h2 class="statement" id="run-h">Run.</h2>
+      <p class="lead measure">One tap to start. Then put the phone away.</p>
+    </div>
+    <figure class="shot">
+      <div class="device">
+        <span class="camera" aria-hidden="true"></span>
+        <div class="device-screen">
+          <img src="/assets/screen-running-en.webp" width="1080" height="2324" alt="The recording screen: over the map, only elapsed time and an on/off switch." loading="lazy" decoding="async">
+        </div>
       </div>
-      <figcaption>Run</figcaption>
+      <figcaption>Recording</figcaption>
     </figure>
   </div>
 </section>
 
 <section class="sec" aria-labelledby="remain-h">
-  <div class="page stack" style="margin-bottom:var(--space-major)">
-    <h2 class="statement reveal" id="remain-h">It stays.</h2>
-    <p class="lead measure reveal">Distance, route, the songs you heard, your photos. Once the run ends.</p>
+  <div class="page stack reveal" style="margin-bottom:var(--space-plate)">
+    <h2 class="statement" id="remain-h">It stays.</h2>
+    <p class="lead measure">Distance, route, the songs you heard, your photos. Once the run ends.</p>
   </div>
   <!-- The single run detail belongs here, but that screen has not been recaptured at
        device ratio yet (the scenario's tap missed and caught the journal list). Until
        it is, show the record list — the same content on one screen: distance, time,
        route and songs. -->
-  <div class="device-row reveal">
-    <figure class="device">
-      <span class="camera" aria-hidden="true"></span>
-      <div class="device-screen">
-        <img src="/assets/screen-journal-en.webp" width="1080" height="2324" alt="The list of runs: distance, time, the songs you heard and the route, day by day." loading="lazy" decoding="async">
+  <div class="page device-row reveal">
+    <figure class="shot">
+      <div class="device">
+        <span class="camera" aria-hidden="true"></span>
+        <div class="device-screen">
+          <img src="/assets/screen-journal-en.webp" width="1080" height="2324" alt="The list of runs: distance, time, the songs you heard and the route, day by day." loading="lazy" decoding="async">
+        </div>
       </div>
       <figcaption>Your records</figcaption>
     </figure>
-    <figure class="device">
-      <span class="camera" aria-hidden="true"></span>
-      <div class="device-screen">
-        <img src="/assets/screen-songs-en.webp" width="1080" height="2324" alt="The songs played during that run." loading="lazy" decoding="async">
+    <figure class="shot">
+      <div class="device">
+        <span class="camera" aria-hidden="true"></span>
+        <div class="device-screen">
+          <img src="/assets/screen-songs-en.webp" width="1080" height="2324" alt="The songs played during that run." loading="lazy" decoding="async">
+        </div>
       </div>
       <figcaption>Songs</figcaption>
     </figure>
@@ -92,69 +98,83 @@
 </section>
 
 <section class="sec" aria-labelledby="reread-h">
-  <div class="page stack" style="margin-bottom:var(--space-major)">
-    <h2 class="statement reveal" id="reread-h">Read it again.</h2>
-    <p class="lead measure reveal">That day's diary, and a calendar that fills up.</p>
-  </div>
-  <div class="shotwrap reveal">
-    <figure class="device">
-      <span class="camera" aria-hidden="true"></span>
-      <div class="device-screen">
-        <img src="/assets/screen-calendar-en.webp" width="1080" height="2324" alt="A month calendar with the days you ran filled in, and that day's record." loading="lazy" decoding="async">
+  <div class="page spread spread--mirror reveal">
+    <div class="spread__copy stack">
+      <h2 class="statement" id="reread-h">Read it again.</h2>
+      <p class="lead measure">That day's diary, and a calendar that fills up.</p>
+    </div>
+    <figure class="shot">
+      <div class="device">
+        <span class="camera" aria-hidden="true"></span>
+        <div class="device-screen">
+          <img src="/assets/screen-calendar-en.webp" width="1080" height="2324" alt="A month calendar with the days you ran filled in, and that day's record." loading="lazy" decoding="async">
+        </div>
       </div>
       <figcaption>Calendar</figcaption>
     </figure>
   </div>
 </section>
 
-<section class="sec" aria-labelledby="phil-h">
-  <div class="page stack">
-    <h2 class="statement reveal" id="phil-h">Running is<br>not a score.</h2>
-    <div class="measure reveal">
-      <p class="voice" style="font-size:var(--text-heading);line-height:34px">No rankings, no challenges. Fast days and slow days<br>stay as the same kind of day.</p>
-    </div>
+<section class="sec sec--level" aria-labelledby="phil-h">
+  <div class="page stack reveal">
+    <h2 class="statement" id="phil-h">Running is<br>not a score.</h2>
+    <p class="voice measure">No rankings, no challenges. Fast days and slow days<br>stay as the same kind of day.</p>
   </div>
 </section>
 
-<section class="page" style="padding-bottom:var(--space-chapter)">
-  <hr class="rule" style="margin-bottom:var(--space-major)">
-  <h2 class="statement reveal" id="hist-h">The same city,<br>again and again.</h2>
-  <div class="closing">
-    <p id="close-1">No rankings, no challenges, no ads.</p>
-    <p id="close-2">What you ran stays on your device.</p>
-    <p class="meta" id="close-spec" style="line-height:22px">Automatic run detection, with Health Connect. Photos, music and weather are kept with the record. Optional Google Drive backup and export. 日本語 / English.</p>
+<section class="sec" aria-labelledby="hist-h">
+  <div class="page stack reveal" style="margin-bottom:var(--space-plate)">
+    <h2 class="display" id="hist-h">The same city,<br>again and again.</h2>
   </div>
-  <p class="lead measure reveal">The roads you ran slowly become your own map. The ones you use most grow darker where they overlap.</p>
-  <div class="shotwrap reveal" style="margin-top:var(--space-chapter)">
-    <figure class="device">
-      <span class="camera" aria-hidden="true"></span>
-      <div class="device-screen">
-        <img src="/assets/screen-trajectory-en.webp" width="1080" height="2324" alt="The month's runs laid over one another, with the distance and days they add up to." loading="lazy" decoding="async">
+  <div class="page spread reveal">
+    <div class="spread__copy">
+      <p class="lead measure">The roads you ran slowly become your own map. The ones you use most grow darker where they overlap.</p>
+    </div>
+    <figure class="shot">
+      <div class="device">
+        <span class="camera" aria-hidden="true"></span>
+        <div class="device-screen">
+          <img src="/assets/screen-trajectory-en.webp" width="1080" height="2324" alt="The month's runs laid over one another, with the distance and days they add up to." loading="lazy" decoding="async">
+        </div>
       </div>
       <figcaption>Tracks</figcaption>
     </figure>
   </div>
 </section>
 
-<section class="sec" aria-labelledby="hist-h">
-  <div class="page stack" style="margin-bottom:var(--space-major)"></div>
-  <div class="map map--faint" id="history-map" style="border-top:var(--hairline) solid var(--color-border);border-bottom:var(--hairline) solid var(--color-border)" role="img" aria-label="34 demo runs laid over one another. The more often a road was run, the darker its line.">
-    <div class="paperwash"></div>
-    <div class="history-veil"></div>
-    <footer class="page site-foot" style="position:absolute;left:0;right:0;bottom:0;z-index:420;border-top:none;padding-bottom:var(--space-section)">
-      <div class="foot-mark">
-        <img src="/assets/haruki-icon.png" alt="Haruki" width="36" height="36">
-        <span>Haruki</span>
-        <a class="store-link" href="mailto:sooksook7110@gmail.com?subject=Haruki%20pre-registration">Pre-register</a>
-      </div>
-      <nav>
-        <a href="mailto:sooksook7110@gmail.com">sooksook7110@gmail.com</a>
-        <a href="/privacy">Privacy policy（日本語）</a>
-        <a href="/terms">Terms of use（日本語）</a>
-      </nav>
-    </footer>
+<!-- The plate between sections. It stands in for a divider rule. -->
+<div class="plate map map--faint" id="history-map" role="img" aria-label="34 demo runs laid over one another. The more often a road was run, the darker its line.">
+  <div class="paperwash"></div>
+  <div class="history-veil"></div>
+</div>
+
+<section class="sec" aria-labelledby="close-1">
+  <div class="page reveal">
+    <div class="closing">
+      <p id="close-1">No rankings, no challenges, no ads.</p>
+      <p id="close-2">What you ran stays on your device.</p>
+      <ul class="closing__spec" id="close-spec">
+        <li>Automatic run detection, with Health Connect</li>
+        <li>Photos, music and weather kept with the record</li>
+        <li>Optional Google Drive backup and export</li>
+        <li>日本語 / English</li>
+      </ul>
+      <p><a class="cta" href="mailto:sooksook7110@gmail.com?subject=Haruki%20pre-registration">Pre-register</a></p>
+    </div>
   </div>
 </section>
+
+<footer class="page site-foot">
+  <div class="foot-mark">
+    <img src="/assets/haruki-icon.png" alt="Haruki" width="36" height="36">
+    <span>Haruki</span>
+  </div>
+  <nav>
+    <a href="mailto:sooksook7110@gmail.com">sooksook7110@gmail.com</a>
+    <a href="/privacy">Privacy policy（日本語）</a>
+    <a href="/terms">Terms of use（日本語）</a>
+  </nav>
+</footer>
 
 <script type="module" src="/src/main.ts"></script>
 </body>

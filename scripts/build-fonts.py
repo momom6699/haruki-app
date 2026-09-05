@@ -24,13 +24,24 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "public" / "fonts"
 NODE = ROOT / "node_modules" / "@expo-google-fonts"
 
-# 役割はデザイン（Haruki LP standalone.html）の指定どおり。
+# 役割は正本（Haruki-Designsystem `generated/app-typography.css`）の宣言どおり。
+# 和文の4フェイスと、欧文の4フェイス。`script` はそのフェイスに何を積むかで、
+# "jp" は全部、"latin" は CJK を除いた分だけ——欧文フェイスに日本語の字は無いので、
+# 全文字を渡すと「収録できなかった」だけが並ぶ。欧文フェイスの CJK は CSS 側の
+# unicode-range で和文フェイスへ渡す（src/styles/lp.css）。
 FACES = [
-    ("ZenAntique", 400, "zen-antique/400Regular/ZenAntique_400Regular.ttf"),
-    ("ShipporiMincho", 400, "shippori-mincho/400Regular/ShipporiMincho_400Regular.ttf"),
-    ("ZenKakuGothicNew", 400, "zen-kaku-gothic-new/400Regular/ZenKakuGothicNew_400Regular.ttf"),
-    ("ZenKakuGothicNew", 500, "zen-kaku-gothic-new/500Medium/ZenKakuGothicNew_500Medium.ttf"),
+    ("ZenAntique", 400, "jp", "zen-antique/400Regular/ZenAntique_400Regular.ttf"),
+    ("ShipporiMincho", 400, "jp", "shippori-mincho/400Regular/ShipporiMincho_400Regular.ttf"),
+    ("ZenKakuGothicNew", 400, "jp", "zen-kaku-gothic-new/400Regular/ZenKakuGothicNew_400Regular.ttf"),
+    ("ZenKakuGothicNew", 500, "jp", "zen-kaku-gothic-new/500Medium/ZenKakuGothicNew_500Medium.ttf"),
+    ("BodoniModa", 400, "latin", "bodoni-moda/400Regular/BodoniModa_400Regular.ttf"),
+    ("LibreCaslonText", 400, "latin", "libre-caslon-text/400Regular/LibreCaslonText_400Regular.ttf"),
+    ("Archivo", 400, "latin", "archivo/400Regular/Archivo_400Regular.ttf"),
+    ("Archivo", 500, "latin", "archivo/500Medium/Archivo_500Medium.ttf"),
 ]
+
+# CJK の始まり。これより下は欧文フェイスにも入っている（ラテン、記号、—、©、←）。
+CJK_START = 0x2E80
 
 # 画面に出るがマークアップには無い文字。JS が入れるものはここに書き足すこと
 # ——テストは HTML しか見ないので、書き忘れると本番でその字だけ豆腐になる。
@@ -50,9 +61,11 @@ EXTRA = (
 # LP が先読みする表示用フェイスが 44KB → 118KB に膨らむ。あの1枚は最初に出るものなので、
 # めったに開かれない規約のためにそこを重くしたくない。両方読む人は2回落とすことになるが、
 # 割に合う方を取る。
+# 値は (ページ, そこで使うスクリプト)。法務の2枚は日本語だけで、
+# `public/style.css` も和文の4フェイスしか宣言していないので欧文は積まない。
 GROUPS = {
-    "": ("index.html", "index-en.html"),
-    "legal": ("public/privacy/index.html", "public/terms/index.html"),
+    "": (("index.html", "index-en.html"), ("jp", "latin")),
+    "legal": (("public/privacy/index.html", "public/terms/index.html"), ("jp",)),
 }
 
 
@@ -63,7 +76,7 @@ def rendered_text(html: str) -> str:
     return html
 
 
-def build(group: str, pages: "tuple[str, ...]") -> int:
+def build(group: str, pages: "tuple[str, ...]", scripts: "tuple[str, ...]") -> int:
     out = OUT / group if group else OUT
     out.mkdir(parents=True, exist_ok=True)
     chars = set(EXTRA)
@@ -77,22 +90,29 @@ def build(group: str, pages: "tuple[str, ...]") -> int:
     text = "".join(sorted(chars))
     print(f"[{group or 'lp'}] charset: {len(chars)} glyphs")
 
+    latin = "".join(c for c in text if ord(c) < CJK_START)
+
     coverage = {"chars": text, "faces": []}
     total = 0
-    for family, weight, rel in FACES:
+    for family, weight, script, rel in FACES:
+        if script not in scripts:
+            continue
         src = NODE / rel
         if not src.is_file():
             print(f"missing source: {src}", file=sys.stderr)
             return 1
+        wanted = text if script == "jp" else latin
         font = TTFont(str(src))
         options = Options()
         options.flavor = "woff2"
         options.desubroutinize = True
-        options.layout_features = ["kern", "liga", "locl", "palt", "vert"]
+        # tnum は正本が typography.numeric-features として宣言している。落とすと
+        # CSS の指定だけが残って等幅にならないので、字と一緒に持っていく。
+        options.layout_features = ["kern", "liga", "locl", "palt", "vert", "tnum"]
         options.drop_tables += ["DSIG"]
         options.notdef_outline = True
         sub = Subsetter(options=options)
-        sub.populate(text=text)
+        sub.populate(text=wanted)
         sub.subset(font)
         dest = out / f"{family}-{weight}.woff2"
         font.flavor = "woff2"
@@ -100,10 +120,12 @@ def build(group: str, pages: "tuple[str, ...]") -> int:
         kb = dest.stat().st_size / 1024
         total += kb
         cmap = set(TTFont(str(dest)).getBestCmap())
-        missing = [c for c in text if ord(c) not in cmap]
-        coverage["faces"].append({"family": family, "weight": weight, "missing": missing})
+        missing = [c for c in wanted if ord(c) not in cmap]
+        coverage["faces"].append(
+            {"family": family, "weight": weight, "script": script, "chars": wanted, "missing": missing}
+        )
         flag = "" if not missing else f"  !! missing {len(missing)}: {''.join(missing[:20])}"
-        print(f"  {dest.name:34s} {kb:6.1f} KB{flag}")
+        print(f"  {dest.name:34s} {kb:6.1f} KB  {script:5s}{flag}")
     print(f"[{group or 'lp'}] total {total:.1f} KB")
 
     (out / "coverage.json").write_text(json.dumps(coverage, ensure_ascii=False), encoding="utf-8")
@@ -111,8 +133,8 @@ def build(group: str, pages: "tuple[str, ...]") -> int:
 
 
 def main() -> int:
-    for group, pages in GROUPS.items():
-        code = build(group, pages)
+    for group, (pages, scripts) in GROUPS.items():
+        code = build(group, pages, scripts)
         if code:
             return code
     return 0

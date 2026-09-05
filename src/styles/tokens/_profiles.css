@@ -1,0 +1,11 @@
+/* 生成物 — 編集しない。
+   正本: tokens/haruki.tokens.json
+   生成: python3 tools/build-tokens.py */
+:root {
+  --editorial-measure: 32em;
+  --editorial-width: 72rem;
+  --editorial-gutter: clamp(1.25rem, 4vw, 4rem);
+  --editorial-title-size: clamp(2rem, 4.5vw, 4.5rem);
+  --editorial-title-leading: 1.3;
+  --editorial-section-space: clamp(3rem, 8vw, 6rem);
+}

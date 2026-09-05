@@ -1,0 +1,130 @@
+/* 生成物 — 編集しない。
+   正本: tokens/haruki.tokens.json
+   生成: python3 tools/build-tokens.py */
+
+:root{
+
+  /* color — 規律：UIクロームは無彩色。色が灯るのは意味のあるところだけ——実際に走ったルート、積み重ねの階調、ライブ/破壊的な状態、そしてマーク。　面は段で重ねる：0 = bg（地）／1 = surface（副面）／2 = surface-elevated（カード）。段を上げるのは面の明度と罫線だけで、影は使わない（effect.shadow-none） */
+  --color-bg:#F7F3E9;                /* 生成りの紙。アプリとページの地 */
+  --color-surface:#EFE9DA;           /* 副面。チップ、入力欄、セグメントの溝 */
+  --color-surface-elevated:#FBF8EF;  /* 白磁。カード、選択中セグメント、浮くカプセル */
+  --color-border:#E4DCC9;            /* 罫線 0.5px */
+  --color-ink:#2A2620;               /* 本文と見出し（bg比 ≈13.6:1） */
+  --color-muted:#6B6152;             /* 副次・メタ・アイコン（surface比 5.02:1 / bg比 5.48:1、DADS AA 検証済み） */
+  --color-accent:#2A2620;            /* ボタン主色・リンク・選択タブ。意図的に無彩色——CTA も色相を持たない */
+  --color-accent-pressed:#14110D;    /* 押下中。ink よりさらに濃い。色だけでなくリップルでも示す */
+  --color-on-accent:#FFFFFF;         /* accent の上に乗る文字 */
+  --color-focus-ring:#2A2620;        /* キーボード/D-pad フォーカスの外周 */
+  --color-critical:#D5583C;          /* 現在地・記録中・警告の非文字マーカー。本文色には使わず color.critical-text を使う。進行中と破壊的操作は同色でもラベル・アイコン・配置で区別する */
+  --color-secondary:#4B7A52;         /* 予約。テーマに宣言はあるが現行画面では未使用 */
+  --color-mark-cyan:#17A5DB;         /* マークのシアン */
+  --color-mark-cyan-deep:#127FB0;    /* cyan の上に大きめ文字を置くときの濃色 */
+  --color-mark-mustard:#E4B23E;      /* マークのマスタード */
+  --color-mark-olive:#7C6F33;        /* マークのオリーブ */
+  --color-mark-pale:#ECE18A;         /* マークの淡色 */
+  --color-data-1:#EFE9DA;            /* 活動なし（= surface） */
+  --color-data-2:#D7E8D1;            /* 0km超〜3km。距離区分であり評価ではない */
+  --color-data-3:#5E9E52;            /* 3km超〜7km。route.line と同値でも意味は独立 */
+  --color-data-4:#3C6B34;            /* 7km超。route.marker と同値でも意味は独立 */
+  --color-route-line:#5E9E52;        /* 走行ルートの線 */
+  --color-route-marker:#3C6B34;      /* 実データに対応する始点・終点の印。配列の中間点を終点や折返しと見なさない */
+  --color-map-face:#EAE1C8;          /* 地図の下地を紙へ寄せたときの面の色 */
+  --color-critical-text:#A53D29;     /* エラー・削除の説明文字。通常本文のコントラストを確保した朱。非文字マーカーは critical */
+  --color-control-border:#6B6152;    /* 入力欄・未選択コントロールの識別が枠に依存する場合。薄い border は装飾の区切り専用 */
+  --color-on-data-1:#2A2620;
+  --color-on-data-2:#2A2620;
+  --color-on-data-3:#2A2620;
+  --color-on-data-4:#F7F3E9;
+  --color-bookmark-1:#0E6E99;        /* シアン */
+  --color-bookmark-2:#D5583C;        /* 朱 */
+  --color-bookmark-3:#5E9E52;        /* 緑 */
+  --color-bookmark-4:#C8912A;        /* マスタード（生成り紙の上で沈まない濃さ） */
+  --color-bookmark-5:#6E6656;        /* グレー */
+
+  /* space — 距離が意味を持つ：近い＝強く関係、遠い＝弱く関係。囲みではなく余白で括る。px は アプリの dp と同値 */
+  --space-inline:4px;      /* 1行の中のアイコン↔ラベル */
+  --space-tight:8px;       /* 強く関係する対 */
+  --space-related:12px;     /* 一段弱い、同じブロック内 */
+  --space-same-group:16px;  /* ひとつの情報単位 */
+  --space-subsection:24px;  /* ブロック内の小さな区切り */
+  --space-section:32px;     /* はっきりした節の区切り */
+  --space-expanded:40px;    /* 地図など視覚素材まわりの息継ぎ */
+  --space-major:48px;       /* 意味の階層が変わる */
+  --space-chapter:64px;     /* ページ内で最も強い区切り */
+  --space-plate:96px;       /* 節と節のあいだ。ページを「刷られた紙の連なり」として読ませるための呼吸。chapter(64) の一段上で、印刷では見開きの余白に対応させる */
+
+  /* layout */
+  --page-horizontal:20px;  /* 画面本体の左右の余白（明示的に狭い例外） */
+  --page-top:24px;
+  --touch-target:48px;     /* これより小さくしない */
+
+  /* radius — ★監査：Kotlin の Radius は interactive/surface/dialog の3つしか持たず、残り5つは RoundedCornerShape(n.dp) の直書きになっている（10dp×7、28dp×2 など）。さらに 6/4/3/2/1dp はトークン自体が無い */
+  --radius-interactive:8px;  /* ボタン、チップ、入力欄 */
+  --radius-art:10px;          /* ジャケットのタイル */
+  --radius-surface:12px;      /* カード、地図の枠 */
+  --radius-dialog:16px;       /* シート、ダイアログ */
+  --radius-capsule:20px;      /* 地図の上に浮くピル（戻る、現在地、天気） */
+  --radius-floating:24px;     /* 浮くパネル：計測中パネル、地図上のシート */
+  --radius-cta:28px;          /* 走る CTA カードだけ */
+  --radius-pill:999px;         /* 選択チップだけ */
+
+  /* border */
+  --hairline:0.5px;      /* 装飾の区切り罫。操作枠・選択・フォーカスには専用の太さを使う */
+  --control:1px;       /* 操作要素の境界 */
+  --focus:2px;         /* 外周フォーカス。2pxの間隔をあけ、クリップしない */
+  --focus-offset:2px;  /* フォーカスと対象の間隔 */
+
+  /* effect — Haruki には影の体系が無い。奥行きは面の明度と罫線で表す。例外は生きた地図の上に浮くカプセルだけで、そこも影ではなく半透明の面で処理する */
+  --shadow-none:none;          /* 影は使わない、という宣言そのもの */
+  --capsule-fill:rgba(251,248,239,0.85);         /* surface-elevated の 85%。地図の上に浮くカプセル */
+  --capsule-fill-strong:rgba(251,248,239,0.94);  /* 同 94% */
+  --overlay-scrim:rgba(42,38,32,0.32);        /* ダイアログの背後 */
+  --pressed-veil:rgba(20,17,13,0.06);         /* 平らな行の押下フィードバック */
+
+  /* motion */
+  --motion-fast:120ms;
+  --motion-base:200ms;
+  --motion-slow:320ms;
+  --easing-standard:cubic-bezier(0.2,0,0,1);  /* Material 3 標準。この体系で唯一の曲線 */
+
+  /* font — 4つの声。それぞれ欧文の面と、その和文の相方を対で持つ。和文の光学補正は typography.ja-optical-scale を参照。　声を分ける境目は「読ませるものか、確かめさせるものか」——**読みもの（本文・日記・見出し・説明）は明朝（reading / voice / display）。明示的な情報（プライバシーポリシー、利用規約、ライセンス、権限の説明、仕様の列挙）と、利用者が操作・入力するものはサンセリフ（ui）。**確かめるために読む文には、字面が素直で走査しやすいゴシックを当てる。 */
+  --font-display:'Bodoni Moda','Zen Antique','Hiragino Mincho ProN',serif;  /* 画面の主役、ワードマーク。大きな見出しだけ */
+  --font-reading:'Libre Caslon Text','Shippori Mincho','Hiragino Mincho ProN',serif;  /* 短い読みもの・説明・画面タイトル。操作のラベル、入力例、プレースホルダ、法務・権限・仕様は ui。日記本文は voice。 */
+  --font-ui:'Archivo','Zen Kaku Gothic New','Hiragino Kaku Gothic ProN',sans-serif;       /* 操作・入力のラベル、検索、設定、明示的な情報（法務・権限・仕様）。本人の日記本文は編集中もvoiceを保つ。アプリのReleaseInformationDialogはbodyMedium（ui）で描く。 */
+  --font-numeric:'Libre Caslon Text','Shippori Mincho',serif;  /* 距離、時間、回数 */
+  --font-voice:'Shippori Mincho','Libre Caslon Text','Hiragino Mincho ProN',serif;    /* 日記の本文だけ。走った人自身の手 */
+
+  /* typography — px == アプリの sp。印刷用の pt スケールは別に決める（画面のスケールをそのまま換算しない） */
+  --ja-optical-scale:0.92;    /* 和文の光学補正。Shippori Mincho は Caslon より大きく重く見えるので、あいさつ文・一行コピー・小さな補助ラベル・曲リスト/数値チップ・画面タイトルでは日本語UIだけサイズを詰め、ウェイトを一段落とす（下限12px）。英語の組みには触れない。素のまま明朝を保つ役割：日付と節の見出し、日記カードのタイトルと1行プレビュー、日記本文(voice)、大きな数字、メタ行 */
+  --weight-regular:400;
+  --weight-medium:500;       /* 控えめに：操作、節の見出し、選択中のタブ */
+  --weight-bold:700;         /* 画面タイトルと月の合計だけ */
+  --numeric-features:'tnum' 1;    /* 数字は等幅 */
+  --text-display:36px;        /* 画面の主役の数字 */
+  --leading-display:44px;
+  --text-title:28px;          /* すべての画面タイトル */
+  --leading-title:36px;
+  --text-headline:24px;
+  --leading-headline:32px;
+  --text-heading:20px;        /* 節の見出し */
+  --leading-heading:28px;
+  --text-subheading:18px;
+  --leading-subheading:25px;
+  --text-body:16px;
+  --leading-body:26px;
+  --text-body-sm:14px;
+  --leading-body-sm:22px;
+  --text-label:14px;
+  --leading-label:20px;
+  --text-meta:13px;           /* 時刻、天気、取込元 */
+  --leading-meta:20px;
+  --text-caption:12px;        /* Haruki の画面上の補助文字の下限。本文の推奨値ではない。拡大を妨げない。DADS一律の下限という意味ではない */
+  --leading-caption:17px;
+  --text-metric:15px;         /* 日記の行に出る実測値 */
+  --leading-metric:21px;
+  --text-diary:17px;          /* 日記の本文 */
+  --leading-diary:30px;
+
+  /* imagery — 画像は役割で選ぶ。(1) 記録の証拠：実ルート、実画面、本人の写真・聴いた曲のアートを改変しない。(2) ブランドの編集表現：ランニングに結びつく具体的な風景・物の写真やオリジナルの平面的な挿絵。(3) 手順の説明図。版は配置方法であり絵柄の制限ではない。作者の絵柄の模倣、架空のGPS線、意味のない3D・グラデーションは採用しない。アプリの記録本文へブランドの挿絵を割り込ませない。guidelines/brand.md 参照 */
+  --imagery-device-ratio:9 / 19.5;  /* 機種未指定モックの推奨比 9:19.5。実キャプチャと実機の比率が優先。引き伸ばし・操作領域の切り落としはしない */
+}

@@ -9,13 +9,35 @@ import { readFileSync } from 'node:fs';
  * サブセットは2組ある（LP と法務ページ）。組を取り違えても同じ壊れ方をするので、
  * ページごとに**自分の組**と突き合わせる。
  */
-type Coverage = { chars: string; faces: { family: string; weight: number; missing: string[] }[] };
+type Face = { family: string; weight: number; script: 'jp' | 'latin'; chars: string; missing: string[] };
+type Coverage = { chars: string; faces: Face[] };
 
 const load = (dir: string) => JSON.parse(readFileSync(`${dir}/coverage.json`, 'utf8')) as Coverage;
 
 const GROUPS = [
-  { name: 'lp', dir: 'public/fonts', pages: ['index.html', 'index-en.html'] },
-  { name: 'legal', dir: 'public/fonts/legal', pages: ['public/privacy/index.html', 'public/terms/index.html'] },
+  {
+    name: 'lp',
+    dir: 'public/fonts',
+    pages: ['index.html', 'index-en.html'],
+    // 和文の4フェイスと欧文の4フェイス。欧文には CJK を積まないので、面倒でも並びで持つ。
+    faces: [
+      'ZenAntique-400',
+      'ShipporiMincho-400',
+      'ZenKakuGothicNew-400',
+      'ZenKakuGothicNew-500',
+      'BodoniModa-400',
+      'LibreCaslonText-400',
+      'Archivo-400',
+      'Archivo-500',
+    ],
+  },
+  {
+    name: 'legal',
+    dir: 'public/fonts/legal',
+    pages: ['public/privacy/index.html', 'public/terms/index.html'],
+    // 法務の2枚は日本語だけ。public/style.css も和文しか宣言していない。
+    faces: ['ZenAntique-400', 'ShipporiMincho-400', 'ZenKakuGothicNew-400', 'ZenKakuGothicNew-500'],
+  },
 ];
 
 const rendered = (file: string) =>
@@ -38,13 +60,21 @@ describe('self-hosted font subsets', () => {
 
     it(`built every face the ${group.name} stylesheet declares, with no dropped glyphs`, () => {
       const families = coverage.faces.map((f) => `${f.family}-${f.weight}`);
-      expect(families).toEqual(['ZenAntique-400', 'ShipporiMincho-400', 'ZenKakuGothicNew-400', 'ZenKakuGothicNew-500']);
-      for (const face of coverage.faces) expect(face.missing, face.family).toEqual([]);
+      expect(families).toEqual(group.faces);
+      // 欧文フェイスに日本語は積まない（CSS の unicode-range が和文フェイスへ渡す）。
+      // 落ちた字が無いかは、そのフェイスが積むはずだった分だけを見る。
+      for (const face of coverage.faces) {
+        expect(face.missing, `${face.family}-${face.weight}`).toEqual([]);
+        const cjk = [...face.chars].some((c) => c.codePointAt(0)! >= 0x2e80);
+        expect(cjk, `${face.family}-${face.weight} carries CJK`).toBe(face.script === 'jp');
+      }
     });
   }
 
   it('serves the fonts from this origin, never a font CDN', () => {
-    expect(readFileSync('src/styles/lp.css', 'utf8')).toContain("url('/fonts/ZenAntique-400.woff2')");
+    const lp = readFileSync('src/styles/lp.css', 'utf8');
+    expect(lp).toContain("url('/fonts/ZenAntique-400.woff2')");
+    expect(lp).toContain("url('/fonts/BodoniModa-400.woff2')");
     expect(readFileSync('public/style.css', 'utf8')).toContain("url('/fonts/legal/ZenAntique-400.woff2')");
     const pages = [
       'index.html',

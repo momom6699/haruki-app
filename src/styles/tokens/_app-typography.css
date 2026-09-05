@@ -1,0 +1,33 @@
+/* Generated from tokens/app-typography.json. Do not edit. */
+:lang(en) {
+  --font-display: 'Bodoni Moda',serif;
+  --font-reading: 'Libre Caslon Text',serif;
+  --font-ui: 'Archivo',sans-serif;
+  --font-numeric: 'Libre Caslon Text',serif;
+  --font-voice: 'Shippori Mincho',serif;
+}
+.app-display:lang(en) { font-family: var(--font-display); font-size: 36px; line-height: 44px; font-weight: 400; font-style: normal; font-feature-settings: var(--numeric-features); font-optical-sizing: none; }
+.app-screen-title:lang(en) { font-family: var(--font-reading); font-size: 28px; line-height: 36px; font-weight: 700; font-style: normal; font-feature-settings: var(--numeric-features); font-optical-sizing: none; }
+.app-reading:lang(en) { font-family: var(--font-reading); font-size: 16px; line-height: 24px; font-weight: 400; font-style: normal; font-feature-settings: var(--numeric-features); font-optical-sizing: none; }
+.app-ui-body:lang(en) { font-family: var(--font-ui); font-size: 14px; line-height: 20px; font-weight: 400; font-style: normal; font-feature-settings: var(--numeric-features); font-optical-sizing: none; }
+.app-ui-emphasis:lang(en) { font-family: var(--font-ui); font-size: 16px; line-height: 22px; font-weight: 500; font-style: normal; font-feature-settings: var(--numeric-features); font-optical-sizing: none; }
+.app-voice:lang(en) { font-family: var(--font-voice); font-size: 17px; line-height: 30px; font-weight: 400; font-style: normal; font-feature-settings: normal; font-optical-sizing: none; }
+.app-metric:lang(en) { font-family: var(--font-reading); font-size: 15px; line-height: 21px; font-weight: 400; font-style: normal; font-feature-settings: var(--numeric-features); font-optical-sizing: none; }
+.app-numeric:lang(en) { font-family: var(--font-numeric); font-size: 15px; line-height: 21px; font-weight: 400; font-style: normal; font-feature-settings: var(--numeric-features); font-optical-sizing: none; }
+.app-numeric-emphasis:lang(en) { font-family: var(--font-numeric); font-size: 15px; line-height: 21px; font-weight: 700; font-style: normal; font-feature-settings: var(--numeric-features); font-optical-sizing: none; }
+:lang(ja) {
+  --font-display: 'Zen Antique',serif;
+  --font-reading: 'Shippori Mincho',serif;
+  --font-ui: 'Zen Kaku Gothic New',sans-serif;
+  --font-numeric: 'Libre Caslon Text',serif;
+  --font-voice: 'Shippori Mincho',serif;
+}
+.app-display:lang(ja) { font-family: var(--font-display); font-size: 36px; line-height: 44px; font-weight: 400; font-style: normal; font-feature-settings: var(--numeric-features); font-optical-sizing: none; }
+.app-screen-title:lang(ja) { font-family: var(--font-reading); font-size: 25.76px; line-height: 33.12px; font-weight: 500; font-style: normal; font-feature-settings: var(--numeric-features); font-optical-sizing: none; }
+.app-reading:lang(ja) { font-family: var(--font-reading); font-size: 16px; line-height: 24px; font-weight: 400; font-style: normal; font-feature-settings: var(--numeric-features); font-optical-sizing: none; }
+.app-ui-body:lang(ja) { font-family: var(--font-ui); font-size: 14px; line-height: 20px; font-weight: 400; font-style: normal; font-feature-settings: var(--numeric-features); font-optical-sizing: none; }
+.app-ui-emphasis:lang(ja) { font-family: var(--font-ui); font-size: 16px; line-height: 22px; font-weight: 500; font-style: normal; font-feature-settings: var(--numeric-features); font-optical-sizing: none; }
+.app-voice:lang(ja) { font-family: var(--font-voice); font-size: 17px; line-height: 30px; font-weight: 400; font-style: normal; font-feature-settings: normal; font-optical-sizing: none; }
+.app-metric:lang(ja) { font-family: var(--font-reading); font-size: 13.8px; line-height: 19.32px; font-weight: 400; font-style: normal; font-feature-settings: var(--numeric-features); font-optical-sizing: none; }
+.app-numeric:lang(ja) { font-family: var(--font-numeric); font-size: 15px; line-height: 21px; font-weight: 400; font-style: normal; font-feature-settings: var(--numeric-features); font-optical-sizing: none; }
+.app-numeric-emphasis:lang(ja) { font-family: var(--font-numeric); font-size: 15px; line-height: 21px; font-weight: 700; font-style: normal; font-feature-settings: var(--numeric-features); font-optical-sizing: none; }
